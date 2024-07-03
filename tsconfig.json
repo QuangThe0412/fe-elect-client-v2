@@ -34,6 +34,7 @@
       "@layouts/*": ["./src/layouts/*"],
       "@api/*": ["./src/api/*"],
       "@theme/*": ["./src/theme/*"],
+      "@schemaValidations/*": ["./src/schemaValidations/*"],
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],

@@ -14,6 +14,7 @@ const PublicLayout = ({ children }: any) => {
                         width={840}
                         alt="Image"
                         className="object-cover dark:brightness-[0.2] dark:grayscale"
+                        priority
                     />
                 </div>
             </div>
