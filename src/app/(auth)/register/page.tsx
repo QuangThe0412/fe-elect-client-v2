@@ -10,6 +10,7 @@ import {
 } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import { paths } from "@/constants/paths"
 
 const RegisterForm = () => {
   return (
@@ -54,7 +55,7 @@ const RegisterForm = () => {
         </div>
         <div className="mt-4 text-center text-sm">
           Already have an account?{" "}
-          <Link href="#" className="underline">
+          <Link href={paths.login} className="underline">
             Sign in
           </Link>
         </div>
