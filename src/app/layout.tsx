@@ -4,7 +4,7 @@ import "@styles/globals.css";
 import { Inter as FontSans } from "next/font/google"
 import { cn } from "@/lib/utils"
 import AppLayout from "@/layouts/AppLayout"
- 
+
 const fontSans = FontSans({
   subsets: ["vietnamese"],
   variable: "--font-sans",
@@ -20,24 +20,24 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  
+
   return (
     <html lang="en" suppressHydrationWarning>
       <head />
-      <body
-        className={cn(
-          "min-h-screen bg-background font-sans antialiased",
-          fontSans.variable
-        )}
-      >
+      <body className={cn(
+        "min-h-screen bg-background font-sans antialiased",
+        fontSans.variable
+      )} >
         <ThemeProvider
-            attribute="class"
-            defaultTheme="system"
-            enableSystem
-            disableTransitionOnChange
-          >
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <AppLayout>
             {children}
-          </ThemeProvider>
+          </AppLayout>
+        </ThemeProvider>
       </body>
     </html>
   );
