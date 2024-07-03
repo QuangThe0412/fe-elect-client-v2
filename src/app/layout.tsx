@@ -1,8 +1,9 @@
+import { ThemeProvider } from "@/components/theme-provider"
 import type { Metadata } from "next";
 import "@styles/globals.css";
 import { Inter as FontSans } from "next/font/google"
- 
 import { cn } from "@/lib/utils"
+import AppLayout from "@/layouts/AppLayout"
  
 const fontSans = FontSans({
   subsets: ["vietnamese"],
@@ -19,6 +20,7 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  
   return (
     <html lang="en" suppressHydrationWarning>
       <head />
@@ -28,7 +30,14 @@ export default function RootLayout({
           fontSans.variable
         )}
       >
-        {children}
+        <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+          >
+            {children}
+          </ThemeProvider>
       </body>
     </html>
   );
