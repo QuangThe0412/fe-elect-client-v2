@@ -2,10 +2,22 @@ import z from 'zod'
 
 export const RegisterBody = z
     .object({
-        name: z.string().trim().min(2).max(256),
-        email: z.string().email(),
-        password: z.string().min(6).max(100),
-        confirmPassword: z.string().min(6).max(100)
+        name: z.string().trim()
+            .min(1, { message: 'Vui lòng nhập họ tên' })
+            .max(256, { message: 'Không đúng định dạng' }),
+        username: z.string()
+            .min(6, { message: 'Vui lòng nhập tài khoản' })
+            .max(100, { message: 'Không đúng định dạng' })
+            .regex(/^[A-Za-z0-9]+$/, { message: 'Tài khoản không được chứa dấu hoặc ký tự đặc biệt' }),
+        phone: z.string()
+            .min(10, { message: "Số điện thoại không hợp lệ" })
+            .max(10, { message: "Số điện thoại không hợp lệ" })
+            .regex(/^([+]?[\s0-9]+)?(\d{3}|[(]?[0-9]+[)])?([-]?[\s]?[0-9])+$/, { message: "Số điện thoại không hợp lệ" }),
+        password: z.string()
+            .min(6, { message: "Mật khẩu quá ngắn" })
+            .max(50, { message: "Mật khẩu quá dài" })
+            .regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]*$/,
+                { message: "Mật khẩu phải chứa ít nhất một chữ cái viết thường, một chữ cái viết hoa, một số, và một ký tự đặc biệt" }), confirmPassword: z.string()
     })
     .strict()
     .superRefine(({ confirmPassword, password }, ctx) => {
@@ -22,15 +34,19 @@ export type RegisterBodyType = z.TypeOf<typeof RegisterBody>
 
 export const RegisterRes = z.object({
     data: z.object({
-        token: z.string(),
-        expiresAt: z.string(),
+        accessToken: z.string(),
+        refreshToken: z.string(),
+        expiresAccessToken: z.string(),
+        expiresRefreshToken: z.string(),
         account: z.object({
             id: z.number(),
+            idtype: z.number(),
             name: z.string(),
-            email: z.string()
+            username: z.string(),
+            phone: z.string(),
         })
     }),
-    message: z.string()
+    mess: z.string()
 })
 
 //body
@@ -38,26 +54,13 @@ export type RegisterResType = z.TypeOf<typeof RegisterRes>
 
 export const LoginBody = z
     .object({
-        username: z.string().min(6, { message: 'Vui lòng nhập tài khoản' }),
-        password: z.string().min(6, { message: 'Vui lòng nhập mật khẩu' }),
+        username: z.string().min(6, { message: 'Vui lòng nhập tài khoản' }).max(100, { message: 'Không đúng định dạng' }),
+        password: z.string().min(6, { message: 'Vui lòng nhập mật khẩu' }).max(100, { message: 'Không đúng định dạng' }),
     })
     .strict()
 
 export type LoginBodyType = z.TypeOf<typeof LoginBody>
 
-export const LoginRes = z
-    .object({
-        IDKhachHang: z.string(),
-        IDLoaiKH: z.string(),
-        TenKhachHang: z.string(),
-        username: z.string(),
-        DienThoai: z.string(),
-    }).strict()
+export const LoginRes = RegisterRes
 
 export type LoginResType = z.TypeOf<typeof LoginRes>
-export const SlideSessionBody = z.object({}).strict()
-
-export type SlideSessionBodyType = z.TypeOf<typeof SlideSessionBody>
-export const SlideSessionRes = RegisterRes
-
-export type SlideSessionResType = z.TypeOf<typeof SlideSessionRes>

@@ -3,7 +3,7 @@ import type { NextRequest } from 'next/server'
 import { paths } from './constants/paths';
 
 export function middleware(request: NextRequest) {
-    let cookie = request.cookies.get('access_token');
+    let cookie = request.cookies.get('accessToken');
     if (!cookie) {
         return NextResponse.redirect(new URL(paths.login, request.url))
     }

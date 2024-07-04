@@ -1,7 +1,7 @@
 'use client';
 
 import { ThemeProvider } from "@/components/theme-provider"
-import type { Metadata } from "next";
+import { Toaster } from "@/components/ui/toaster"
 import "@styles/globals.css";
 import { Inter as FontSans } from "next/font/google"
 import { cn } from "@/lib/utils"
@@ -39,6 +39,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         >
           <Layout>
             {children}
+            <Toaster />
           </Layout>
         </ThemeProvider>
       </body>

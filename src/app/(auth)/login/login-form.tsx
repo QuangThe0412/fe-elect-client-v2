@@ -16,7 +16,7 @@ import { LoginBody, LoginBodyType } from '@/schemaValidations/auth.schema'
 import { useToast } from '@/components/ui/use-toast'
 import authApiRequest from '@/apiRequests/auth'
 import { useRouter } from 'next/navigation'
-import { handleErrorApi } from '@/lib/utils'
+import { setCookie, decodeJWT, handleErrorApi, getDateRemaining, getCookie } from '@/lib/utils'
 import { useState } from 'react'
 import Link from "next/link"
 import { Label } from "@/components/ui/label"
@@ -24,18 +24,13 @@ import { paths } from "@/constants/paths"
 import { PasswordInput } from '@/components/ui/input-password'
 import { ResponsePayloadType } from '@/lib/http'
 import useAuthStore, { TypeUsers } from '@/store/auth.store'
-import accountApiRequest from '@/apiRequests/account'
 
 const LoginForm = () => {
     const { user, setUser } = useAuthStore((state: TypeUsers) => ({
         user: state.user,
         setUser: state.setUser
     }))
-
-    console.log({ user })
-
     const [loading, setLoading] = useState(false)
-    //   const { setUser } = useAppContext()
     const { toast } = useToast()
     const router = useRouter()
     const form = useForm<LoginBodyType>({
@@ -46,22 +41,35 @@ const LoginForm = () => {
         }
     })
 
+    const accessToken = getCookie('accessToken');
+    if (accessToken) {
+        const decodedAccess = decodeJWT(accessToken);
+        if (decodedAccess.exp > Date.now() / 1000) {
+            router.push(paths.home)
+        }
+    }
+
     async function onSubmit(values: LoginBodyType) {
-        if (loading) return
-        setLoading(true)
+        if (loading) return;
+        setLoading(true);
         try {
             const result = await authApiRequest.login(values);
             const payload = result.payload as ResponsePayloadType;
-            console.log({ payload })
             if (result.status == 200) {
                 toast({
-                    description: payload.mess
+                    description: payload.mess,
+                    variant: 'success',
+                    duration: 5000,
                 })
-                const accessToken = payload.data.token;
+                const accessToken = payload.data.accessToken;
                 const refreshToken = payload.data.refreshToken;
-                const accountRes = await accountApiRequest.profile();
 
-                // setUser(result.payload.data.account)
+                const decodedAccess = decodeJWT(accessToken);
+                const decodedRefresh = decodeJWT(refreshToken);
+
+                setCookie('accessToken', accessToken, getDateRemaining(decodedAccess.exp));
+                setCookie('refreshToken', refreshToken, getDateRemaining(decodedRefresh.exp));
+                setUser(payload.data.account)
                 router.push('/')
                 router.refresh()
             }
@@ -71,7 +79,7 @@ const LoginForm = () => {
                 setError: form.setError
             })
         } finally {
-            setLoading(false)
+            setLoading(false);
         }
     }
     return (
@@ -82,21 +90,19 @@ const LoginForm = () => {
                     className='grid gap-4'
                     noValidate
                 >
-                    <div>
-                        <FormField
-                            control={form.control}
-                            name='username'
-                            render={({ field }) => (
-                                <FormItem className="grid gap-2">
-                                    <FormLabel className="mr-auto">Tài khoản</FormLabel>
-                                    <FormControl>
-                                        <Input type='text' {...field} />
-                                    </FormControl>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
-                    </div>
+                    <FormField
+                        control={form.control}
+                        name='username'
+                        render={({ field }) => (
+                            <FormItem className="grid gap-2">
+                                <FormLabel className="mr-auto">Tài khoản</FormLabel>
+                                <FormControl>
+                                    <Input type='text' {...field} />
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
                     <FormField
                         control={form.control}
                         name='password'
@@ -121,6 +127,7 @@ const LoginForm = () => {
             </div>
             <div className="mt-4 text-center text-sm">
                 Chưa có tài khoản?{" "}
+
                 <Link href={paths.register} className="underline">
                     Đăng ký ngay
                 </Link>

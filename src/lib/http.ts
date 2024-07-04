@@ -8,10 +8,10 @@ export type ResponsePayloadType = {
 }
 
 type EntityErrorPayload = {
-    message: string
+    mess: string
     errors: {
       field: string
-      message: string
+      mess: string
     }[]
   }
   
@@ -65,7 +65,6 @@ const request = async<Response>(
         body,
         method,
     });
-    console.log({res})
     const payload: Response = await res.json();
     const _payload = payload as ResponsePayloadType;
     const data = {

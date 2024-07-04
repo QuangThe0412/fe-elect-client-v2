@@ -1,15 +1,25 @@
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card"
 import LoginForm from "./login-form"
 
 const Login = () => {
   return (
-    <>
-      <div className="mx-auto grid w-[350px]">
-        <div className="grid gap-2 text-center">
-          <h1 className="text-3xl font-bold">Đăng nhập</h1>
-          <LoginForm />
-        </div>
-      </div>
-    </>
+    <Card className="mx-auto w-full md:w-1/2 ">
+      <CardHeader>
+        <CardTitle className="text-xl">Đăng nhập</CardTitle>
+        <CardDescription>
+          Vui lòng điền thông tin để đăng nhập
+        </CardDescription>
+      </CardHeader>
+      <CardContent>
+        <LoginForm />
+      </CardContent>
+    </Card>
   )
 }
 

@@ -3,9 +3,13 @@ import z from 'zod'
 export const AccountRes = z
   .object({
     data: z.object({
-      id: z.number(),
-      name: z.string(),
-      email: z.string()
+      account: z.object({
+        id: z.number(),
+        idtype: z.number(),
+        name: z.string(),
+        username: z.string(),
+        phone: z.string(),
+      })
     }),
     message: z.string()
   })

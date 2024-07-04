@@ -8,11 +8,11 @@ export type TypeUsers = {
   setUser: (user: User) => void;
 }
 
-const useAuthStore = create<TypeUsers>()((set, get) => {
-  return {
-    user: {} as User,
-    setUser: (user: User) => set({ user })
+const useAuthStore = create<TypeUsers>()((set) => ({
+  user: {} as User,
+  setUser: (user: User) =>{
+    set({ user })
   }
-})
+}));
 
 export default useAuthStore;
