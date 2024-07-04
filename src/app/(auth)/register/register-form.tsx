@@ -53,7 +53,6 @@ const RegisterForm = () => {
             if (result.status == 201) {
                 toast({
                     description: payload.mess,
-                    variant: 'success',
                     duration: 5000,
                 })
                 const accessToken = payload.data.accessToken;

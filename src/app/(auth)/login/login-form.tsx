@@ -17,7 +17,7 @@ import { useToast } from '@/components/ui/use-toast'
 import authApiRequest from '@/apiRequests/auth'
 import { useRouter } from 'next/navigation'
 import { setCookie, decodeJWT, handleErrorApi, getDateRemaining, getCookie } from '@/lib/utils'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Link from "next/link"
 import { Label } from "@/components/ui/label"
 import { paths } from "@/constants/paths"
@@ -36,18 +36,20 @@ const LoginForm = () => {
     const form = useForm<LoginBodyType>({
         resolver: zodResolver(LoginBody),
         defaultValues: {
-            username: '',
-            password: ''
+            username: 'khach11',
+            password: 'Aa123123'
         }
     })
 
-    const accessToken = getCookie('accessToken');
-    if (accessToken) {
-        const decodedAccess = decodeJWT(accessToken);
-        if (decodedAccess.exp > Date.now() / 1000) {
-            router.push(paths.home)
+    useEffect(() => {
+        const accessToken = getCookie('accessToken');
+        if (accessToken) {
+            const decodedAccess = decodeJWT(accessToken);
+            if (decodedAccess.exp > Date.now() / 1000) {
+                router.push(paths.home);
+            }
         }
-    }
+    }, [router])
 
     async function onSubmit(values: LoginBodyType) {
         if (loading) return;
@@ -58,7 +60,6 @@ const LoginForm = () => {
             if (result.status == 200) {
                 toast({
                     description: payload.mess,
-                    variant: 'success',
                     duration: 5000,
                 })
                 const accessToken = payload.data.accessToken;
