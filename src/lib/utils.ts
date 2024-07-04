@@ -1,7 +1,6 @@
 import { type ClassValue, clsx } from "clsx"
 import { twMerge } from "tailwind-merge"
 import { toast } from '@/components/ui/use-toast'
-import { EntityError } from '@/lib/http'
 import { UseFormSetError } from 'react-hook-form'
 import jwt from 'jsonwebtoken'
 
@@ -9,30 +8,18 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
 
-export const handleErrorApi = ({
-  error,
-  setError,
-  duration
-}: {
-  error: any
-  setError?: UseFormSetError<any>
-  duration?: number
+export const handleErrorApi = ({ error, setError, duration }: {
+  error: any, setError?: UseFormSetError<any>, duration?: number
 }) => {
-  if (error instanceof EntityError && setError) {
-    error.payload.errors.forEach((item) => {
-      setError(item.field, {
-        type: 'server',
-        message: item.mess
-      })
-    })
-  } else {
-    toast({
-      title: 'Lỗi',
-      description: error?.payload?.mess ?? 'Lỗi không xác định',
-      variant: 'destructive',
-      duration: duration ?? 5000
-    })
-  }
+  console.log('error', error)
+  const { mess, type } = error?.payload;
+  const title = error?.status === 422 ? 'Lỗi nhập liệu' : 'Lỗi hệ thống';
+  toast({
+    title: title,
+    description: mess ?? 'Lỗi không xác định',
+    variant: 'destructive',
+    duration: duration ?? 5000
+  })
 }
 /**
  * Xóa đi ký tự `/` đầu tiên của path
@@ -48,6 +35,7 @@ export const decodeJWT = <Payload = any>(token: string) => {
 export const isServer = () => typeof window === 'undefined';
 
 export const setCookie = (name: string, value: string, days: number) => {
+  if (isServer()) return;
   let expires = "";
   if (days) {
     const date = new Date();
@@ -58,6 +46,7 @@ export const setCookie = (name: string, value: string, days: number) => {
 };
 
 export const getCookie = (name: string) => {
+  if (isServer()) return;
   const nameEQ = `${name}=`;
   const ca = document.cookie.split(';');
   for (let i = 0; i < ca.length; i++) {
@@ -69,10 +58,13 @@ export const getCookie = (name: string) => {
 };
 
 export const eraseCookie = (name: string) => {
+  if (isServer()) return;
   document.cookie = `${name}=; Max-Age=-99999999;`;
 };
 
-export const getDateRemaining = (exp: number) => {
+export const getDateRemaining = (exp: number | undefined) => {
+  if (isServer() || !exp) return;
+
   const expDate = new Date(exp * 1000);
   expDate.setDate(expDate.getDate() + 1); // add 1 day to the expiration date
   const now = new Date();

@@ -7,8 +7,8 @@ export const RegisterBody = z
             .max(256, { message: 'Không đúng định dạng' }),
         username: z.string()
             .min(6, { message: 'Vui lòng nhập tài khoản' })
-            .max(100, { message: 'Không đúng định dạng' })
-            .regex(/^[A-Za-z0-9]+$/, { message: 'Tài khoản không được chứa dấu hoặc ký tự đặc biệt' }),
+            .max(100, { message: 'Không đúng định dạng' }),
+            // .regex(/^[A-Za-z0-9]+$/, { message: 'Tài khoản không được chứa dấu hoặc ký tự đặc biệt' }),
         phone: z.string()
             .min(10, { message: "Số điện thoại không hợp lệ" })
             .max(10, { message: "Số điện thoại không hợp lệ" })

@@ -30,6 +30,9 @@ export function MainNav({
         <Link href={paths.register} className="text-muted-foreground transition-colors hover:text-foreground">
           Register
         </Link>
+        <Link href={paths.profile} className="text-muted-foreground transition-colors hover:text-foreground">
+          Profile
+        </Link>
       </nav>
       <Sheet>
         <SheetTrigger asChild>

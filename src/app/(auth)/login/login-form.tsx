@@ -41,16 +41,6 @@ const LoginForm = () => {
         }
     })
 
-    useEffect(() => {
-        const accessToken = getCookie('accessToken');
-        if (accessToken) {
-            const decodedAccess = decodeJWT(accessToken);
-            if (decodedAccess.exp > Date.now() / 1000) {
-                router.push(paths.home);
-            }
-        }
-    }, [router])
-
     async function onSubmit(values: LoginBodyType) {
         if (loading) return;
         setLoading(true);
@@ -65,11 +55,14 @@ const LoginForm = () => {
                 const accessToken = payload.data.accessToken;
                 const refreshToken = payload.data.refreshToken;
 
-                const decodedAccess = decodeJWT(accessToken);
-                const decodedRefresh = decodeJWT(refreshToken);
+                const resultNextServer = await fetch('/api/auth', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ accessToken, refreshToken }),
+                });
 
-                setCookie('accessToken', accessToken, getDateRemaining(decodedAccess.exp));
-                setCookie('refreshToken', refreshToken, getDateRemaining(decodedRefresh.exp));
                 setUser(payload.data.account)
                 router.push('/')
                 router.refresh()

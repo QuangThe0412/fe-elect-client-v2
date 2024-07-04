@@ -1,10 +1,14 @@
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
 import { paths } from './constants/paths';
+import { cookies } from 'next/headers'
 
 export function middleware(request: NextRequest) {
-    let cookie = request.cookies.get('accessToken');
-    if (!cookie) {
+    const cookieStore = cookies();
+    const accessToken = cookieStore.get('accessToken');
+    const refreshToken = cookieStore.get('refreshToken');
+
+    if (!accessToken) {
         return NextResponse.redirect(new URL(paths.login, request.url))
     }
 

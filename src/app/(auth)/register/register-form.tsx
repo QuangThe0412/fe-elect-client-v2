@@ -61,8 +61,8 @@ const RegisterForm = () => {
                 const decodedAccess = decodeJWT(accessToken);
                 const decodedRefresh = decodeJWT(refreshToken);
 
-                setCookie('accessToken', accessToken, getDateRemaining(decodedAccess.exp));
-                setCookie('refreshToken', refreshToken, getDateRemaining(decodedRefresh.exp));
+                setCookie('accessToken', accessToken, getDateRemaining(decodedAccess?.exp));
+                setCookie('refreshToken', refreshToken, getDateRemaining(decodedRefresh?.exp));
                 setUser(payload.data.account)
                 router.push('/')
                 router.refresh()
