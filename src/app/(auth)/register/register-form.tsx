@@ -36,39 +36,38 @@ const RegisterForm = () => {
     const form = useForm<RegisterBodyType>({
         resolver: zodResolver(RegisterBody),
         defaultValues: {
-            name: '',
-            phone: '',
-            username: '',
-            password: '',
-            confirmPassword: ''
+            name: 'khách số 11',
+            phone: '0901465811',
+            username: 'khach11',
+            password: 'Aa123123',
+            confirmPassword: 'Aa123123'
         }
     })
 
     async function onSubmit(values: RegisterBodyType) {
-        console.log(values)
         if (loading) return;
         setLoading(true);
         try {
-            // const result = await authApiRequest.register(values);
-            // const payload = result.payload as ResponsePayloadType;
-            // if (result.status == 200) {
-            //     toast({
-            //         description: payload.mess,
-            //         variant: 'success',
-            //         duration: 5000,
-            //     })
-            //     const accessToken = payload.data.accessToken;
-            //     const refreshToken = payload.data.refreshToken;
+            const result = await authApiRequest.register(values);
+            const payload = result.payload as ResponsePayloadType;
+            if (result.status == 201) {
+                toast({
+                    description: payload.mess,
+                    variant: 'success',
+                    duration: 5000,
+                })
+                const accessToken = payload.data.accessToken;
+                const refreshToken = payload.data.refreshToken;
 
-            //     const decodedAccess = decodeJWT(accessToken);
-            //     const decodedRefresh = decodeJWT(refreshToken);
+                const decodedAccess = decodeJWT(accessToken);
+                const decodedRefresh = decodeJWT(refreshToken);
 
-            //     setCookie('accessToken', accessToken, getDateRemaining(decodedAccess.exp));
-            //     setCookie('refreshToken', refreshToken, getDateRemaining(decodedRefresh.exp));
-            //     setUser(payload.data.account)
-            //     router.push('/')
-            //     router.refresh()
-            // }
+                setCookie('accessToken', accessToken, getDateRemaining(decodedAccess.exp));
+                setCookie('refreshToken', refreshToken, getDateRemaining(decodedRefresh.exp));
+                setUser(payload.data.account)
+                router.push('/')
+                router.refresh()
+            }
         } catch (error: any) {
             handleErrorApi({
                 error,

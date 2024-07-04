@@ -12,11 +12,11 @@ export const RegisterBody = z
         phone: z.string()
             .min(10, { message: "Số điện thoại không hợp lệ" })
             .max(10, { message: "Số điện thoại không hợp lệ" })
-            .regex(/^([+]?[\s0-9]+)?(\d{3}|[(]?[0-9]+[)])?([-]?[\s]?[0-9])+$/, { message: "Số điện thoại không hợp lệ" }),
+            .regex(/(84|0[3|5|7|8|9])+([0-9]{8})\b/, { message: "Số điện thoại không hợp lệ" }),
         password: z.string()
-            .min(6, { message: "Mật khẩu quá ngắn" })
+            .min(7, { message: "Mật khẩu quá ngắn" })
             .max(50, { message: "Mật khẩu quá dài" })
-            .regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]*$/,
+            .regex(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,}$/,
                 { message: "Mật khẩu phải chứa ít nhất một chữ cái viết thường, một chữ cái viết hoa, một số, và một ký tự đặc biệt" }), confirmPassword: z.string()
     })
     .strict()
