@@ -1,14 +1,22 @@
 import z from 'zod'
 
+export type TypeDataAccountRes = {
+  IDKhachHang: number
+  IDLoaiKH: number
+  TenKhachHang: string
+  UserName: string
+  DienThoai: string
+}
+
 export const AccountRes = z
   .object({
     data: z.object({
       account: z.object({
-        IDKhachHang : z.number(),
-        IDLoaiKH : z.number(),
-        TenKhachHang : z.string(),
-        UserName : z.string(),
-        DienThoai : z.string()
+        IDKhachHang: z.number(),
+        IDLoaiKH: z.number(),
+        TenKhachHang: z.string(),
+        UserName: z.string(),
+        DienThoai: z.string()
       })
     }),
     message: z.string()

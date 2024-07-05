@@ -1,16 +1,14 @@
+import { TypeDataAccountRes } from '@/schemaValidations/account.schema';
 import { create } from 'zustand'
-import { AccountResType } from '@/schemaValidations/account.schema'
-
-type User = AccountResType['data']
 
 export type TypeUsers = {
-  user: User;
-  setUser: (user: User) => void;
+  user: TypeDataAccountRes;
+  setUser: (user: TypeDataAccountRes) => void;
 }
 
 const useAuthStore = create<TypeUsers>()((set) => ({
-  user: {} as User,
-  setUser: (user: User) =>{
+  user: {} as TypeDataAccountRes,
+  setUser: (user: TypeDataAccountRes) => {
     set({ user })
   }
 }));

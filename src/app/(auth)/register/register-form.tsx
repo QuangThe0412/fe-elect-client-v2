@@ -16,18 +16,18 @@ import { RegisterBody, RegisterBodyType } from '@/schemaValidations/auth.schema'
 import { useToast } from '@/components/ui/use-toast'
 import authApiRequest from '@/apiRequests/auth'
 import { useRouter } from 'next/navigation'
-import { setCookie, decodeJWT, handleErrorApi, getDateRemaining } from '@/lib/utils'
+import { handleErrorApi } from '@/lib/utils'
 import { useState } from 'react'
 import Link from "next/link"
 import { Label } from "@/components/ui/label"
 import { paths } from "@/constants/paths"
 import { PasswordInput } from '@/components/ui/input-password'
 import { ResponsePayloadType } from '@/lib/http'
+import { ToastAction } from '@/components/ui/toast'
 import useAuthStore, { TypeUsers } from '@/store/auth.store'
 
 const RegisterForm = () => {
-    const { user, setUser } = useAuthStore((state: TypeUsers) => ({
-        user: state.user,
+    const { setUser } = useAuthStore((state: TypeUsers) => ({
         setUser: state.setUser
     }))
     const [loading, setLoading] = useState(false)
@@ -51,6 +51,7 @@ const RegisterForm = () => {
             const result = await authApiRequest.register(values);
             const payload = result.payload as ResponsePayloadType;
             if (result.status == 201) {
+                setUser(payload.data.account)
                 toast({
                     description: payload.mess,
                     duration: 5000,
@@ -58,14 +59,22 @@ const RegisterForm = () => {
                 const accessToken = payload.data.accessToken;
                 const refreshToken = payload.data.refreshToken;
 
-                const decodedAccess = decodeJWT(accessToken);
-                const decodedRefresh = decodeJWT(refreshToken);
-
-                setCookie('accessToken', accessToken, getDateRemaining(decodedAccess?.exp));
-                setCookie('refreshToken', refreshToken, getDateRemaining(decodedRefresh?.exp));
-                setUser(payload.data.account)
-                router.push('/')
+                const body = {
+                    accessToken,
+                    refreshToken
+                }
+                router.push(paths.home)
                 router.refresh()
+                const resultNextServer = await authApiRequest.setToken(body);
+                if (resultNextServer.status == 200) {
+                } else {
+                    toast({
+                        variant: "destructive",
+                        title: "Uh oh! Something went wrong.",
+                        description: "There was a problem with your request.",
+                        action: <ToastAction altText="Try again">Try again</ToastAction>,
+                    })
+                }
             }
         } catch (error: any) {
             handleErrorApi({

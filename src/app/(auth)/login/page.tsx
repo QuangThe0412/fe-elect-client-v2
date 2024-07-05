@@ -8,8 +8,6 @@ import {
 import LoginForm from "./login-form"
 
 const Login = () => {
-  
-
   return (
     <Card className="mx-auto w-full md:w-1/2 ">
       <CardHeader>

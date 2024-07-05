@@ -24,6 +24,7 @@ import { paths } from "@/constants/paths"
 import { PasswordInput } from '@/components/ui/input-password'
 import { ResponsePayloadType } from '@/lib/http'
 import useAuthStore, { TypeUsers } from '@/store/auth.store'
+import { ToastAction } from "@/components/ui/toast"
 
 const LoginForm = () => {
     const { user, setUser } = useAuthStore((state: TypeUsers) => ({
@@ -60,9 +61,18 @@ const LoginForm = () => {
                     accessToken,
                     refreshToken
                 }
-                const resultNextServer = await authApiRequest.auth(body);
-                router.push('/')
+                router.push(paths.home)
                 router.refresh()
+                const resultNextServer = await authApiRequest.setToken(body);
+                if (resultNextServer.status == 200) {
+                } else {
+                    toast({
+                        variant: "destructive",
+                        title: "Uh oh! Something went wrong.",
+                        description: "There was a problem with your request.",
+                        action: <ToastAction altText="Try again">Try again</ToastAction>,
+                    })
+                }
             }
         } catch (error: any) {
             handleErrorApi({

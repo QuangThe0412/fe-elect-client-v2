@@ -1,4 +1,4 @@
-import { CreditCard, LogOut, PlusCircle, Settings, User } from "lucide-react"
+import { CreditCard, LogOut, Settings, User } from "lucide-react"
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
@@ -9,11 +9,34 @@ import {
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
-  DropdownMenuShortcut,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
+import useAuthStore, { TypeUsers } from '@/store/auth.store'
+import { TypeDataAccountRes } from "@/schemaValidations/account.schema"
+import accountApiRequest from "@/apiRequests/account";
 
 export function UserNav() {
+  const { user, setUser } = useAuthStore((state: TypeUsers) => ({
+    user: state.user,
+    setUser: state.setUser
+  }))
+
+  const fetchProfile = async () => {
+    if (!user.IDKhachHang) {
+      const result = await accountApiRequest.profile();
+      console.log({ result });
+      // const accessToken = await tryGetAccessToken();
+      // if (accessToken) {
+      // const result = await accountApiRequest.profile();
+      //   const data: TypeDataAccountRes = result.payload.data;
+      //   console.log('data', data);
+      //   setUser(data);
+      // }
+    }
+  }
+
+  fetchProfile();
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -27,9 +50,11 @@ export function UserNav() {
       <DropdownMenuContent className="w-56" align="end" forceMount>
         <DropdownMenuLabel className="font-normal">
           <div className="flex flex-col space-y-1">
-            <p className="text-sm font-medium leading-none">shadcn</p>
+            <p className="text-sm font-medium leading-none">
+              {user?.TenKhachHang}
+            </p>
             <p className="text-xs leading-none text-muted-foreground">
-              m@example.com
+              {user?.DienThoai}
             </p>
           </div>
         </DropdownMenuLabel>
@@ -38,28 +63,20 @@ export function UserNav() {
           <DropdownMenuItem>
             <User className="mr-2 h-4 w-4" />
             <span>Profile</span>
-            <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
           </DropdownMenuItem>
           <DropdownMenuItem>
             <CreditCard className="mr-2 h-4 w-4" />
             <span>Billing</span>
-            <DropdownMenuShortcut>⌘B</DropdownMenuShortcut>
           </DropdownMenuItem>
           <DropdownMenuItem>
             <Settings className="mr-2 h-4 w-4" />
             <span>Settings</span>
-            <DropdownMenuShortcut>⌘S</DropdownMenuShortcut>
-          </DropdownMenuItem>
-          <DropdownMenuItem>
-            <PlusCircle className="mr-2 h-4 w-4" />
-            <span>New Team</span>
           </DropdownMenuItem>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
         <DropdownMenuItem>
           <LogOut className="mr-2 h-4 w-4" />
           <span>Log out</span>
-          <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

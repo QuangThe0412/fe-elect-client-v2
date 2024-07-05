@@ -1,4 +1,4 @@
-import { getCookie } from "./utils";
+import authApiRequest from "@/apiRequests/auth";
 
 type CustomOptions = RequestInit & { baseUrl?: string | undefined };
 type CustomOptionsWithoutBody = Omit<CustomOptions, 'body'> | undefined;
@@ -42,19 +42,17 @@ const request = async<Response>(
   url: string,
   options?: CustomOptions,
 ) => {
-  
+
   const body = options?.body ? JSON.stringify(options.body) : undefined;
   const baseHeaders = {
     'Content-Type': 'application/json',
   };
-  
+
   //Nếu không truyền baseUrl thì lấy từ biến môi trường
   //Nếu không truyền baseUrl = '' thì gọi API của nextjs
   const baseUrl = options?.baseUrl === undefined ? process.env.NEXT_PUBLIC_API_URL : options.baseUrl;
   const fullUrl = url.startsWith('/') ? `${baseUrl}${url}` : `/${baseUrl}${url}`
 
-  console.log({options})
-  console.log('------------request===================')
   const res = await fetch(fullUrl, {
     ...options,
     headers: {
