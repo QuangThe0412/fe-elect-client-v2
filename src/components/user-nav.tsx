@@ -14,6 +14,7 @@ import {
 import useAuthStore, { TypeUsers } from '@/store/auth.store'
 import { TypeDataAccountRes } from "@/schemaValidations/account.schema"
 import accountApiRequest from "@/apiRequests/account";
+import { useEffect } from "react"
 
 export function UserNav() {
   const { user, setUser } = useAuthStore((state: TypeUsers) => ({
@@ -21,22 +22,19 @@ export function UserNav() {
     setUser: state.setUser
   }))
 
-  const fetchProfile = async () => {
-    if (!user.IDKhachHang) {
-      const result = await accountApiRequest.profile();
-      console.log({ result });
-      // const accessToken = await tryGetAccessToken();
-      // if (accessToken) {
-      // const result = await accountApiRequest.profile();
-      //   const data: TypeDataAccountRes = result.payload.data;
-      //   console.log('data', data);
-      //   setUser(data);
-      // }
+  useEffect(() => {
+    const fetchProfile = async () => {
+      if (!user?.IDKhachHang) {
+        const result = await accountApiRequest.profile();
+        if (result.status === 200) {
+          const data = result.payload.data;
+          setUser(data as TypeDataAccountRes);
+        }
+      }
     }
-  }
 
-  fetchProfile();
-
+    fetchProfile();
+  }, [user])
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>

@@ -1,21 +1,26 @@
-import authApiRequest from "@/apiRequests/auth";
+import { stat } from 'fs';
 import http from "@/lib/http";
+import { tryGetAccessToken } from "@/lib/utilsNext";
+export async function GET(req: Request, res: Response) {
+    const accessToken = await tryGetAccessToken();
 
-export async function GET() {
-    const tokenRes = await authApiRequest.getToken();
-    let accessToken = '';
-    if (tokenRes.status == 200) {
-        accessToken = tokenRes.payload.data.accessToken;
+    if (accessToken) {
+        const result = await http.get('/account/profile', {
+            headers: {
+                Authorization: `${accessToken}`
+            }
+        });
+        const data = result.payload.data;
+
+        return Response.json({
+            status: 200,
+            data
+        });
     }
-    console.log('===========1=======1================');
-    console.log('accessToken', accessToken);
-
-    const result = await http.get('/account/profile', {
-        headers: {
-            Authorization: `${accessToken}`
+    return Response.json({
+        status: 401,
+        payload: {
+            mess: 'Unauthorized'
         }
     });
-
-    console.log('result', result);
-    return Response.json(result);
 }

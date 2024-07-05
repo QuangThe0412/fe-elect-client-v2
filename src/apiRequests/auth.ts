@@ -11,9 +11,6 @@ const authApiRequest = {
     setToken: (body: any) => http.post('/api/auth/setToken', body, {
         baseUrl: ''
     }),
-    getToken: () => http.get('/api/auth/getToken', {
-        baseUrl: ''
-    }),
 }
 
 export default authApiRequest;
