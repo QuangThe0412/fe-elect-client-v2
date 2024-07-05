@@ -38,7 +38,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
           disableTransitionOnChange
         >
           <Layout>
-            {children}
+              {children}
             <Toaster />
           </Layout>
         </ThemeProvider>

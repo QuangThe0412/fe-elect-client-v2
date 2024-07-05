@@ -4,11 +4,11 @@ export const AccountRes = z
   .object({
     data: z.object({
       account: z.object({
-        id: z.number(),
-        idtype: z.number(),
-        name: z.string(),
-        username: z.string(),
-        phone: z.string(),
+        IDKhachHang : z.number(),
+        IDLoaiKH : z.number(),
+        TenKhachHang : z.string(),
+        UserName : z.string(),
+        DienThoai : z.string()
       })
     }),
     message: z.string()

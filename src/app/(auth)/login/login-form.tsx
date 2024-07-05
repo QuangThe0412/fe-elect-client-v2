@@ -16,8 +16,8 @@ import { LoginBody, LoginBodyType } from '@/schemaValidations/auth.schema'
 import { useToast } from '@/components/ui/use-toast'
 import authApiRequest from '@/apiRequests/auth'
 import { useRouter } from 'next/navigation'
-import { setCookie, decodeJWT, handleErrorApi, getDateRemaining, getCookie } from '@/lib/utils'
-import { useEffect, useState } from 'react'
+import { handleErrorApi } from '@/lib/utils'
+import { useState } from 'react'
 import Link from "next/link"
 import { Label } from "@/components/ui/label"
 import { paths } from "@/constants/paths"
@@ -48,6 +48,7 @@ const LoginForm = () => {
             const result = await authApiRequest.login(values);
             const payload = result.payload as ResponsePayloadType;
             if (result.status == 200) {
+                setUser(payload.data.account)
                 toast({
                     description: payload.mess,
                     duration: 5000,
@@ -55,15 +56,11 @@ const LoginForm = () => {
                 const accessToken = payload.data.accessToken;
                 const refreshToken = payload.data.refreshToken;
 
-                const resultNextServer = await fetch('/api/auth', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({ accessToken, refreshToken }),
-                });
-
-                setUser(payload.data.account)
+                const body = {
+                    accessToken,
+                    refreshToken
+                }
+                const resultNextServer = await authApiRequest.auth(body);
                 router.push('/')
                 router.refresh()
             }

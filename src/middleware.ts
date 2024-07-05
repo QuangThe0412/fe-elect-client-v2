@@ -11,8 +11,12 @@ export function middleware(request: NextRequest) {
     if (!accessToken) {
         return NextResponse.redirect(new URL(paths.login, request.url))
     }
+    const response = NextResponse.next();
 
-    return NextResponse.next();
+    // Thêm Authorization header vào response
+    response.headers.set('Authorization', `Bearer ${accessToken}`);
+    console.log('------------middleware===================')
+    return response
 }
 
 export const config = {

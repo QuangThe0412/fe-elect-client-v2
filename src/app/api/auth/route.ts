@@ -6,6 +6,7 @@ export async function POST(request: Request) {
     const refreshToken = req.refreshToken;
     const decodedAccess = decodeJWT(accessToken);
     const decodedRefresh = decodeJWT(refreshToken);
+    
     if (!decodedAccess || !decodedRefresh) {
         return Response.json({
             status: 400,

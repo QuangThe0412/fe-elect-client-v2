@@ -1,3 +1,5 @@
+import { getCookie } from "./utils";
+
 type CustomOptions = RequestInit & { baseUrl?: string | undefined };
 type CustomOptionsWithoutBody = Omit<CustomOptions, 'body'> | undefined;
 
@@ -38,18 +40,21 @@ export class EntityError extends HttpError {
 const request = async<Response>(
   method: 'GET' | 'POST' | 'PUT' | 'DELETE',
   url: string,
-  options?: CustomOptions
+  options?: CustomOptions,
 ) => {
+  
   const body = options?.body ? JSON.stringify(options.body) : undefined;
   const baseHeaders = {
     'Content-Type': 'application/json',
   };
+  
   //Nếu không truyền baseUrl thì lấy từ biến môi trường
   //Nếu không truyền baseUrl = '' thì gọi API của nextjs
   const baseUrl = options?.baseUrl === undefined ? process.env.NEXT_PUBLIC_API_URL : options.baseUrl;
-
   const fullUrl = url.startsWith('/') ? `${baseUrl}${url}` : `/${baseUrl}${url}`
 
+  console.log({options})
+  console.log('------------request===================')
   const res = await fetch(fullUrl, {
     ...options,
     headers: {
@@ -59,7 +64,7 @@ const request = async<Response>(
     body,
     method,
   });
-  const payload: Response = await res.json();
+  const payload: Response = await res?.json();
   const _payload = payload as ResponsePayloadType;
   const data = {
     status: res.status,
