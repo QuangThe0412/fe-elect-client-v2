@@ -42,7 +42,6 @@ const request = async<Response>(
   url: string,
   options?: CustomOptions,
 ) => {
-
   const body = options?.body ? JSON.stringify(options.body) : undefined;
   const baseHeaders = {
     'Content-Type': 'application/json',
@@ -62,6 +61,7 @@ const request = async<Response>(
     body,
     method,
   });
+  
   const payload: Response = await res?.json();
   const _payload = payload as ResponsePayloadType;
   const data = {

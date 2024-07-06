@@ -27,9 +27,10 @@ import useAuthStore, { TypeUsers } from '@/store/auth.store'
 import { ToastAction } from "@/components/ui/toast"
 
 const LoginForm = () => {
-    const { user, setUser } = useAuthStore((state: TypeUsers) => ({
+    const { user, setUser, setIsAuthenticated } = useAuthStore((state: TypeUsers) => ({
         user: state.user,
-        setUser: state.setUser
+        setIsAuthenticated: state.setIsAuthenticated,
+        setUser: state.setUser,
     }))
     const [loading, setLoading] = useState(false)
     const { toast } = useToast()
@@ -49,6 +50,7 @@ const LoginForm = () => {
             const result = await authApiRequest.login(values);
             const payload = result.payload as ResponsePayloadType;
             if (result.status == 200) {
+                setIsAuthenticated(true)
                 setUser(payload.data.account)
                 toast({
                     description: payload.mess,
@@ -61,10 +63,11 @@ const LoginForm = () => {
                     accessToken,
                     refreshToken
                 }
-                router.push(paths.home)
-                router.refresh()
+
                 const resultNextServer = await authApiRequest.setToken(body);
                 if (resultNextServer.status == 200) {
+                    router.push(paths.home)
+                    router.refresh()
                 } else {
                     toast({
                         variant: "destructive",
@@ -118,7 +121,7 @@ const LoginForm = () => {
                         )}
                     />
 
-                    <Button type="submit" className="w-full">Đăng nhập</Button>
+                    <Button disabled={loading} type="submit" className="w-full">Đăng nhập</Button>
                 </form>
             </Form>
             <div className="mt-4 text-center text-sm">
