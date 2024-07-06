@@ -12,9 +12,7 @@ export async function POST(request: Request) {
         if (!decodedRefresh) {
             return Response.json({
                 status: 400,
-                payload: {
-                    mess: 'RefreshToken không hợp lệ'
-                }
+                mess: 'RefreshToken không hợp lệ'
             });
         }
 
@@ -26,9 +24,7 @@ export async function POST(request: Request) {
         else {
             return Response.json({
                 status: 500,
-                payload: {
-                    mess: 'Đã có lỗi xảy ra khi lấy accessToken từ refreshToken'
-                }
+                mess: 'Đã có lỗi xảy ra khi lấy accessToken từ refreshToken'
             });
         }
     }

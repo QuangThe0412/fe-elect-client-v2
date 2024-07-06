@@ -37,11 +37,11 @@ const RegisterForm = () => {
     const form = useForm<RegisterBodyType>({
         resolver: zodResolver(RegisterBody),
         defaultValues: {
-            name: 'khách số 11',
-            phone: '0901465811',
-            username: 'khach11',
-            password: 'Aa123123',
-            confirmPassword: 'Aa123123'
+            name: '',
+            phone: '',
+            username: '',
+            password: '',
+            confirmPassword: ''
         }
     })
 

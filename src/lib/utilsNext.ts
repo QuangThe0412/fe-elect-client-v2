@@ -33,3 +33,13 @@ export const tryGetAccessToken = async () => {
     }
     return null;
 };
+
+export const handleResponseFromServerBackEnd = async (result: any) => {
+    const { status, payload } = result;
+    const data = payload.data;
+    return Response.json({
+        status: status,
+        data,
+        mess: result.payload.mess
+    });
+}

@@ -11,8 +11,7 @@ export function cn(...inputs: ClassValue[]) {
 export const handleErrorApi = ({ error, setError, duration }: {
   error: any, setError?: UseFormSetError<any>, duration?: number
 }) => {
-  console.log('error', error)
-  const { mess, type } = error?.payload;
+  const mess = error?.payload?.mess;
   const title = error?.status === 422 ? 'Lỗi nhập liệu' : 'Lỗi hệ thống';
   toast({
     title: title,

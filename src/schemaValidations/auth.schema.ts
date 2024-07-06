@@ -8,7 +8,7 @@ export const RegisterBody = z
         username: z.string()
             .min(6, { message: 'Vui lòng nhập tài khoản' })
             .max(100, { message: 'Không đúng định dạng' }),
-            // .regex(/^[A-Za-z0-9]+$/, { message: 'Tài khoản không được chứa dấu hoặc ký tự đặc biệt' }),
+        // .regex(/^[A-Za-z0-9]+$/, { message: 'Tài khoản không được chứa dấu hoặc ký tự đặc biệt' }),
         phone: z.string()
             .min(10, { message: "Số điện thoại không hợp lệ" })
             .max(10, { message: "Số điện thoại không hợp lệ" })
@@ -17,7 +17,8 @@ export const RegisterBody = z
             .min(7, { message: "Mật khẩu quá ngắn" })
             .max(50, { message: "Mật khẩu quá dài" })
             .regex(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,}$/,
-                { message: "Mật khẩu phải chứa ít nhất một chữ cái viết thường, một chữ cái viết hoa, một số, và một ký tự đặc biệt" }), confirmPassword: z.string()
+                { message: "Mật khẩu phải chứa ít nhất một chữ cái viết thường, một chữ cái viết hoa, một số, và một ký tự đặc biệt" }),
+        confirmPassword: z.string()
     })
     .strict()
     .superRefine(({ confirmPassword, password }, ctx) => {

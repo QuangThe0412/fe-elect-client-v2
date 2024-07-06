@@ -1,6 +1,5 @@
-import { stat } from 'fs';
 import http from "@/lib/http";
-import { tryGetAccessToken } from "@/lib/utilsNext";
+import { handleResponseFromServerBackEnd, tryGetAccessToken } from "@/lib/utilsNext";
 export async function GET(request: Request, response: Response) {
     const accessToken = await tryGetAccessToken();
 
@@ -10,18 +9,11 @@ export async function GET(request: Request, response: Response) {
                 Authorization: `${accessToken}`
             }
         });
-        const data = result.payload.data;
-
-        return Response.json({
-            status: 200,
-            data
-        });
+        return handleResponseFromServerBackEnd(result);
     }
     return Response.json({
         status: 401,
-        payload: {
-            mess: 'Unauthorized'
-        }
+        mess: 'Unauthorized'
     });
 }
 
@@ -34,18 +26,10 @@ export async function PUT(request: Request, response: Response) {
                 Authorization: `${accessToken}`
             }
         });
-
-        const data = result.payload.data;
-        return Response.json({
-            status: 200,
-            data,
-            mess: result.payload.mess
-        });
+        return handleResponseFromServerBackEnd(result);
     }
     return Response.json({
         status: 401,
-        payload: {
-            mess: 'Unauthorized'
-        }
+        mess: 'Unauthorized'
     });
 }

@@ -38,8 +38,8 @@ const LoginForm = () => {
     const form = useForm<LoginBodyType>({
         resolver: zodResolver(LoginBody),
         defaultValues: {
-            username: 'khach11',
-            password: 'Aa123123'
+            username: '',
+            password: ''
         }
     })
 

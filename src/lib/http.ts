@@ -1,5 +1,3 @@
-import authApiRequest from "@/apiRequests/auth";
-
 type CustomOptions = RequestInit & { baseUrl?: string | undefined };
 type CustomOptionsWithoutBody = Omit<CustomOptions, 'body'> | undefined;
 
@@ -7,34 +5,7 @@ export type ResponsePayloadType = {
   code: string;
   mess: string;
   data: any;
-}
-
-type EntityErrorPayload = {
-  mess: string
-  errors: {
-    field: string
-    mess: string
-  }[]
-}
-
-class HttpError extends Error {
   status: number;
-  payload: any;
-  constructor({ status, payload }: { status: number, payload: any }) {
-    super('Http Error');
-    this.status = status;
-    this.payload = payload;
-  }
-}
-
-export class EntityError extends HttpError {
-  status: 422
-  payload: EntityErrorPayload
-  constructor({ status, payload }: { status: 422, payload: EntityErrorPayload }) {
-    super({ status, payload })
-    this.status = status
-    this.payload = payload
-  }
 }
 
 const request = async<Response>(
@@ -61,7 +32,7 @@ const request = async<Response>(
     body,
     method,
   });
-  
+
   const payload: Response = await res?.json();
   const _payload = payload as ResponsePayloadType;
   const data = {
@@ -69,7 +40,7 @@ const request = async<Response>(
     payload: _payload
   }
   if (!res.ok) {
-    throw new HttpError(data);
+    return Promise.reject(data);
   }
   return data;
 }

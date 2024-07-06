@@ -9,9 +9,7 @@ export async function POST(request: Request) {
     if (!decodedAccess) {
         return Response.json({
             status: 400,
-            payload: {
-                mess: 'Token không hợp lệ'
-            }
+            mess: 'Token không hợp lệ'
         });
     }
 
@@ -23,9 +21,7 @@ export async function POST(request: Request) {
         if (!decodedRefresh) {
             return Response.json({
                 status: 400,
-                payload: {
-                    mess: 'Token không hợp lệ'
-                }
+                mess: 'Token không hợp lệ'
             });
         }
         const refreshTokenCookie = `refreshToken=${refreshToken}; HttpOnly; Path=/; Max-Age=${decodedRefresh.exp - Date.now() / 1000}`;

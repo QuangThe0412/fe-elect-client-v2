@@ -11,9 +11,7 @@ export function middleware(request: NextRequest) {
     if (!accessToken) {
         return NextResponse.redirect(new URL(paths.login, request.url))
     }
-    const response = NextResponse.next();
-    response.headers.set('Authorization', `Bearer ${accessToken}`);
-    return response
+    return NextResponse.next();
 }
 
 export const config = {

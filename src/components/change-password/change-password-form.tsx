@@ -16,39 +16,44 @@ import { useToast } from '@/components/ui/use-toast'
 import { handleErrorApi } from '@/lib/utils'
 import { useState } from 'react'
 import { ResponsePayloadType } from '@/lib/http'
-import useAuthStore, { TypeUsers } from '@/store/auth.store'
 import accountApiRequest from '@/apiRequests/account'
-import { ProfileBody, ProfileBodyType } from '@/schemaValidations/account.schema'
+import { PasswordBody, PasswordBodyType } from '@/schemaValidations/account.schema'
+import { PasswordInput } from '../ui/input-password'
+import { ToastAction } from '../ui/toast'
 
-const ProfileForm = ({ onClose }: { onClose: () => void }) => {
-    const { user, setUser } = useAuthStore((state: TypeUsers) => ({
-        user: state.user,
-        setUser: state.setUser,
-    }))
+const ChangePasswordForm = ({ onClose }: { onClose: () => void }) => {
     const [loading, setLoading] = useState(false)
     const { toast } = useToast()
-    const form = useForm<ProfileBodyType>({
-        resolver: zodResolver(ProfileBody),
+    const form = useForm<PasswordBodyType>({
+        resolver: zodResolver(PasswordBody),
         defaultValues: {
-            name: user?.TenKhachHang,
-            phone: user?.DienThoai,
+            oldPassword: 'Aa123123@',
+            newPassword: 'Aa123123',
+            confirmNewPassword: 'Aa123123',
         }
     })
 
-    async function onSubmit(values: ProfileBodyType) {
+    async function onSubmit(values: PasswordBodyType) {
         if (loading) return;
         setLoading(true);
         try {
-            const result = await accountApiRequest.updateProfile(values);
+            const result = await accountApiRequest.changePassword(values);
+            console.log({ result })
             const payload = result.payload as ResponsePayloadType;
-            if (result.status == 200) {
-                const data = payload.data;
-                setUser(data);
+            const { mess } = payload;
+            if (result.status == 200 && payload.status == 200) {
                 toast({
                     description: payload.mess,
                     duration: 5000,
                 })
                 onClose();
+            } else {
+                toast({
+                    variant: "destructive",
+                    title: "Uh oh! Something went wrong.",
+                    description: mess,
+                    action: <ToastAction altText="Try again">Try again</ToastAction>,
+                })
             }
         } catch (error: any) {
             handleErrorApi({
@@ -70,12 +75,12 @@ const ProfileForm = ({ onClose }: { onClose: () => void }) => {
                 >
                     <FormField
                         control={form.control}
-                        name='name'
+                        name='oldPassword'
                         render={({ field }) => (
                             <FormItem className="grid gap-2">
-                                <FormLabel className="mr-auto">Họ và tên</FormLabel>
+                                <FormLabel className="mr-auto">Mật khẩu hiện tại</FormLabel>
                                 <FormControl>
-                                    <Input type='text' {...field} />
+                                    <PasswordInput {...field} />
                                 </FormControl>
                                 <FormMessage />
                             </FormItem>
@@ -83,12 +88,25 @@ const ProfileForm = ({ onClose }: { onClose: () => void }) => {
                     />
                     <FormField
                         control={form.control}
-                        name='phone'
+                        name='newPassword'
                         render={({ field }) => (
                             <FormItem className="grid gap-2">
-                                <FormLabel className="mr-auto">Điện thoại</FormLabel>
+                                <FormLabel className="mr-auto">Mật khẩu mới</FormLabel>
                                 <FormControl>
-                                    <Input type='text' {...field} />
+                                    <PasswordInput {...field} />
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
+                    <FormField
+                        control={form.control}
+                        name='confirmNewPassword'
+                        render={({ field }) => (
+                            <FormItem className="grid gap-2">
+                                <FormLabel className="mr-auto">Nhập lại mật khẩu mới</FormLabel>
+                                <FormControl>
+                                    <PasswordInput {...field} />
                                 </FormControl>
                                 <FormMessage />
                             </FormItem>
@@ -101,4 +119,4 @@ const ProfileForm = ({ onClose }: { onClose: () => void }) => {
     )
 }
 
-export default ProfileForm
+export default ChangePasswordForm
