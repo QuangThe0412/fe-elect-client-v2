@@ -37,13 +37,13 @@ const ChangePasswordForm = ({ onClose }: { onClose: () => void }) => {
         if (loading) return;
         setLoading(true);
         try {
-            const result = await accountApiRequest.changePassword(values);
-            console.log({ result })
-            const payload = result.payload as ResponsePayloadType;
+            const result = await accountApiRequest.changePassword(values) as ResponsePayloadType;
+            const { status, payload } = result;
             const { mess } = payload;
-            if (result.status == 200 && payload.status == 200) {
+
+            if (status == 200) {
                 toast({
-                    description: payload.mess,
+                    description: mess,
                     duration: 5000,
                 })
                 onClose();

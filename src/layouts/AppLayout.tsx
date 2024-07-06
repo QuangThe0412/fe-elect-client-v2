@@ -3,9 +3,9 @@ import { UserNav } from "@/components/user-nav"
 import { Search } from "@/components/search"
 import { ModeToggle } from "@/components/mode-toggle"
 import useAuthStore, { TypeUsers } from '@/store/auth.store'
-import { TypeDataAccountRes } from "@/schemaValidations/account.schema"
 import accountApiRequest from "@/apiRequests/account"
 import { useEffect } from "react"
+import { TypeDataAccountRes } from "@/schemaValidations/account.schema"
 
 const AppLayout = ({ children }: any) => {
     const { user, setUser, isAuthenticated, setIsAuthenticated } = useAuthStore((state: TypeUsers) => ({
@@ -18,10 +18,11 @@ const AppLayout = ({ children }: any) => {
         const fetchProfile = async () => {
             if (!isAuthenticated) {
                 const result = await accountApiRequest.profile();
+                console.log({ result })
                 const { status, payload } = result;
-                if (status === 200 && payload.status === 200) {
-                    const data = payload.data;
-                    setUser(data as TypeDataAccountRes);
+                if (status === 200) {
+                    const data = (payload as any)?.data as TypeDataAccountRes;
+                    setUser(data);
                     setIsAuthenticated(true);
                 }
             }

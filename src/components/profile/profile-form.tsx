@@ -19,6 +19,8 @@ import { ResponsePayloadType } from '@/lib/http'
 import useAuthStore, { TypeUsers } from '@/store/auth.store'
 import accountApiRequest from '@/apiRequests/account'
 import { ProfileBody, ProfileBodyType } from '@/schemaValidations/account.schema'
+import { ToastAction } from '@radix-ui/react-toast'
+import { set } from 'zod'
 
 const ProfileForm = ({ onClose }: { onClose: () => void }) => {
     const { user, setUser } = useAuthStore((state: TypeUsers) => ({
@@ -39,16 +41,23 @@ const ProfileForm = ({ onClose }: { onClose: () => void }) => {
         if (loading) return;
         setLoading(true);
         try {
-            const result = await accountApiRequest.updateProfile(values);
-            const payload = result.payload as ResponsePayloadType;
-            if (result.status == 200) {
-                const data = payload.data;
+            const result = await accountApiRequest.updateProfile(values) as ResponsePayloadType;
+            const { status, payload } = result;
+            const { mess, data } = payload;
+            if (status == 200) {
                 setUser(data);
                 toast({
-                    description: payload.mess,
+                    description: mess,
                     duration: 5000,
                 })
                 onClose();
+            } else {
+                toast({
+                    variant: "destructive",
+                    title: "Uh oh! Something went wrong.",
+                    description: mess,
+                    action: <ToastAction altText="Try again">Try again</ToastAction>,
+                })
             }
         } catch (error: any) {
             handleErrorApi({

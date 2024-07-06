@@ -1,6 +1,7 @@
 import authApiRequest from "@/apiRequests/auth";
 import { decodeJWT, getDateRemaining } from "@/lib/utils";
 import { cookies } from 'next/headers'
+import { ResponsePayloadType } from "./http";
 
 export const tryGetAccessToken = async () => {
     const cookieStore = cookies()
@@ -25,7 +26,7 @@ export const tryGetAccessToken = async () => {
                 // refresh token still valid
                 const result = await authApiRequest.refreshToken();
                 if (result.status == 200) {
-                    accessToken = result.payload.data.accessToken;
+                    accessToken = (result?.payload as any)?.data?.accessToken;
                 }
             }
         }
@@ -35,11 +36,6 @@ export const tryGetAccessToken = async () => {
 };
 
 export const handleResponseFromServerBackEnd = async (result: any) => {
-    const { status, payload } = result;
-    const data = payload.data;
-    return Response.json({
-        status: status,
-        data,
-        mess: result.payload.mess
-    });
+    const { status, payload: { data, code, mess } } = result as ResponsePayloadType;
+    return new Response(JSON.stringify({ data, code, mess }), { status });
 }

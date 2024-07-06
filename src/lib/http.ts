@@ -2,10 +2,12 @@ type CustomOptions = RequestInit & { baseUrl?: string | undefined };
 type CustomOptionsWithoutBody = Omit<CustomOptions, 'body'> | undefined;
 
 export type ResponsePayloadType = {
-  code: string;
-  mess: string;
-  data: any;
   status: number;
+  payload: {
+    code: string;
+    mess: string;
+    data: any;
+  }
 }
 
 const request = async<Response>(
@@ -34,10 +36,9 @@ const request = async<Response>(
   });
 
   const payload: Response = await res?.json();
-  const _payload = payload as ResponsePayloadType;
   const data = {
     status: res.status,
-    payload: _payload
+    payload
   }
   if (!res.ok) {
     return Promise.reject(data);

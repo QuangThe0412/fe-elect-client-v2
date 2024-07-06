@@ -1,4 +1,4 @@
-import http from "@/lib/http";
+import http, { ResponsePayloadType } from "@/lib/http";
 import { handleResponseFromServerBackEnd, tryGetAccessToken } from "@/lib/utilsNext";
 
 export async function PUT(request: Request, response: Response) {
@@ -11,7 +11,7 @@ export async function PUT(request: Request, response: Response) {
                     Authorization: `${accessToken}`
                 }
             });
-            return result;
+            return handleResponseFromServerBackEnd(result);
         }
         return Response.json({
             status: 401,
