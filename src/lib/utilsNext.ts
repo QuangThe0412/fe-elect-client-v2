@@ -4,38 +4,31 @@ import { cookies } from 'next/headers'
 import { ResponsePayloadType } from "./http";
 
 export const tryGetAccessToken = async () => {
-    const cookieStore = cookies()
-    const accessTokenCookie = cookieStore.get('accessToken')
-    let accessToken = accessTokenCookie?.value
-    if (accessToken) {
-        const expAccessToken = decodeJWT<{ exp: number }>(accessToken).exp;
-        const daysUntilExpAccess = getDateRemaining(expAccessToken);
-        if (daysUntilExpAccess && daysUntilExpAccess < 1) {
-            cookies().delete('accessToken')
-
-            const refreshTokenCookie = cookieStore.get('refreshToken')
-            const refreshToken = refreshTokenCookie?.value;
-            if (refreshToken) {
-                const expRefreshToken = decodeJWT<{ exp: number }>(refreshToken).exp;
-                const daysUntilExpRefresh = getDateRemaining(expRefreshToken);
-                if (daysUntilExpRefresh && daysUntilExpRefresh < 1) {
-                    cookies().delete('refreshToken')
-                    return null;
-                }
-
-                // refresh token still valid
-                const result = await authApiRequest.refreshToken();
-                if (result.status == 200) {
-                    accessToken = (result?.payload as any)?.data?.accessToken;
-                }
-            }
+    const cookieStore = cookies();
+    const accessToken = cookieStore.get('accessToken')?.value ?? '';
+    if (!accessToken || isTokenExpired(accessToken)) {
+        cookieStore.delete('accessToken');
+        const refreshToken = cookieStore.get('refreshToken')?.value;
+        if (!refreshToken || isTokenExpired(refreshToken)) {
+            cookieStore.delete('refreshToken');
+            return null;
         }
-        return accessToken;
+        const result = await authApiRequest.refreshToken();
+        return result.status === 200 ? (result?.payload as any)?.data?.accessToken : null;
     }
-    return null;
+    return accessToken;
+};
+
+const isTokenExpired = (token: string) => {
+    const exp = decodeJWT<{ exp: number }>(token).exp;
+    return getDateRemaining(exp) < 1;
 };
 
 export const handleResponseFromServerBackEnd = async (result: any) => {
-    const { status, payload: { data, code, mess } } = result as ResponsePayloadType;
+    const { status, payload } = result as ResponsePayloadType;
+    if (!payload) {
+        return new Response(JSON.stringify({ code: 'Error', mess: 'Unknown error', data: null }), { status: status || 500 });
+    }
+    const { data, code, mess } = payload;
     return new Response(JSON.stringify({ data, code, mess }), { status });
 }

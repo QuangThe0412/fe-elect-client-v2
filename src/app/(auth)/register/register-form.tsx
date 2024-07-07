@@ -49,23 +49,14 @@ const RegisterForm = () => {
         if (loading) return;
         setLoading(true);
         try {
-            const result = await authApiRequest.register(values);
-            const payload = result.payload as ResponsePayloadType;
-            if (result.status == 201) {
+            const { status, payload } = await authApiRequest.register(values) as ResponsePayloadType;
+            if (status == 201) {
                 setIsAuthenticated(true)
                 setUser(payload.data.account)
-                toast({
-                    description: payload.mess,
-                    duration: 5000,
-                })
-                const accessToken = payload.data.accessToken;
-                const refreshToken = payload.data.refreshToken;
+                toast({ description: payload.mess, duration: 5000 });
+                const { accessToken, refreshToken } = payload.data;
 
-                const body = {
-                    accessToken,
-                    refreshToken
-                }
-                const resultNextServer = await authApiRequest.setToken(body);
+                const resultNextServer = await authApiRequest.setToken({ accessToken, refreshToken });
                 if (resultNextServer.status == 200) {
                     router.push(paths.home)
                     router.refresh()

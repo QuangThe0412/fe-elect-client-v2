@@ -1,12 +1,12 @@
 type CustomOptions = RequestInit & { baseUrl?: string | undefined };
 type CustomOptionsWithoutBody = Omit<CustomOptions, 'body'> | undefined;
 
-export type ResponsePayloadType = {
+export type ResponsePayloadType<T = any> = {
   status: number;
   payload: {
     code: string;
     mess: string;
-    data: any;
+    data: any | T;
   }
 }
 

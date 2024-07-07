@@ -27,9 +27,9 @@ const ChangePasswordForm = ({ onClose }: { onClose: () => void }) => {
     const form = useForm<PasswordBodyType>({
         resolver: zodResolver(PasswordBody),
         defaultValues: {
-            oldPassword: 'Aa123123@',
-            newPassword: 'Aa123123',
-            confirmNewPassword: 'Aa123123',
+            oldPassword: '',
+            newPassword: '',
+            confirmNewPassword: '',
         }
     })
 

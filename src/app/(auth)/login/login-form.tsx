@@ -47,25 +47,15 @@ const LoginForm = () => {
         if (loading) return;
         setLoading(true);
         try {
-            const result = await authApiRequest.login(values);
-            const payload = result.payload as ResponsePayloadType;
-            if (result.status == 200) {
-                setIsAuthenticated(true)
-                setUser(payload.data.account)
-                toast({
-                    description: payload.mess,
-                    duration: 5000,
-                })
-                const accessToken = payload.data.accessToken;
-                const refreshToken = payload.data.refreshToken;
+            const { status, payload } = await authApiRequest.login(values) as ResponsePayloadType;
+            if (status === 200) {
+                setIsAuthenticated(true);
+                setUser(payload.data.account);
+                toast({ description: payload.mess, duration: 5000 });
 
-                const body = {
-                    accessToken,
-                    refreshToken
-                }
-
-                const resultNextServer = await authApiRequest.setToken(body);
-                if (resultNextServer.status == 200) {
+                const { accessToken, refreshToken } = payload.data;
+                const resultNextServer = await authApiRequest.setToken({ accessToken, refreshToken });
+                if (resultNextServer.status === 200) {
                     router.push(paths.home)
                     router.refresh()
                 } else {
@@ -74,14 +64,11 @@ const LoginForm = () => {
                         title: "Uh oh! Something went wrong.",
                         description: "There was a problem with your request.",
                         action: <ToastAction altText="Try again">Try again</ToastAction>,
-                    })
+                    });
                 }
             }
         } catch (error: any) {
-            handleErrorApi({
-                error,
-                setError: form.setError
-            })
+            handleErrorApi({ error, setError: form.setError });
         } finally {
             setLoading(false);
         }

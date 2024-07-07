@@ -18,7 +18,6 @@ const AppLayout = ({ children }: any) => {
         const fetchProfile = async () => {
             if (!isAuthenticated) {
                 const result = await accountApiRequest.profile();
-                console.log({ result })
                 const { status, payload } = result;
                 if (status === 200) {
                     const data = (payload as any)?.data as TypeDataAccountRes;

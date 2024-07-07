@@ -1,43 +1,39 @@
-import http, { ResponsePayloadType } from "@/lib/http";
+import http from "@/lib/http";
 import { handleResponseFromServerBackEnd, tryGetAccessToken } from "@/lib/utilsNext";
-export async function GET(request: Request, response: Response) {
+
+async function fetchProfile(method: string, request: Request, body?: any) {
     try {
         const accessToken = await tryGetAccessToken();
-
-        if (accessToken) {
-            const result = await http.get('/account/profile', {
-                headers: {
-                    Authorization: `${accessToken}`
-                }
+        if (!accessToken) {
+            return handleResponseFromServerBackEnd({
+                status: 401,
+                payload: { code: 'Unauthorized', mess: 'Chưa xác thực', data: null }
             });
-            return handleResponseFromServerBackEnd(result);
         }
-        return Response.json({
-            status: 401,
-            mess: 'Unauthorized'
-        });
+        const config = {
+            headers: { Authorization: `${accessToken}` },
+            ...(method === 'PUT' && { body: JSON.stringify(body) })
+        };
+        let result;
+        switch (method) {
+            case 'GET':
+                result = await http.get('/account/profile', config);
+                break;
+            case 'PUT':
+                result = await http.put('/account/profile', body, config);
+                break;
+        }
+        return handleResponseFromServerBackEnd(result);
     } catch (error: any) {
         return handleResponseFromServerBackEnd(error);
     }
 }
 
+export async function GET(request: Request, response: Response) {
+    return fetchProfile('GET', request);
+}
+
 export async function PUT(request: Request, response: Response) {
-    try {
-        const req = await request.json();
-        const accessToken = await tryGetAccessToken();
-        if (accessToken) {
-            const result = await http.put('/account/profile', req, {
-                headers: {
-                    Authorization: `${accessToken}`
-                }
-            });
-            return handleResponseFromServerBackEnd(result);
-        }
-        return Response.json({
-            status: 401,
-            mess: 'Unauthorized'
-        });
-    } catch (error: any) {
-        return handleResponseFromServerBackEnd(error);
-    }
+    const req = await request.json();
+    return fetchProfile('PUT', request, req);
 }

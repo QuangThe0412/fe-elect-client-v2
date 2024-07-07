@@ -11,8 +11,9 @@ export function cn(...inputs: ClassValue[]) {
 export const handleErrorApi = ({ error, setError, duration }: {
   error: any, setError?: UseFormSetError<any>, duration?: number
 }) => {
+  console.log({ error })
   const mess = error?.payload?.mess;
-  const title = error?.status === 422 ? 'Lỗi nhập liệu' : 'Lỗi hệ thống';
+  const title = error?.status === 422 ? 'Lỗi nhập liệu' : 'Thông báo';
   toast({
     title: title,
     description: mess ?? 'Lỗi không xác định',
@@ -34,7 +35,7 @@ export const decodeJWT = <Payload = any>(token: string) => {
 export const isServer = () => typeof window === 'undefined';
 
 export const getDateRemaining = (exp: number | undefined) => {
-  if (isServer() || !exp) return;
+  if (!exp) return 0;
 
   const expDate = new Date(exp * 1000);
   expDate.setDate(expDate.getDate() + 1); // add 1 day to the expiration date

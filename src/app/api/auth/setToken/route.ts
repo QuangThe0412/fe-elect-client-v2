@@ -1,44 +1,46 @@
 import { decodeJWT } from "@/lib/utils";
 import { handleResponseFromServerBackEnd } from "@/lib/utilsNext";
+import { cookies } from 'next/headers'
 
 export async function POST(request: Request) {
     try {
-        const req = await request.json();
-        const accessToken = req.accessToken;
-        const refreshToken = req.refreshToken;
-        const decodedAccess = decodeJWT(accessToken);
+        const { accessToken, refreshToken } = await request.json();
 
-        if (!decodedAccess) {
-            return Response.json({
+        const setCookie = (token: string, name: string) => {
+            const decoded = decodeJWT(token);
+            if (decoded) {
+                cookies().set({
+                    name,
+                    value: token,
+                    httpOnly: true,
+                    path: '/',
+                    maxAge: decoded.exp - Date.now() / 1000,
+                });
+            }
+        };
+
+        if (!accessToken || !refreshToken) {
+            return handleResponseFromServerBackEnd({
                 status: 400,
-                mess: 'Token không hợp lệ'
+                payload: {
+                    code: 'BadRequest',
+                    mess: 'Token không hợp lệ',
+                    data: { accessToken, refreshToken },
+                },
             });
         }
 
-        const cookies = [];
-        const accessTokenCookie = `accessToken=${accessToken}; HttpOnly; Path=/; Max-Age=${decodedAccess.exp - Date.now() / 1000}`;
-        cookies.push(accessTokenCookie);
-        if (refreshToken) {
-            const decodedRefresh = decodeJWT(refreshToken);
-            if (!decodedRefresh) {
-                return Response.json({
-                    status: 400,
-                    mess: 'Token không hợp lệ'
-                });
-            }
-            const refreshTokenCookie = `refreshToken=${refreshToken}; HttpOnly; Path=/; Max-Age=${decodedRefresh.exp - Date.now() / 1000}`;
-            cookies.push(refreshTokenCookie);
-        }
+        setCookie(accessToken, 'accessToken');
+        setCookie(refreshToken, 'refreshToken');
 
-        return Response.json(
-            { req },
-            {
-                status: 200,
-                headers: {
-                    'Set-Cookie': [...cookies].join(', '),
-                },
-            }
-        );
+        return handleResponseFromServerBackEnd({
+            status: 200,
+            payload: {
+                code: 'Success',
+                mess: 'Đã cập nhật token',
+                data: { accessToken, refreshToken },
+            },
+        });
     } catch (error: any) {
         return handleResponseFromServerBackEnd(error);
     }

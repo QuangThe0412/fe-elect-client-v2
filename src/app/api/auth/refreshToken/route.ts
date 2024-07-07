@@ -1,46 +1,52 @@
-import http from "@/lib/http";
+import http, { ResponsePayloadType } from "@/lib/http";
 import { decodeJWT } from "@/lib/utils";
 import { handleResponseFromServerBackEnd } from "@/lib/utilsNext";
 import { cookies } from 'next/headers'
 
 export async function POST(request: Request) {
-    try {
-        const cookieStore = cookies();
-        const refreshToken = cookieStore.get('refreshToken');
+    const cookieStore = cookies();
+    const refreshToken = cookieStore.get('refreshToken')?.value;
 
-        let accessToken = '';
-        if (refreshToken) {
-            const decodedRefresh = decodeJWT(refreshToken?.value);
-            if (!decodedRefresh) {
-                return Response.json({
-                    status: 400,
-                    mess: 'RefreshToken không hợp lệ'
-                });
+    if (!refreshToken || !decodeJWT(refreshToken)) {
+        return handleResponseFromServerBackEnd({
+            status: 400,
+            payload: {
+                code: 'BadRequest',
+                mess: 'RefreshToken không hợp lệ',
+                data: null
             }
-
-            const result = await http.post('/auth/refresh-token', { refreshToken });
-            if (result.status === 200) {
-                const accessTokenData = (result as any)?.payload?.data;
-                accessToken = `accessToken=${accessTokenData}; HttpOnly; Path=/; Max-Age=${decodedRefresh.exp - Date.now() / 1000}`;
-            }
-            else {
-                return Response.json({
-                    status: 500,
-                    mess: 'Đã có lỗi xảy ra khi lấy accessToken từ refreshToken'
-                });
-            }
-        }
-
-        return Response.json(
-            { data: { accessToken } },
-            {
-                status: 200,
-                headers: {
-                    'Set-Cookie': accessToken,
-                },
-            }
-        );
-    } catch (error: any) {
-        return handleResponseFromServerBackEnd(error);
+        });
     }
+
+    const result = await http.post('/auth/refresh-token', { refreshToken }) as ResponsePayloadType;
+    const { status, payload } = result;
+    if (status == 200) {
+        const accessToken = payload?.data;
+        const decodedRefresh = decodeJWT(refreshToken);
+        cookies().set({
+            name: 'accessToken',
+            value: accessToken,
+            httpOnly: true,
+            path: '/',
+            maxAge: decodedRefresh.exp - Date.now() / 1000
+        });
+
+        return handleResponseFromServerBackEnd({
+            status: 200,
+            payload: {
+                code: 'Success',
+                mess: 'Lấy accessToken thành công',
+                data: { accessToken },
+            }
+        });
+    }
+
+    return handleResponseFromServerBackEnd({
+        status: 500,
+        payload: {
+            code: 'InternalServerError',
+            mess: 'Đã có lỗi xảy ra khi lấy accessToken từ refreshToken',
+            data: null
+        }
+    });
 }
