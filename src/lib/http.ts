@@ -24,7 +24,7 @@ const request = async<Response>(
   //Nếu không truyền baseUrl = '' thì gọi API của nextjs
   const baseUrl = options?.baseUrl === undefined ? process.env.NEXT_PUBLIC_API_URL : options.baseUrl;
   const fullUrl = url.startsWith('/') ? `${baseUrl}${url}` : `/${baseUrl}${url}`
-
+  
   const res = await fetch(fullUrl, {
     ...options,
     headers: {

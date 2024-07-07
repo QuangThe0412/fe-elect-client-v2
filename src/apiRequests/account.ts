@@ -11,6 +11,9 @@ const accountApiRequest = {
     changePassword: (body: any) => http.put('/api/account/change-password', body, {
         baseUrl: ''
     }),
+    logout: () => http.delete('/api/account/logout', null, {
+        baseUrl: ''
+    }),
 }
 
 export default accountApiRequest;

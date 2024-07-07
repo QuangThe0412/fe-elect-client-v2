@@ -14,8 +14,12 @@ import { TypeDataAccountRes } from "@/schemaValidations/account.schema"
 import { useState } from "react"
 import { DialogProfile } from "@/components/profile/dialog-profile"
 import { ChangePassword } from "./change-password/change-password"
+import accountApiRequest from "@/apiRequests/account"
+import { useRouter } from 'next/navigation'
+import { paths } from "@/constants/paths"
 
 export function UserNav({ user }: { user: TypeDataAccountRes | undefined }) {
+  const router = useRouter()
   const [openDialogProfile, setOpenDialogProfile] = useState(false);
   const [openDialogChangePassword, setOpenDialogChangePassword] = useState(false);
 
@@ -55,7 +59,10 @@ export function UserNav({ user }: { user: TypeDataAccountRes | undefined }) {
             </DropdownMenuItem>
           </DropdownMenuGroup>
           <DropdownMenuSeparator />
-          <DropdownMenuItem>
+          <DropdownMenuItem onClick={async () => {
+            await accountApiRequest.logout();
+            window.location.href = paths.home;
+          }}>
             <LogOut className="mr-2 h-4 w-4" />
             <span>Đăng xuất</span>
           </DropdownMenuItem>
