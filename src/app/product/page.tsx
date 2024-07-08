@@ -3,11 +3,11 @@ import React, { useState } from 'react'
 import { ProductResType } from "@/schemaValidations/product.schema";
 import ItemProduct from './item';
 import { PaginationProduct } from './pagination';
-import ProductLayout from '@/layouts/ProductLayout';
+import ProductLayout from './layout';
 import { ScrollArea } from '@/components/ui/scroll-area';
 
 export default async function Product() {
-    let currentPage = 23;
+    let currentPage = 1;
     const { status, payload } = await productApiRequest.getList(currentPage) as any;
     const data = payload?.data as any;
     console.log({ data });
