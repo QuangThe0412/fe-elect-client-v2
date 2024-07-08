@@ -3,9 +3,11 @@ import { ScrollArea } from "@/components/ui/scroll-area"
 import productApiRequest from "@/apiRequests/product";
 import { CategoryResType } from "@/schemaValidations/product.schema";
 
-export async function SidebarProduct() {
-    const categoriesRes = await productApiRequest.getCategories();
-    const categories = (categoriesRes?.payload as any)?.data as CategoryResType[];
+type props = {
+    categories: CategoryResType[]
+}
+
+export async function SidebarProduct({ categories }: props) {
 
     return (
         <div className='pb-12 col-span-2 left-sidebar-height'>
