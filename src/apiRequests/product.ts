@@ -6,9 +6,13 @@ const limit = configEnv.NEXT_PUBLIC_LIMIT;
 const productApiRequest = {
     getCategories: () => http.get('/categories'),
     getList: (currentPage: number) => http.get(`/products?page=${currentPage}&limit=${limit}`),
-    getDetail: (id: string) => http.get(`/api/products/${id}`, {
+    // getDetail: (id: string) => http.get(`/api/products/${id}`, {
+    //     baseUrl: ''
+    // }),
+    //server side
+    getList2: (currentPage: number) => http.get('/api/products', {
         baseUrl: ''
-    }),
+    })
 }
 
 export default productApiRequest;
