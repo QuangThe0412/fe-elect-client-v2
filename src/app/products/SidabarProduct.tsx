@@ -2,6 +2,8 @@ import { Button } from "@/components/ui/button"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import productApiRequest from "@/apiRequests/product";
 import { CategoryResType } from "@/schemaValidations/product.schema";
+import Link from "next/link";
+import { paths } from "@/constants/paths";
 
 export async function SidebarProduct() {
     const categoriesRes = await productApiRequest.getCategories();
@@ -15,15 +17,15 @@ export async function SidebarProduct() {
                         Thể loại
                     </h2>
                     <ScrollArea className="px-1 h-full">
-                        <div className="space-y-1 p-2">
+                        <div className="space-y-1 p-2 flex flex-col">
                             {categories?.map((category) => (
-                                <Button
+                                <Link
+                                    href={`${paths.products}?page=1&category=${category.IDLoaiMon}`}
                                     key={`${category.IDLoaiMon}`}
-                                    variant="ghost"
                                     className="w-full justify-start font-normal"
                                 >
                                     {category?.TenLoai}
-                                </Button>
+                                </Link>
                             ))}
                         </div>
                     </ScrollArea>

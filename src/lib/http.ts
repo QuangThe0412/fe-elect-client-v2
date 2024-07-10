@@ -24,11 +24,11 @@ const request = async<Response>(
   //Nếu truyền baseUrl = '' thì gọi API của nextjs
   const baseUrl = options?.baseUrl === undefined ? process.env.NEXT_PUBLIC_API_URL : 'http://localhost:4005';
   const fullUrl = url.startsWith('/') ? `${baseUrl}${url}` : `/${baseUrl}${url}`
-  // if(url.startsWith('/api/products')){
-  //   console.log({options})
-  //   console.log(options?.baseUrl === undefined);
-  //   console.log({ fullUrl });
-  // }
+  if (url.startsWith('/api/products')) {
+    console.log({ options })
+    console.log(options?.baseUrl === undefined);
+    console.log({ fullUrl });
+  }
   const res = await fetch(fullUrl, {
     ...options,
     headers: {
