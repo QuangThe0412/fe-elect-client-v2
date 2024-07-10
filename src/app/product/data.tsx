@@ -1,21 +1,30 @@
-import React from 'react'
-import ItemProduct from './item'
-import { ProductResType } from '@/schemaValidations/product.schema'
-import { ScrollArea } from '@radix-ui/react-scroll-area'
+import React, { useEffect, useState } from 'react';
+import ItemProduct from './item';
+import { ProductResType } from '@/schemaValidations/product.schema';
+import { ScrollArea } from '@radix-ui/react-scroll-area';
 import productApiRequest from '@/apiRequests/product';
 import { ResponsePayloadType } from '@/lib/http';
 
-async function DataProduct({
+function DataProduct({
     query,
     currentPage,
 }: {
     query: string;
     currentPage: number;
 }) {
-    const { status, payload } = await productApiRequest.getList2(currentPage) as ResponsePayloadType;
-    const data = payload?.data as any;
-    const totalPages = data?.totalPages as number;
-    const products = data?.result as ProductResType[];
+    const [products, setProducts] = useState<ProductResType[]>([]);
+    const [totalPages, setTotalPages] = useState<number>(0);
+
+    useEffect(() => {
+        const fetchData = async () => {
+            const { status, payload } = await productApiRequest.getList2(currentPage) as ResponsePayloadType;
+            const data = payload?.data;
+            setTotalPages(data?.totalPages as number);
+            setProducts(data?.result as ProductResType[]);
+        };
+        fetchData();
+    }, [query, currentPage]);
+
     return (
         <ScrollArea className='px-4 py-6 lg:px-8 h-full overflow-auto'>
             <div className='px-4 py-6 lg:px-8 h-full'>
@@ -26,7 +35,7 @@ async function DataProduct({
                 </div>
             </div>
         </ScrollArea>
-    )
+    );
 }
 
-export default DataProduct
+export default DataProduct;
