@@ -11,7 +11,7 @@ export type ParamsProductProps = {
 export default async function Product({searchParams}: ParamsProductProps) {
     const query = searchParams?.query || '';
     const currentPage = searchParams?.page || '1';
-    console.log({query, currentPage});
+    
     return (
         <div className="grid grid-cols-12 h-full">
             <SidebarProduct />

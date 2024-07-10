@@ -10,7 +10,7 @@ const productApiRequest = {
     //     baseUrl: ''
     // }),
     //server side
-    getList2: (currentPage: number) => http.get(`/api/products?page=${currentPage}&limit=${limit}`, {
+    getList2: (currentPage: number) => http.get(`/api/products?page=${currentPage}`, {
         baseUrl :''
     })
 }

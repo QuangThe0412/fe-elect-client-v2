@@ -84,13 +84,13 @@ export const PaginationProduct: React.FC<PaginationProps> = ({
       <PaginationContent>
         <PaginationItem>
           <PaginationPrevious
+            className={currentPage <= 1 ? 'cursor-not-allowed pointer-events-none opacity-50' : ''}
             href='#'
             onClick={(e) => {
               e.preventDefault();
               const newUrl = createPageURL(currentPage - 1);
               window.history.pushState({ path: newUrl }, '', newUrl);
             }}
-            aria-disabled={currentPage === 1}
           />
         </PaginationItem>
         {showLeftEllipsis && (
@@ -106,13 +106,13 @@ export const PaginationProduct: React.FC<PaginationProps> = ({
         )}
         <PaginationItem>
           <PaginationNext
+            className={currentPage >= totalPages ? 'cursor-not-allowed pointer-events-none opacity-50' : ''}
             href='#'
             onClick={(e) => {
               e.preventDefault();
               const newUrl = createPageURL(currentPage + 1);
               window.history.pushState({ path: newUrl }, '', newUrl);
             }}
-            aria-disabled={currentPage === totalPages}
           />
         </PaginationItem>
       </PaginationContent>
