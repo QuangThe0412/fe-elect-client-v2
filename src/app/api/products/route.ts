@@ -9,8 +9,8 @@ export async function GET(request: NextRequest, response: Response) {
         const page = searchParams?.get('page') || '1';
         const limit = searchParams?.get('limit') || '10';
         const category = searchParams?.get('category') || '';
-        const name = searchParams?.get('name') || '';
-        let result = await http.get(`/products?page=${page}&limit=${limit}&category=${category}&name=${name}`);
+        const query = searchParams?.get('query') || '';
+        let result = await http.get(`/products?page=${page}&limit=${limit}&category=${category}&query=${query}`);
         
         return handleResponseFromServerBackEnd(result);
     } catch (error: any) {

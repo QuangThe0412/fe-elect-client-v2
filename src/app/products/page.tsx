@@ -11,7 +11,6 @@ export default function Product() {
     const searchParams = useSearchParams();
     const [products, setProducts] = useState<ProductResType[]>([]);
     const [totalPages, setTotalPages] = useState<number>(0);
-    const page = Number(searchParams?.get('page') || '1');
     useEffect(() => {
         const fetchData = async () => {
             const { status, payload } = await productApiRequest.getList(searchParams) as ResponsePayloadType;

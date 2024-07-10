@@ -7,6 +7,7 @@ import accountApiRequest from "@/apiRequests/account"
 import { useEffect } from "react"
 import { TypeDataAccountRes } from "@/schemaValidations/account.schema"
 import "@/styles/layout.css"
+import { Cart } from "@/components/cart"
 
 const AppLayout = ({ children }: any) => {
     const { user, setUser, isAuthenticated, setIsAuthenticated } = useAuthStore((state: TypeUsers) => ({
@@ -38,14 +39,15 @@ const AppLayout = ({ children }: any) => {
                 <div className="ml-auto flex items-center space-x-4">
                     <Search />
                     {isAuthenticated && <UserNav user={user} />}
+                    <Cart />
                 </div>
-                <ModeToggle />
             </header>
             <div className="overflow-hidden body-height">
                 {children}
             </div>
             <footer className="footer-height bg-background border-t">
                 <div className="flex justify-center items-center h-full">
+                    <ModeToggle />
                     <p className="text-sm text-gray-400">© 2021</p>
                 </div>
             </footer>

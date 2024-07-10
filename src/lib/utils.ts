@@ -3,7 +3,6 @@ import { twMerge } from "tailwind-merge"
 import { toast } from '@/components/ui/use-toast'
 import { UseFormSetError } from 'react-hook-form'
 import jwt from 'jsonwebtoken'
-import configEnv from "@/configEnv"
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
