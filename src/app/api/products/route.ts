@@ -1,20 +1,16 @@
+import { ParamsProductProps } from "@/app/product/page";
 import http from "@/lib/http";
-import { handleResponseFromServerBackEnd, tryGetAccessToken } from "@/lib/utilsNext";
+import { handleResponseFromServerBackEnd } from "@/lib/utilsNext";
+import { type NextRequest } from 'next/server'
 
-export async function GET(request: Request, response: Response) {
+export async function GET(request: NextRequest, response: Response) {
     try {
-        console.log({ request });
-        console.log('==========================================================');
+        const params = request.nextUrl as ParamsProductProps;
+        const searchParams = params?.searchParams;
+        const { page, limit, query } = searchParams || {};
+        let result = await http.get(`/products?page=${page}&limit=${limit}&query=${query}`);
 
-        // let result = await http.get('/products');
-        // console.log({ result });
-
-        return new Response(JSON.stringify(
-            { code: 'Error', mess: 'Unknown error', data: null }),
-            { status: 500 }
-        );
-
-        // return handleResponseFromServerBackEnd(result);
+        return handleResponseFromServerBackEnd(result);
     } catch (error: any) {
         return handleResponseFromServerBackEnd(error);
     }

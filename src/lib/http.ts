@@ -20,10 +20,15 @@ const request = async<Response>(
     'Content-Type': 'application/json',
   };
 
-  //Nếu không truyền baseUrl thì lấy từ biến môi trường
-  //Nếu không truyền baseUrl = '' thì gọi API của nextjs
-  const baseUrl = (!options?.baseUrl) ? process.env.NEXT_PUBLIC_API_URL : options.baseUrl;
+  //Nếu không truyền baseUrl thì là gọi ServerBackEnd
+  //Nếu truyền baseUrl = '' thì gọi API của nextjs
+  const baseUrl = options?.baseUrl === undefined ? process.env.NEXT_PUBLIC_API_URL : 'http://localhost:4005';
   const fullUrl = url.startsWith('/') ? `${baseUrl}${url}` : `/${baseUrl}${url}`
+  // if(url.startsWith('/api/products')){
+  //   console.log({options})
+  //   console.log(options?.baseUrl === undefined);
+  //   console.log({ fullUrl });
+  // }
   const res = await fetch(fullUrl, {
     ...options,
     headers: {
@@ -33,11 +38,6 @@ const request = async<Response>(
     body,
     method,
   });
-
-  if (!res.ok) {
-    console.log({ fullUrl });
-    throw new Error(`Server responded with status ${res.status}`);
-  }
 
   const payload: Response = await res?.json();
   const data = {
