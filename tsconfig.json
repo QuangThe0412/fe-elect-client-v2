@@ -26,7 +26,6 @@
       "@hooks/*": ["./src/hooks/*"],
       "@context/*": ["./src/context/*"],
       "@pages/*": ["./src/pages/*"],
-      "@public/*": ["./public/*"],
       "@styles/*": ["./src/styles/*"],
       "@assets/*": ["./src/assets/*"],
       "@services/*": ["./src/services/*"],
