@@ -11,7 +11,7 @@ import useAuthStore, { TypeUsers } from "@/store/auth.store"
 export function LoginDialog() {
     const { isShowLoginDialog, setIsShowLoginDialog } = useAuthStore((state: TypeUsers) => ({
         isShowLoginDialog: state.isShowLoginDialog,
-        setIsShowLoginDialog: state.setShowLoginDialog
+        setIsShowLoginDialog: state.setIsShowLoginDialog
     }))
     return (
         <Dialog open={isShowLoginDialog}>

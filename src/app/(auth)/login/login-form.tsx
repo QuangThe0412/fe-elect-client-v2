@@ -31,7 +31,7 @@ const LoginForm = () => {
         user: state.user,
         setUser: state.setUser,
         isShowLoginDialog: state.isShowLoginDialog,
-        setIsShowLoginDialog: state.setShowLoginDialog
+        setIsShowLoginDialog: state.setIsShowLoginDialog
     }))
     const [loading, setLoading] = useState(false)
     const { toast } = useToast()

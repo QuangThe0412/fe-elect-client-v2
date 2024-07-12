@@ -3,6 +3,7 @@ import { twMerge } from "tailwind-merge"
 import { toast } from '@/components/ui/use-toast'
 import { UseFormSetError } from 'react-hook-form'
 import jwt from 'jsonwebtoken'
+import emptyImg from '../../public/emptyCard.png'
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
@@ -55,3 +56,34 @@ export const getCookie = (name: string) => {
   const parts = value.split(`; ${name}=`);
   if (parts.length === 2) return parts.pop()?.split(';').shift();
 }
+
+export const setCookie = (name: string, value: string, days: number) => {
+  if (isServer()) return;
+
+  const date = new Date();
+  date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+  const expires = `expires=${date.toUTCString()}`;
+  document.cookie = `${name}=${value};${expires};path=/`;
+}
+
+export const removeCookie = (name: string) => {
+  if (isServer()) return;
+
+  document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
+}
+
+export const formatCurrency = (value: number | string | undefined) => {
+  if (!value) return '0';
+
+  return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(Number(value));
+}
+
+export const formatNumber = (value: number | string | undefined) => {
+  if (!value) return '0';
+
+  return new Intl.NumberFormat('vi-VN').format(Number(value));
+}
+
+export const emptyImage = (e: any) => {
+  e.target.src = {emptyImg}
+};

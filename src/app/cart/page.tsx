@@ -14,18 +14,20 @@ export default function Cart() {
             <div className="container mx-auto px-4 h-full">
                 <h1 className="text-2xl font-semibold mb-4">Giỏ hàng</h1>
                 <div className="flex flex-col md:flex-row gap-4 h-full overflow-auto">
-                    <div className="md:w-3/4 wrap-table height-table">
-                        <div className="bg-white rounded-lg shadow-md p-6 mb-4 table-container">
-                            <table>
-                                <thead>
+                    <div className="h-full md:w-3/4">
+                        <div className="flex bg-white rounded-lg shadow-md p-6 mb-4 height-wraper-table">
+                            <table className='h-full table-fixed'>
+                                <thead className='h-16'>
                                     <tr>
-                                        <th className="text-left font-semibold">Product</th>
-                                        <th className="text-left font-semibold">Price</th>
-                                        <th className="text-left font-semibold">Quantity</th>
-                                        <th className="text-left font-semibold">Total</th>
+                                        <th className="text-center font-semibold border border-slate-300">Sản phẩm</th>
+                                        <th className="text-center font-semibold border border-slate-300">Giá</th>
+                                        <th className="text-center font-semibold border border-slate-300">Số lượng</th>
+                                        <th className="text-center font-semibold border border-slate-300">Chiết khấu</th>
+                                        <th className="text-center font-semibold border border-slate-300">Tổng</th>
+                                        <th className="text-center font-semibold border border-slate-300"></th>
                                     </tr>
                                 </thead>
-                                <tbody className='tbody-scroll'>
+                                <tbody className='height-body'>
                                     {
                                         cart?.details?.map((item, index) => (
                                             <ItemCart key={index} data={item} />

@@ -1,3 +1,4 @@
+import { formatCurrency } from '@/lib/utils'
 import useCartStore, { TypeCartStore } from '@/store/cart.store'
 import React from 'react'
 
@@ -7,30 +8,31 @@ function TotalCart() {
         setCart: state.setCart,
     }))
 
-    const total = cart?.details?.reduce((acc, item) => acc + (item.DonGia ?? 0) * (item.SoLuong ?? 0), 0)
+    const details = cart?.details ?? [];
+
+    const totalBefore = details?.reduce((acc, item) => acc + (item.TienChuaCK ?? 0), 0);
+    const totalAfter = details?.reduce((acc, item) => acc + (item.TienSauCK ?? 0), 0);
+    const totalDiscount = details?.reduce((acc, item) => acc + (item.TienCK ?? 0), 0);
 
     return (
         <div className="bg-white rounded-lg shadow-md p-6">
-            <h2 className="text-lg font-semibold mb-4">Summary</h2>
+            <h2 className="text-lg font-semibold mb-4">Tổng tiền</h2>
             <div className="flex justify-between mb-2">
-                <span>Subtotal</span>
-                <span>$19.99</span>
+                <span>Tổng đơn</span>
+                <span>{formatCurrency(totalBefore)}</span>
             </div>
             <div className="flex justify-between mb-2">
-                <span>Taxes</span>
-                <span>$1.99</span>
-            </div>
-            <div className="flex justify-between mb-2">
-                <span>Shipping</span>
-                <span>$0.00</span>
+                <span>Giảm giá</span>
+                <span>{formatCurrency(totalDiscount)}</span>
             </div>
             <hr className="my-2"></hr>
             <div className="flex justify-between mb-2">
-                <span className="font-semibold">Total</span>
-                <span className="font-semibold">{total}</span>
+                <span className="font-semibold">Tổng</span>
+                <span className="font-semibold">{formatCurrency(totalAfter)}</span>
             </div>
-            <button className="bg-blue-500 text-white py-2 px-4 rounded-lg mt-4 w-full">Checkout</button>
-        </div>)
+            <button className="bg-blue-500 !text-white py-2 px-4 rounded-lg mt-4 w-full">Thanh toán</button>
+        </div>
+    )
 }
 
 export default TotalCart

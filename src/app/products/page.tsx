@@ -14,9 +14,11 @@ export default function Product() {
     useEffect(() => {
         const fetchData = async () => {
             const { status, payload } = await productApiRequest.getList(searchParams) as ResponsePayloadType;
-            const data = payload?.data;
-            setTotalPages(data?.totalPages as number);
-            setProducts(data?.result as ProductResType[]);
+            if (status == 200) {
+                const data = payload?.data;
+                setTotalPages(data?.totalPages as number);
+                setProducts(data?.result as ProductResType[]);
+            }
         };
         fetchData();
     }, [searchParams]);
