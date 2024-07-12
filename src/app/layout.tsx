@@ -31,17 +31,17 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         "min-h-screen bg-background font-sans antialiased",
         fontSans.variable
       )} >
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnChange
-        >
-          <Layout>
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+          >
+            <Layout>
               {children}
-            <Toaster />
-          </Layout>
-        </ThemeProvider>
+              <Toaster />
+            </Layout>
+          </ThemeProvider>
       </body>
     </html>
   );

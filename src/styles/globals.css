@@ -36,6 +36,7 @@
 
     --header-height: 4rem;
     --footer-height: 4rem;
+    --button-text-color:black;
   }
 
   .dark {
@@ -66,6 +67,8 @@
     --border: 240 3.7% 15.9%;
     --input: 240 3.7% 15.9%;
     --ring: 240 4.9% 83.9%;
+    
+    --button-text-color:white;
   }
 }
 
@@ -82,6 +85,10 @@
 @layer components {
   .md-total-cart {
     margin-bottom: calc(var(--footer-height) + 8rem);
+  }
+
+  button {
+    color: var(--button-text-color) !important;
   }
 }
 

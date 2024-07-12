@@ -49,7 +49,7 @@ export function UserNav({ user }: { user: TypeDataAccountRes | undefined }) {
           <DropdownMenuGroup>
             <DropdownMenuItem onClick={() => setOpenDialogProfile(true)}>
               <User className="mr-2 h-4 w-4" />
-              <span>Thông tin</span>
+              <span>Cập nhật thông tin</span>
             </DropdownMenuItem>
             <DropdownMenuItem onClick={() => setOpenDialogChangePassword(true)}>
               <LockKeyhole className="mr-2 h-4 w-4" />

@@ -27,9 +27,8 @@ import { ToastAction } from '@/components/ui/toast'
 import useAuthStore, { TypeUsers } from '@/store/auth.store'
 
 const RegisterForm = () => {
-    const { setUser, setIsAuthenticated } = useAuthStore((state: TypeUsers) => ({
-        setIsAuthenticated: state.setIsAuthenticated,
-        setUser: state.setUser,
+    const { setUser } = useAuthStore((state: TypeUsers) => ({
+        setUser: state.setUser
     }))
     const [loading, setLoading] = useState(false)
     const { toast } = useToast()
@@ -51,7 +50,6 @@ const RegisterForm = () => {
         try {
             const { status, payload } = await authApiRequest.register(values) as ResponsePayloadType;
             if (status == 201) {
-                setIsAuthenticated(true)
                 setUser(payload.data.account)
                 toast({ description: payload.mess, duration: 5000 });
                 const { accessToken, refreshToken } = payload.data;
@@ -151,7 +149,7 @@ const RegisterForm = () => {
                             </FormItem>
                         )}
                     />
-                    <Button disabled={loading} type="submit" className="w-full">Đăng ký</Button>
+                    <Button disabled={loading} type="submit" className="w-full text-white">Đăng ký</Button>
                 </form>
             </Form>
             <div className="mt-4 text-center text-sm">

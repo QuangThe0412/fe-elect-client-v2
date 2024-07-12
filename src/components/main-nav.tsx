@@ -20,6 +20,8 @@ export function MainNav({
         </Link>
         <NavLink href={paths.home}>Trang chủ</NavLink>
         <NavLink href={paths.products}>Sản phẩm</NavLink>
+        <NavLink href={paths.login}>login</NavLink>
+        <NavLink href={paths.register}>register</NavLink>
       </nav>
       <Sheet>
         <SheetTrigger asChild>

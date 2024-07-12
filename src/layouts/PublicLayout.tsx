@@ -9,13 +9,13 @@ const PublicLayout = ({ children }: any) => {
                     {children}
                 </div>
                 <div className="hidden flex items-center justify-center h-full w-full lg:flex">
-                    <Image
+                    {/* <Image
                         src={image}
                         width={840}
                         alt="Image"
                         className="object-cover dark:brightness-[0.2] dark:grayscale"
                         priority
-                    />
+                    /> */}
                 </div>
             </div>
         </div>

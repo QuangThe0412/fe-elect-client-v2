@@ -3,17 +3,15 @@ import { handleResponseFromServerBackEnd, tryGetAccessToken } from "@/lib/utilsN
 
 async function HandleCart(method: string, request: Request, body?: any) {
     try {
-        let result;
         const accessToken = await tryGetAccessToken();
-        if (accessToken) {
-            const config = {
-                headers: { Authorization: `${accessToken}` },
-                ...((method === 'PUT' || 'DELETE') && { body: JSON.stringify(body) })
-            };
-            result = await http.get('/cart', config);
-        } else {
+        if (!accessToken) return handleResponseFromServerBackEnd({ status: 401, message: 'Unauthorized' });
 
-        }
+        const config = {
+            headers: { Authorization: `${accessToken}` },
+            ...((method === 'PUT' || 'DELETE') && { body: JSON.stringify(body) })
+        };
+        let result = await http.get('/cart', config);
+
         return handleResponseFromServerBackEnd(result);
     } catch (error: any) {
         return handleResponseFromServerBackEnd(error);

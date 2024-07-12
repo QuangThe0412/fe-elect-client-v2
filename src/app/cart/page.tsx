@@ -1,24 +1,14 @@
 "use client";
-import React, { use, useEffect, useState } from 'react';
+import useCartStore, { TypeCartStore } from '@/store/cart.store';
 import ItemCart from './item';
 import TotalCart from './total';
-import cartApiRequest from '@/apiRequests/cart';
-import { CartType } from '@/schemaValidations/cart.schema';
 
 export default function Cart() {
-    const [cart, setCart] = useState<CartType>({} as CartType);
-    useEffect(() => {
-        const fetchCart = async () => {
-            const response = await cartApiRequest.getCart();
-            console.log(response);
-            const { payload, status } = response as any;
-            if (status === 200) {
-                setCart(payload?.data);
-            }
-        }
+    const { cart, setCart } = useCartStore((state: TypeCartStore) => ({
+        cart: state.cart,
+        setCart: state.setCart,
+    }))
 
-        fetchCart();
-    }, []);
     return (
         <div className="bg-gray-100 h-screen py-8 h-full">
             <div className="container mx-auto px-4 h-full">
@@ -37,7 +27,7 @@ export default function Cart() {
                                 </thead>
                                 <tbody className='tbody-scroll'>
                                     {
-                                        cart.details?.map((item, index) => (
+                                        cart?.details?.map((item, index) => (
                                             <ItemCart key={index} data={item} />
                                         ))
                                     }

@@ -20,7 +20,6 @@ import useAuthStore, { TypeUsers } from '@/store/auth.store'
 import accountApiRequest from '@/apiRequests/account'
 import { ProfileBody, ProfileBodyType } from '@/schemaValidations/account.schema'
 import { ToastAction } from '@radix-ui/react-toast'
-import { set } from 'zod'
 
 const ProfileForm = ({ onClose }: { onClose: () => void }) => {
     const { user, setUser } = useAuthStore((state: TypeUsers) => ({

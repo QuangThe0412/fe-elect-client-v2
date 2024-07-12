@@ -1,16 +1,19 @@
 'use client';
-import { paths } from "@/constants/paths";
 import { ShoppingCart } from "lucide-react";
-import Link from "next/link";
 
-export default function CartIcon() {
+type CartIconProps = {
+    number: number | undefined;
+    onClick: () => void;
+}
+
+export default function CartIcon({ number, onClick }: CartIconProps) {
     return (
-        <Link className="relative inline-flex items-center h-16 w-16" href={paths.cart}>
+        <div className="relative inline-flex items-center h-16 w-16" onClick={onClick}>
             <ShoppingCart />
             <div className="absolute top-0 right-4 h-6 w-6 text-center 
             -translate-x-1 translate-y-1 bg-red-500 text-white rounded-full">
-                <span className="w-full text-center text-sm">15</span>
+                <span className="w-full text-center text-sm">{number}</span>
             </div>
-        </Link>
+        </div>
     )
 }

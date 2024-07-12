@@ -26,7 +26,7 @@ export async function POST(request: Request) {
         cookies().set({
             name: 'accessToken',
             value: accessToken,
-            httpOnly: true,
+            httpOnly: false,
             path: '/',
             maxAge: decodedRefresh.exp - Date.now() / 1000
         });

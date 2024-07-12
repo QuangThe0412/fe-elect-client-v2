@@ -27,10 +27,11 @@ import useAuthStore, { TypeUsers } from '@/store/auth.store'
 import { ToastAction } from "@/components/ui/toast"
 
 const LoginForm = () => {
-    const { user, setUser, setIsAuthenticated } = useAuthStore((state: TypeUsers) => ({
+    const { user, setUser,isShowLoginDialog, setIsShowLoginDialog } = useAuthStore((state: TypeUsers) => ({
         user: state.user,
-        setIsAuthenticated: state.setIsAuthenticated,
         setUser: state.setUser,
+        isShowLoginDialog: state.isShowLoginDialog,
+        setIsShowLoginDialog: state.setShowLoginDialog
     }))
     const [loading, setLoading] = useState(false)
     const { toast } = useToast()
@@ -38,8 +39,8 @@ const LoginForm = () => {
     const form = useForm<LoginBodyType>({
         resolver: zodResolver(LoginBody),
         defaultValues: {
-            username: '',
-            password: ''
+            username: 'khach31',
+            password: 'Aa123123'
         }
     })
 
@@ -49,13 +50,15 @@ const LoginForm = () => {
         try {
             const { status, payload } = await authApiRequest.login(values) as ResponsePayloadType;
             if (status === 200) {
-                setIsAuthenticated(true);
                 setUser(payload.data.account);
                 toast({ description: payload.mess, duration: 5000 });
 
                 const { accessToken, refreshToken } = payload.data;
                 const resultNextServer = await authApiRequest.setToken({ accessToken, refreshToken });
                 if (resultNextServer.status === 200) {
+                    if (isShowLoginDialog) {
+                        setIsShowLoginDialog(false)
+                    }
                     router.push(paths.home)
                     router.refresh()
                 } else {
@@ -108,7 +111,7 @@ const LoginForm = () => {
                         )}
                     />
 
-                    <Button disabled={loading} type="submit" className="w-full">Đăng nhập</Button>
+                    <Button disabled={loading} type="submit" className="w-full text-white">Đăng nhập</Button>
                 </form>
             </Form>
             <div className="mt-4 text-center text-sm">

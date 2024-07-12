@@ -4,8 +4,8 @@ import { create } from 'zustand'
 export type TypeUsers = {
   user: TypeDataAccountRes | undefined;
   setUser: (user: TypeDataAccountRes) => void;
-  isAuthenticated: boolean;
-  setIsAuthenticated: (isAuthenticated: boolean) => void;
+  isShowLoginDialog: boolean;
+  setIsShowLoginDialog: (isShowLoginDialog: boolean) => void;
 }
 
 const useAuthStore = create<TypeUsers>()((set) => ({
@@ -13,10 +13,10 @@ const useAuthStore = create<TypeUsers>()((set) => ({
   setUser: (user: TypeDataAccountRes) => {
     set({ user })
   },
-  isAuthenticated: false,
-  setIsAuthenticated: (isAuthenticated: boolean) => {
-    set({ isAuthenticated })
-  },
+  isShowLoginDialog: false,
+  setIsShowLoginDialog: (isShowLoginDialog: boolean) => {
+    set({ isShowLoginDialog })
+  }
 }));
 
 export default useAuthStore;

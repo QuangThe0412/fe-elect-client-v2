@@ -33,10 +33,10 @@ const DialogContent = React.forwardRef<
   React.ElementRef<typeof DialogPrimitive.Content>,
   React.ComponentPropsWithoutRef<typeof DialogPrimitive.Content> & {
     hideCloseButton?: boolean;
-  } & { onClose?: () => void }
->(({ className, children, hideCloseButton, onClose, ...props }, ref) => (
+  } & { onClose?: () => void } & { autoHideOverlay?: boolean}
+>(({ className, children, hideCloseButton, onClose, autoHideOverlay = true, ...props }, ref) => (
   <DialogPortal>
-    <DialogOverlay />
+    <DialogOverlay onClick={() => { if (autoHideOverlay && onClose) onClose(); }} />
     <DialogPrimitive.Content
       ref={ref}
       className={cn(

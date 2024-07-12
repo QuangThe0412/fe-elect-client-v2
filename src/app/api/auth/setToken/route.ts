@@ -12,7 +12,7 @@ export async function POST(request: Request) {
                 cookies().set({
                     name,
                     value: token,
-                    httpOnly: true,
+                    httpOnly: false,
                     path: '/',
                     maxAge: decoded.exp - Date.now() / 1000,
                 });
