@@ -1,6 +1,5 @@
 import { formatCurrency } from '@/lib/utils'
 import useCartStore, { TypeCartStore } from '@/store/cart.store'
-import React from 'react'
 
 function TotalCart() {
     const { cart, setCart } = useCartStore((state: TypeCartStore) => ({
@@ -9,10 +8,9 @@ function TotalCart() {
     }))
 
     const details = cart?.details ?? [];
-
-    const totalBefore = details?.reduce((acc, item) => acc + (item.TienChuaCK ?? 0), 0);
-    const totalAfter = details?.reduce((acc, item) => acc + (item.TienSauCK ?? 0), 0);
-    const totalDiscount = details?.reduce((acc, item) => acc + (item.TienCK ?? 0), 0);
+    const totalBefore = details.reduce((acc, item) => acc + (item.TienChuaCK ?? 0), 0);
+    const totalAfter = details.reduce((acc, item) => acc + (item.TienSauCK ?? 0), 0);
+    const totalDiscount = details.reduce((acc, item) => acc + (item.TienCK ?? 0), 0);
 
     return (
         <div className="bg-white rounded-lg shadow-md p-6">

@@ -12,6 +12,7 @@ import { redirect } from 'next/navigation'
 
 const Login = async () => {
   const accessToken = await tryGetAccessToken();
+  console.log({ accessToken })
   if (accessToken) {
     redirect(paths.home)
   }

@@ -1,17 +1,39 @@
-import http from "@/lib/http";
+import http, { ResponsePayloadType } from "@/lib/http";
 import { handleResponseFromServerBackEnd, tryGetAccessToken } from "@/lib/utilsNext";
 
 async function HandleCart(method: string, request: Request, body?: any) {
     try {
         const accessToken = await tryGetAccessToken();
-        if (!accessToken) return handleResponseFromServerBackEnd({ status: 401, message: 'Unauthorized' });
+        if (!accessToken) return handleResponseFromServerBackEnd(
+            {
+                status: 401,
+                payload: { code: 'Error', mess: 'Not Authorize', data: null }
+            }
+        );
+        const _body = JSON.stringify(body);
+        const idChiTiet = body?.IDChiTietHD;
 
         const config = {
             headers: { Authorization: `${accessToken}` },
-            ...((method === 'PUT' || 'DELETE') && { body: JSON.stringify(body) })
+            ...((method === 'PUT' || 'POST') && { body: _body })
         };
-        let result = await http.get('/cart', config);
-
+        let result;
+        switch (method) {
+            case 'GET':
+                result = await http.get('/cart', config);
+                break;
+            case 'POST':
+                result = await http.post('/cart', body, config);
+                break;
+            case 'PUT':
+                result = await http.put(`/cart/${idChiTiet}`, body, config);
+                break;
+            case 'DELETE':
+                result = await http.delete(`/cart/${idChiTiet}`, {}, config);
+                break;
+            default:
+                break;
+        }
         return handleResponseFromServerBackEnd(result);
     } catch (error: any) {
         return handleResponseFromServerBackEnd(error);
@@ -19,15 +41,20 @@ async function HandleCart(method: string, request: Request, body?: any) {
 }
 
 export async function GET(request: Request, response: Response) {
-    return HandleCart('GET', request);
+    return HandleCart(request.method, request);
+}
+
+export async function POST(request: Request, response: Response) {
+    const reqBody = await request.json();
+    return HandleCart(request.method, request, reqBody);
 }
 
 export async function PUT(request: Request, response: Response) {
-    const req = await request.json();
-    return HandleCart('PUT', request, req);
+    const reqBody = await request.json();
+    return HandleCart(request.method, request, reqBody);
 }
 
-export async function DETELE(request: Request, response: Response) {
-    const req = await request.json();
-    return HandleCart('DELETE', request, req);
+export async function DELETE(request: Request, response: Response) {
+    const reqBody = await request.json();
+    return HandleCart(request.method, request, reqBody);
 }

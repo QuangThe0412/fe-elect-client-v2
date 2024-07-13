@@ -11,6 +11,9 @@ const authApiRequest = {
     setToken: (body: any) => http.post('/api/auth/setToken', body, {
         baseUrl: ''
     }),
+    deleteToken: (nameToken: string) => http.delete('/api/auth/deleteToken', nameToken, {
+        baseUrl: ''
+    }),
 }
 
 export default authApiRequest;

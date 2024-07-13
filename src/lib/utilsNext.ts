@@ -7,10 +7,10 @@ export const tryGetAccessToken = async () => {
     const cookieStore = cookies();
     const accessToken = cookieStore.get('accessToken')?.value ?? '';
     if (!accessToken || isTokenExpired(accessToken)) {
-        cookieStore.delete('accessToken');
+        await authApiRequest.deleteToken('accessToken');
         const refreshToken = cookieStore.get('refreshToken')?.value;
         if (!refreshToken || isTokenExpired(refreshToken)) {
-            cookieStore.delete('refreshToken');
+            await authApiRequest.deleteToken('refreshToken');
             return null;
         }
         const result = await authApiRequest.refreshToken();
@@ -32,3 +32,8 @@ export const handleResponseFromServerBackEnd = async (result: any) => {
     const { data, code, mess } = payload;
     return new Response(JSON.stringify({ data, code, mess }), { status });
 }
+
+export const getParamFromUrl = (url: string, key: string) => {
+    const urlParams = new URLSearchParams(url);
+    return urlParams.get(key);
+};
