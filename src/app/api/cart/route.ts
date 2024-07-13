@@ -1,4 +1,4 @@
-import http, { ResponsePayloadType } from "@/lib/http";
+import http from "@/lib/http";
 import { handleResponseFromServerBackEnd, tryGetAccessToken } from "@/lib/utilsNext";
 
 async function HandleCart(method: string, request: Request, body?: any) {
@@ -11,7 +11,8 @@ async function HandleCart(method: string, request: Request, body?: any) {
             }
         );
         const _body = JSON.stringify(body);
-        const idChiTiet = body?.IDChiTietHD;
+        const idChiTietHd = Number(body?.IDChiTietHD ?? 0);
+        const idHoaDon = Number(body?.IDHoaDon ?? 0);
 
         const config = {
             headers: { Authorization: `${accessToken}` },
@@ -22,14 +23,14 @@ async function HandleCart(method: string, request: Request, body?: any) {
             case 'GET':
                 result = await http.get('/cart', config);
                 break;
-            case 'POST':
-                result = await http.post('/cart', body, config);
+            case 'POST'://======work here
+                result = await http.post(`/cart/${idHoaDon}`, [_body], config);
                 break;
             case 'PUT':
-                result = await http.put(`/cart/${idChiTiet}`, body, config);
+                result = await http.put(`/cart/${idChiTietHd}`, _body, config);
                 break;
             case 'DELETE':
-                result = await http.delete(`/cart/${idChiTiet}`, {}, config);
+                result = await http.delete(`/cart/${idChiTietHd}`, {}, config);
                 break;
             default:
                 break;

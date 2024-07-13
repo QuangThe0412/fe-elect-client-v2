@@ -25,9 +25,11 @@ import { PasswordInput } from '@/components/ui/input-password'
 import { ResponsePayloadType } from '@/lib/http'
 import useAuthStore, { TypeUsers } from '@/store/auth.store'
 import { ToastAction } from "@/components/ui/toast"
+import { usePathname } from 'next/navigation'
 
 const LoginForm = () => {
-    const { user, setUser,isShowLoginDialog, setIsShowLoginDialog } = useAuthStore((state: TypeUsers) => ({
+    const pathname = usePathname()
+    const { user, setUser, isShowLoginDialog, setIsShowLoginDialog } = useAuthStore((state: TypeUsers) => ({
         user: state.user,
         setUser: state.setUser,
         isShowLoginDialog: state.isShowLoginDialog,
@@ -50,7 +52,6 @@ const LoginForm = () => {
         try {
             const { status, payload } = await authApiRequest.login(values) as ResponsePayloadType;
             if (status === 200) {
-                setUser(payload.data.account);
                 toast({ description: payload.mess, duration: 5000 });
 
                 const { accessToken, refreshToken } = payload.data;
@@ -59,8 +60,10 @@ const LoginForm = () => {
                     if (isShowLoginDialog) {
                         setIsShowLoginDialog(false)
                     }
-                    router.push(paths.home)
-                    router.refresh()
+                    if (pathname === paths.login) {
+                        router.push(paths.home)
+                    }
+                    setUser(payload.data.account);
                 } else {
                     toast({
                         variant: "destructive",

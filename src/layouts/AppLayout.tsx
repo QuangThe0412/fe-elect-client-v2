@@ -23,15 +23,17 @@ const AppLayout = ({ children }: any) => {
         setUser: state.setUser,
         setIsShowLoginDialog: state.setIsShowLoginDialog,
     }))
+    const hadUser = !!(user && Object.keys(user).length);
 
     const { cart, setCart } = useCartStore((state: TypeCartStore) => ({
         cart: state.cart,
         setCart: state.setCart,
     }))
+
     useEffect(() => {
+        const accessToken = getCookie('accessToken');
         const fetchProfile = async () => {
-            const accessToken = getCookie('accessToken');
-            if (user === undefined && accessToken) {
+            if (!hadUser && accessToken) {
                 const result = await accountApiRequest.profile();
                 const { status, payload } = result;
                 if (status === 200) {
@@ -42,23 +44,21 @@ const AppLayout = ({ children }: any) => {
         }
 
         const fetchCart = async () => {
-            if (user) {
+            if (accessToken) {
                 const response = await cartApiRequest.getCart();
-                console.log({ response });
                 const { payload, status } = response as any;
                 if (status === 200) {
-                    const data = (payload as any)?.data as CartType;
+                    const data = payload?.data as CartType;
                     setCart(data);
                 }
             }
         }
 
-        fetchProfile().then(() => {
-            fetchCart();
-        });
+        fetchProfile()
+        fetchCart();
     }, [user])
 
-    const onClick = () => {
+    const onClickCart = () => {
         if (user) {
             router.push(paths.cart);
         } else {
@@ -74,8 +74,8 @@ const AppLayout = ({ children }: any) => {
                     <MainNav className="mx-6" />
                     <div className="ml-auto flex items-center space-x-4">
                         <Search />
-                        {user && <UserNav user={user} />}
-                        <CartIcon number={cart && cart?.details?.length} onClick={onClick} />
+                        {hadUser && <UserNav />}
+                        <CartIcon number={cart && cart?.details?.length} onClick={onClickCart} />
                     </div>
                 </header>
                 <div className="overflow-hidden body-height">

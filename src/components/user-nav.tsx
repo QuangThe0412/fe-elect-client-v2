@@ -1,3 +1,4 @@
+"use client";
 import { LockKeyhole, LogOut, User } from "lucide-react"
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
@@ -15,9 +16,20 @@ import { useState } from "react"
 import { DialogProfile } from "@/components/profile/dialog-profile"
 import { ChangePassword } from "./change-password/change-password"
 import accountApiRequest from "@/apiRequests/account"
-import { paths } from "@/constants/paths"
+import useAuthStore, { TypeUsers } from "@/store/auth.store";
+import useCartStore, { TypeCartStore } from "@/store/cart.store";
+import { CartType } from "@/schemaValidations/cart.schema";
 
-export function UserNav({ user }: { user: TypeDataAccountRes | undefined }) {
+export function UserNav() {
+  const { user, setUser } = useAuthStore((state: TypeUsers) => ({
+    user: state.user,
+    setUser: state.setUser,
+  }))
+
+  const { setCart } = useCartStore((state: TypeCartStore) => ({
+    setCart: state.setCart,
+  }))
+
   const [openDialogProfile, setOpenDialogProfile] = useState(false);
   const [openDialogChangePassword, setOpenDialogChangePassword] = useState(false);
 
@@ -58,8 +70,11 @@ export function UserNav({ user }: { user: TypeDataAccountRes | undefined }) {
           </DropdownMenuGroup>
           <DropdownMenuSeparator />
           <DropdownMenuItem onClick={async () => {
-            await accountApiRequest.logout();
-            window.location.href = paths.home;
+            const { status } = await accountApiRequest.logout();
+            if (status === 200) {
+              setUser({} as TypeDataAccountRes)
+              setCart({} as CartType)
+            }
           }}>
             <LogOut className="mr-2 h-4 w-4" />
             <span>Đăng xuất</span>
