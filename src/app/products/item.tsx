@@ -5,7 +5,7 @@ import { ShoppingBag } from 'lucide-react'
 import useAuthStore, { TypeUsers } from '@/store/auth.store'
 import useCartStore, { TypeCartStore } from '@/store/cart.store'
 import cartApiRequest from '@/apiRequests/cart'
-import { CartType } from '@/schemaValidations/cart.schema'
+import { CartDetails, CartType } from '@/schemaValidations/cart.schema'
 
 function ItemProduct({ data }: { data: ProductResType }) {
     const { user, setIsShowLoginDialog } = useAuthStore((state: TypeUsers) => ({
@@ -34,9 +34,20 @@ function ItemProduct({ data }: { data: ProductResType }) {
                 const response = await cartApiRequest.addToCart({ IDHoaDon, IDMon: idMon, SoLuong: 1 });
                 const { payload, status } = response as any;
                 if (status === 200) {
-                    const data = payload?.data as CartType;
-                    console.log({ data });
-                    // setCart(data);
+                    const data = payload?.data as CartDetails[];
+                    console.log('data', data);
+                    const updatedCartDetails = [...(cart?.details || [])];
+
+                    data.forEach((dataItem) => {
+                        const index = updatedCartDetails.findIndex(cartItem => cartItem.IDMon === dataItem.IDMon);
+                        if (index > -1) {
+                            updatedCartDetails[index] = { ...updatedCartDetails[index], ...dataItem };
+                        } else {
+                            updatedCartDetails.push(dataItem);
+                        }
+                    });
+                    console.log('updatedCartDetails', updatedCartDetails);
+                    setCart({ ...cart, details: updatedCartDetails });
                 }
             } else {
                 console.log('Chưa có IDHoaDon');

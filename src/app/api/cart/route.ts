@@ -1,3 +1,4 @@
+import { STATUS_ENUM } from "@/constants/status";
 import http from "@/lib/http";
 import { handleResponseFromServerBackEnd, tryGetAccessToken } from "@/lib/utilsNext";
 
@@ -10,24 +11,28 @@ async function HandleCart(method: string, request: Request, body?: any) {
                 payload: { code: 'Error', mess: 'Not Authorize', data: null }
             }
         );
-        const _body = JSON.stringify(body);
         const idChiTietHd = Number(body?.IDChiTietHD ?? 0);
         const idHoaDon = Number(body?.IDHoaDon ?? 0);
 
         const config = {
             headers: { Authorization: `${accessToken}` },
-            ...((method === 'PUT' || 'POST') && { body: _body })
+            ...((method === 'PUT' || 'POST') && { body: JSON.stringify(body) })
         };
         let result;
         switch (method) {
             case 'GET':
                 result = await http.get('/cart', config);
                 break;
-            case 'POST'://======work here
-                result = await http.post(`/cart/${idHoaDon}`, [_body], config);
+            case 'POST':
+                result = await http.post(`/cart/${idHoaDon}`, [body], config);
                 break;
             case 'PUT':
-                result = await http.put(`/cart/${idChiTietHd}`, _body, config);
+                const status = body?.TrangThai ?? 0;
+                if (status === STATUS_ENUM.PROCESSING) {
+                    result = await http.put(`/cart/processing/${idHoaDon}`, body, config);
+                    break;
+                }
+                result = await http.put(`/cart/${idChiTietHd}`, body, config);
                 break;
             case 'DELETE':
                 result = await http.delete(`/cart/${idChiTietHd}`, {}, config);

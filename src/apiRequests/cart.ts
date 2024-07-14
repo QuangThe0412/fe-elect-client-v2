@@ -14,6 +14,9 @@ const cartApiRequest = {
     addToCart: (body: any) => http.post(`/api/cart`, body, {
         baseUrl: ''
     }),
+    paymentCart: (body: any) => http.put(`/api/cart`, body, {
+        baseUrl: ''
+    }),
 }
 
 export default cartApiRequest;
