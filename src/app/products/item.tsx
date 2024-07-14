@@ -6,8 +6,11 @@ import useAuthStore, { TypeUsers } from '@/store/auth.store'
 import useCartStore, { TypeCartStore } from '@/store/cart.store'
 import cartApiRequest from '@/apiRequests/cart'
 import { CartDetails, CartType } from '@/schemaValidations/cart.schema'
+import { Button } from '@/components/ui/button'
+import { formatCurrency } from '@/lib/utils'
 
 function ItemProduct({ data }: { data: ProductResType }) {
+    const [loading, setLoading] = React.useState(false);
     const { user, setIsShowLoginDialog } = useAuthStore((state: TypeUsers) => ({
         user: state.user,
         setIsShowLoginDialog: state.setIsShowLoginDialog
@@ -26,6 +29,7 @@ function ItemProduct({ data }: { data: ProductResType }) {
     const hadUser = !!(user && Object.keys(user).length);
 
     const handleAddToCart = async (idMon: number | undefined) => {
+        setLoading(true);
         if (!hadUser) {
             setIsShowLoginDialog(true);
         } else {
@@ -59,7 +63,10 @@ function ItemProduct({ data }: { data: ProductResType }) {
                 }
             }
         }
+        setLoading(false);
     }
+
+    const numberCart = cart?.details?.find(item => item.IDMon === IDMon)?.SoLuong;
 
     return (
         <div className="w-72 bg-white shadow-md rounded-xl duration-500 hover:scale-105 hover:shadow-xl">
@@ -70,12 +77,22 @@ function ItemProduct({ data }: { data: ProductResType }) {
                     {/* <span className="text-gray-400 mr-3 uppercase text-xs">Brand</span> */}
                     <p className="text-lg font-bold text-black truncate block capitalize">{TenMon}</p>
                     <div className="flex items-center">
-                        <p className="text-lg font-semibold text-black cursor-auto my-3">{DonGiaBanLe}</p>
+                        <p className="text-lg font-semibold text-black cursor-auto my-3">{formatCurrency(DonGiaBanLe)}</p>
                         <del>
-                            <p className="text-sm text-gray-600 cursor-auto ml-2">{data.DonGiaBanLe}</p>
+                            <p className="text-sm text-gray-600 cursor-auto ml-2">{formatCurrency(DonGiaBanLe)}</p>
                         </del>
-                        <div className="ml-auto">
-                            <ShoppingBag size={24} onClick={() => handleAddToCart(IDMon)} />
+                        <div className="ml-auto relative">
+                            <Button disabled={loading} size="icon" variant="outline"
+                                onClick={() => handleAddToCart(IDMon)}>
+                                <ShoppingBag size={24} />
+                                {
+                                    (numberCart ?? 0) > 0 &&
+                                    <div className="absolute bottom-6 left-6 h-6 w-6 text-center 
+                                        -translate-x-1 translate-y-1 bg-red-500 text-white rounded-full">
+                                        <span className="w-full text-center text-sm">{numberCart}</span>
+                                    </div>
+                                }
+                            </Button>
                         </div>
                     </div>
                 </div>
