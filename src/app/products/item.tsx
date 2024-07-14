@@ -19,7 +19,7 @@ function ItemProduct({ data }: { data: ProductResType }) {
     const { IDMon, IDLoaiMon, TenMon, Image, DVTMon, DonGiaBanSi,
         DonGiaBanLe, DonGiaVon, SoLuongTonKho, ThoiGianBH } = data;
 
-    const { IDHoaDon } = cart;
+    const IDHoaDon = cart?.IDHoaDon;
 
     const src = `${(configEnv.NEXT_PUBLIC_LINK_IMAGE_GG ?? '') + Image}`
 
@@ -30,12 +30,10 @@ function ItemProduct({ data }: { data: ProductResType }) {
             setIsShowLoginDialog(true);
         } else {
             if (IDHoaDon) {
-                console.log('Có IDHoaDon', IDHoaDon);
                 const response = await cartApiRequest.addToCart({ IDHoaDon, IDMon: idMon, SoLuong: 1 });
                 const { payload, status } = response as any;
                 if (status === 200) {
                     const data = payload?.data as CartDetails[];
-                    console.log('data', data);
                     const updatedCartDetails = [...(cart?.details || [])];
 
                     data.forEach((dataItem) => {
@@ -46,11 +44,19 @@ function ItemProduct({ data }: { data: ProductResType }) {
                             updatedCartDetails.push(dataItem);
                         }
                     });
-                    console.log('updatedCartDetails', updatedCartDetails);
                     setCart({ ...cart, details: updatedCartDetails });
                 }
             } else {
-                console.log('Chưa có IDHoaDon');
+                const response = await cartApiRequest.addToCart({ IDMon: idMon, SoLuong: 1 });
+                const { payload, status } = response as any;
+                if (status === 200) {
+                    const newCartGet = await cartApiRequest.getCart();
+                    const { payload, status } = newCartGet as any;
+                    if (status === 200) {
+                        const data = payload?.data as CartType;
+                        setCart(data);
+                    }
+                }
             }
         }
     }
