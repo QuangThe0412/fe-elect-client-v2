@@ -9,7 +9,7 @@ export async function DELETE(request: Request, response: Response, nameToken: st
         status: 200,
         payload: {
             code: 'Success',
-            mess: 'Lấy accessToken thành công',
+            mess: 'Xóa Token thành công',
             data: {},
         }
     });

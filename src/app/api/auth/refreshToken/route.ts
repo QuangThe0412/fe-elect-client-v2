@@ -1,13 +1,12 @@
 import http, { ResponsePayloadType } from "@/lib/http";
 import { decodeJWT } from "@/lib/utils";
-import { handleResponseFromServerBackEnd } from "@/lib/utilsNext";
-import { cookies } from 'next/headers'
+import { handleResponseFromServerBackEnd, isTokenExpired } from "@/lib/utilsNext";
 
 export async function POST(request: Request) {
-    const cookieStore = cookies();
-    const refreshToken = cookieStore.get('refreshToken')?.value;
+    const req = await request.json();
+    const { refreshToken } = req;
 
-    if (!refreshToken || !decodeJWT(refreshToken)) {
+    if (!refreshToken || isTokenExpired(refreshToken)) {
         return handleResponseFromServerBackEnd({
             status: 400,
             payload: {
@@ -22,14 +21,8 @@ export async function POST(request: Request) {
     const { status, payload } = result;
     if (status == 200) {
         const accessToken = payload?.data;
-        const decodedRefresh = decodeJWT(refreshToken);
-        cookies().set({
-            name: 'accessToken',
-            value: accessToken,
-            httpOnly: false,
-            path: '/',
-            maxAge: decodedRefresh.exp - Date.now() / 1000
-        });
+
+        
 
         return handleResponseFromServerBackEnd({
             status: 200,

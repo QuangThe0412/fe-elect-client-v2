@@ -5,7 +5,7 @@ const authApiRequest = {
     login: (body: LoginBodyType) => http.post('/auth/login', body),
     register: (body: RegisterBodyType) => http.post('/auth/register', body),
     //server next side
-    refreshToken: () => http.post('/api/auth/refreshToken', {
+    refreshToken: (body: any) => http.post('/api/auth/refreshToken', body, {
         baseUrl: ''
     }),
     setToken: (body: any) => http.post('/api/auth/setToken', body, {
