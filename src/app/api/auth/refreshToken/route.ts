@@ -24,17 +24,10 @@ export async function POST(request: Request) {
         const { status, payload } = result;
         if (status == 200) {
             const accessToken = payload?.data;
-            // const decodedAccessToken = decodeJWT(accessToken);
-            // cookies().set({
-            //     name: 'accessToken',
-            //     value: accessToken,
-            //     httpOnly: false,
-            //     path: '/',
-            //     maxAge: decodedAccessToken.exp - Date.now() / 1000,
-            // });
             console.log('===================from refreshToken route');
             const resultSetToken = await authApiRequest.setToken({ accessToken, refreshToken });
             console.log({ resultSetToken });
+
 
             return handleResponse({
                 status: 200,

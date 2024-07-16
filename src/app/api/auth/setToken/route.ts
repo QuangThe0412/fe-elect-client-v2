@@ -1,48 +1,39 @@
-import { decodeJWT} from "@/lib/utils";
-import { handleResponse } from "@/lib/utilsNext";
-import { cookies } from 'next/headers'
+import { decodeJWT } from "@/lib/utils";
 
 export async function POST(request: Request) {
     try {
         const { accessToken, refreshToken } = await request.json();
-        console.log({ accessToken });
-        console.log({ refreshToken });
-
-        const setCookie = (token: string, name: string) => {
-            const decoded = decodeJWT(token);
-            if (decoded) {
-                cookies().set({
-                    name,
-                    value: token,
-                    httpOnly: false,
-                    path: '/',
-                    maxAge: decoded.exp - Date.now() / 1000,
-                });
-            }
-        };
-
-        if (!accessToken || !refreshToken) {
-            return handleResponse({
+        const decodedAccess = decodeJWT(accessToken);
+        const decodedRefresh = decodeJWT(refreshToken);
+        if (!decodedAccess || !decodedRefresh) {
+            return Response.json({
                 status: 400,
                 payload: {
-                    code: 'BadRequest',
-                    mess: 'Token không hợp lệ',
-                    data: { accessToken, refreshToken },
-                },
+                    mess: 'Token không hợp lệ'
+                }
             });
         }
+        if (decodedAccess.exp < Date.now() / 1000 || decodedRefresh.exp < Date.now() / 1000) {
+            return Response.json({
+                status: 400,
+                payload: {
+                    mess: 'Token đã hết hạn'
+                }
+            });
+        }
+        const accessTokenCookie = `accessToken=${accessToken}; HttpOnly; Path=/; Max-Age=${decodedAccess.exp - Date.now() / 1000}`;
+        const refreshTokenCookie = `refreshToken=${refreshToken}; HttpOnly; Path=/; Max-Age=${decodedRefresh.exp - Date.now() / 1000}`;
 
-        setCookie(accessToken, 'accessToken');
-        setCookie(refreshToken, 'refreshToken');
+        return Response.json(
+            { accessToken, refreshToken },
+            {
+                status: 200,
+                headers: {
+                    'Set-Cookie': [accessTokenCookie, refreshTokenCookie].join(', '),
+                },
+            }
+        );
 
-        return handleResponse({
-            status: 200,
-            payload: {
-                code: 'Success',
-                mess: 'Đã cập nhật token',
-                data: { accessToken, refreshToken },
-            },
-        });
     } catch (error: any) {
         throw new Error(error);
     }
