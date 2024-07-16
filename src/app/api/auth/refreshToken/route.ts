@@ -1,10 +1,10 @@
 import authApiRequest from "@/apiRequests/auth";
 import http, { ResponsePayloadType } from "@/lib/http";
-import { decodeJWT } from "@/lib/utils";
+import { decodeJWT, isServer } from "@/lib/utils";
 import { handleResponse, isTokenExpired } from "@/lib/utilsNext";
 import { cookies } from 'next/headers'
 
-export async function POST(request: Request) {
+export async function POST(request: Request, response: Response) {
     try {
         const req = await request.json();
         const { refreshToken } = req;
@@ -24,19 +24,18 @@ export async function POST(request: Request) {
         const { status, payload } = result;
         if (status == 200) {
             const accessToken = payload?.data;
-            console.log('===================from refreshToken route');
-            const resultSetToken = await authApiRequest.setToken({ accessToken, refreshToken });
-            console.log({ resultSetToken });
-
-
-            return handleResponse({
-                status: 200,
-                payload: {
-                    code: 'Success',
-                    mess: 'Lấy accessToken thành công',
-                    data: { accessToken },
+            const decodedAccess = decodeJWT(accessToken);
+            const accessTokenCookie = `accessToken=${accessToken}; HttpOnly; Path=/; Max-Age=${decodedAccess.exp - Date.now() / 1000}`;
+            console.log(isServer());
+            return Response.json(
+                { accessToken, refreshToken },
+                {
+                    status: 200,
+                    headers: {
+                        'Set-Cookie': [accessTokenCookie].join(', '),
+                    },
                 }
-            });
+            );
         }
 
         return handleResponse({

@@ -1,4 +1,4 @@
-import { decodeJWT } from "@/lib/utils";
+import { decodeJWT, isServer } from "@/lib/utils";
 
 export async function POST(request: Request) {
     try {
@@ -23,7 +23,7 @@ export async function POST(request: Request) {
         }
         const accessTokenCookie = `accessToken=${accessToken}; HttpOnly; Path=/; Max-Age=${decodedAccess.exp - Date.now() / 1000}`;
         const refreshTokenCookie = `refreshToken=${refreshToken}; HttpOnly; Path=/; Max-Age=${decodedRefresh.exp - Date.now() / 1000}`;
-
+        console.log(isServer());
         return Response.json(
             { accessToken, refreshToken },
             {

@@ -22,6 +22,7 @@ export const tryGetAccessToken = async () => {
             const { payload, status } = result as any;
             if (status == 200) {
                 const newAccessToken = payload?.data?.accessToken;
+                
                 return newAccessToken;
                 // const resultSetToken = await authApiRequest.setToken({ accessToken: newAccessToken, refreshToken });                
                 // return resultSetToken.status === 200 ? (result?.payload as any)?.data?.accessToken : null;
