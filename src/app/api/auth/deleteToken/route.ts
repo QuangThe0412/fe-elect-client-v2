@@ -1,11 +1,11 @@
-import { handleResponseFromServerBackEnd } from "@/lib/utilsNext";
+import { handleResponse } from "@/lib/utilsNext";
 import { cookies } from 'next/headers'
 
 export async function DELETE(request: Request, response: Response, nameToken: string = '') {
     const cookieStore = cookies();
     cookieStore.delete(nameToken);
 
-    return handleResponseFromServerBackEnd({
+    return handleResponse({
         status: 200,
         payload: {
             code: 'Success',

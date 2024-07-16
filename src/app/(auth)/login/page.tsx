@@ -11,6 +11,7 @@ import { tryGetAccessToken } from "@/lib/utilsNext";
 import { redirect } from 'next/navigation'
 
 const Login = async () => {
+  throw new Error('Not implemented yet')
   const accessToken = await tryGetAccessToken();
   if (accessToken) {
     redirect(paths.home)

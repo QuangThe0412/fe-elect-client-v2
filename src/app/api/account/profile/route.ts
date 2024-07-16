@@ -1,11 +1,11 @@
 import http from "@/lib/http";
-import { handleResponseFromServerBackEnd, tryGetAccessToken } from "@/lib/utilsNext";
+import { handleResponse, tryGetAccessToken } from "@/lib/utilsNext";
 
 async function fetchProfile(method: string, request: Request, body?: any) {
     try {
         const accessToken = await tryGetAccessToken();
         if (!accessToken) {
-            return handleResponseFromServerBackEnd({
+            return handleResponse({
                 status: 401,
                 payload: { code: 'Unauthorized', mess: 'Chưa xác thực', data: null }
             });
@@ -23,9 +23,9 @@ async function fetchProfile(method: string, request: Request, body?: any) {
                 result = await http.put('/account/profile', body, config);
                 break;
         }
-        return handleResponseFromServerBackEnd(result);
+        return handleResponse(result);
     } catch (error: any) {
-        return handleResponseFromServerBackEnd(error);
+        throw new Error(error);
     }
 }
 

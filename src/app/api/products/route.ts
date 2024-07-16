@@ -1,5 +1,5 @@
 import http from "@/lib/http";
-import { handleResponseFromServerBackEnd } from "@/lib/utilsNext";
+import { handleResponse } from "@/lib/utilsNext";
 import { type NextRequest } from 'next/server'
 
 export async function GET(request: NextRequest, response: Response) {
@@ -12,8 +12,8 @@ export async function GET(request: NextRequest, response: Response) {
         const query = searchParams?.get('query') || '';
         let result = await http.get(`/products?page=${page}&limit=${limit}&category=${category}&query=${query}`);
         
-        return handleResponseFromServerBackEnd(result);
+        return handleResponse(result);
     } catch (error: any) {
-        return handleResponseFromServerBackEnd(error);
+        throw new Error(error);
     }
 }

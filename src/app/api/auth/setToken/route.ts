@@ -1,10 +1,12 @@
-import { decodeJWT } from "@/lib/utils";
-import { handleResponseFromServerBackEnd } from "@/lib/utilsNext";
+import { decodeJWT} from "@/lib/utils";
+import { handleResponse } from "@/lib/utilsNext";
 import { cookies } from 'next/headers'
 
 export async function POST(request: Request) {
     try {
         const { accessToken, refreshToken } = await request.json();
+        console.log({ accessToken });
+        console.log({ refreshToken });
 
         const setCookie = (token: string, name: string) => {
             const decoded = decodeJWT(token);
@@ -20,7 +22,7 @@ export async function POST(request: Request) {
         };
 
         if (!accessToken || !refreshToken) {
-            return handleResponseFromServerBackEnd({
+            return handleResponse({
                 status: 400,
                 payload: {
                     code: 'BadRequest',
@@ -33,7 +35,7 @@ export async function POST(request: Request) {
         setCookie(accessToken, 'accessToken');
         setCookie(refreshToken, 'refreshToken');
 
-        return handleResponseFromServerBackEnd({
+        return handleResponse({
             status: 200,
             payload: {
                 code: 'Success',
@@ -42,6 +44,6 @@ export async function POST(request: Request) {
             },
         });
     } catch (error: any) {
-        return handleResponseFromServerBackEnd(error);
+        throw new Error(error);
     }
 }

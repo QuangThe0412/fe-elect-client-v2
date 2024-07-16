@@ -1,12 +1,12 @@
 import { cookies } from 'next/headers'
-import { handleResponseFromServerBackEnd } from "@/lib/utilsNext";
+import { handleResponse } from "@/lib/utilsNext";
 
 export async function DELETE(request: Request) {
     try {
         cookies().delete('accessToken')
         cookies().delete('refreshToken')
 
-        return handleResponseFromServerBackEnd({
+        return handleResponse({
             status: 200,
             payload: {
                 code: 'Success',
@@ -15,6 +15,6 @@ export async function DELETE(request: Request) {
             }
         });
     } catch (error: any) {
-        return handleResponseFromServerBackEnd(error);
+        throw new Error(error);
     }
 }
