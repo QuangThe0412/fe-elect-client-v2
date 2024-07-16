@@ -25,8 +25,7 @@ export async function POST(request: Request, response: Response) {
         if (status == 200) {
             const accessToken = payload?.data;
             const decodedAccess = decodeJWT(accessToken);
-            const accessTokenCookie = `accessToken=${accessToken}; HttpOnly; Path=/; Max-Age=${decodedAccess.exp - Date.now() / 1000}`;
-            console.log(isServer());
+            const accessTokenCookie = `accessToken=${accessToken}; HttpOnly; Path=/; Max-Age=${decodedAccess.exp - Math.floor(Date.now() / 1000)}`;            console.log(isServer());
             return Response.json(
                 { accessToken, refreshToken },
                 {
