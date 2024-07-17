@@ -14,6 +14,7 @@ async function RefreshTokenPage() {
     const { status, payload } = await authApiRequest.refreshToken({ refreshToken }) as ResponsePayloadType;
     if (status == 200) {
         const newAccessToken = payload?.data?.accessToken;
+        console.log({ newAccessToken });
 
     }
     return (
