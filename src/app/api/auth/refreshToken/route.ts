@@ -25,16 +25,29 @@ export async function POST(request: Request, response: Response) {
         if (status == 200) {
             const accessToken = payload?.data;
             const decodedAccess = decodeJWT(accessToken);
-            const accessTokenCookie = `accessToken=${accessToken}; HttpOnly; Path=/; Max-Age=${decodedAccess.exp - Math.floor(Date.now() / 1000)}`;            console.log(isServer());
-            return Response.json(
-                { accessToken, refreshToken },
-                {
-                    status: 200,
-                    headers: {
-                        'Set-Cookie': [accessTokenCookie].join(', '),
-                    },
+            const currentTimeInSeconds = Date.now() / 1000;
+            const accessTokenMaxAge = decodedAccess.exp - currentTimeInSeconds;
+            console.log('=======refreshToken==================');
+
+            cookies().set('accessToken', accessToken);
+            return handleResponse({
+                status: 200,
+                payload: {
+                    code: 'Success',
+                    mess: 'Lấy accessToken từ refreshToken thành công',
+                    data: { accessToken }
                 }
-            );
+            });
+            // const accessTokenCookie = `accessToken=${accessToken}; Path=/; Max-Age=${accessTokenMaxAge}`;
+            // return Response.json(
+            //     { accessToken, refreshToken },
+            //     {
+            //         status: 200,
+            //         headers: {
+            //             'Set-Cookie': accessTokenCookie,
+            //         },
+            //     }
+            // );
         }
 
         return handleResponse({

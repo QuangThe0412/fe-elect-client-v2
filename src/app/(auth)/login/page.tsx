@@ -7,15 +7,20 @@ import {
 } from "@/components/ui/card"
 import LoginForm from "./login-form"
 import { paths } from "@/constants/paths";
-import { tryGetAccessToken } from "@/lib/utilsNext";
 import { redirect } from 'next/navigation'
+import { cookies } from 'next/headers'
+
 
 const Login = async () => {
-  const accessToken = await tryGetAccessToken();
-  console.log({ accessToken });
-  ///== chưa có accessToken chỗ này ????
+  const cookieStore = cookies()
+  const accessToken = cookieStore.get('accessToken')?.value ?? '';
   if (accessToken) {
     redirect(paths.home)
+  } else {
+    const refreshToken = cookieStore.get('refreshToken')?.value ?? '';
+    if (refreshToken) {
+      redirect(paths.refreshToken)
+    }
   }
 
   return (

@@ -21,9 +21,12 @@ export async function POST(request: Request) {
                 }
             });
         }
-        const accessTokenCookie = `accessToken=${accessToken}; HttpOnly; Path=/; Max-Age=${decodedAccess.exp - Date.now() / 1000}`;
-        const refreshTokenCookie = `refreshToken=${refreshToken}; HttpOnly; Path=/; Max-Age=${decodedRefresh.exp - Date.now() / 1000}`;
-        console.log(isServer());
+        const currentTimeInSeconds = Date.now() / 1000;
+        const accessTokenMaxAge = decodedAccess.exp - currentTimeInSeconds;
+        const refreshTokenMaxAge = decodedRefresh.exp - currentTimeInSeconds;
+
+        const accessTokenCookie = `accessToken=${accessToken}; Path=/; Max-Age=${Math.floor(accessTokenMaxAge)}`;
+        const refreshTokenCookie = `refreshToken=${refreshToken}; Path=/; Max-Age=${Math.floor(refreshTokenMaxAge)}`;
         return Response.json(
             { accessToken, refreshToken },
             {
