@@ -10,7 +10,6 @@ import { paths } from "@/constants/paths";
 import { redirect } from 'next/navigation'
 import { cookies } from 'next/headers'
 
-
 const Login = async () => {
   const cookieStore = cookies()
   const accessToken = cookieStore.get('accessToken')?.value ?? '';
@@ -19,7 +18,7 @@ const Login = async () => {
   } else {
     const refreshToken = cookieStore.get('refreshToken')?.value ?? '';
     if (refreshToken) {
-      redirect(paths.refreshToken)
+      // redirect(paths.refreshToken)
     }
   }
 

@@ -1,6 +1,3 @@
-import { isServer } from "./utils";
-import { tryGetAccessToken } from "./utilsNext";
-
 type CustomOptions = RequestInit & { baseUrl?: string | undefined };
 type CustomOptionsWithoutBody = Omit<CustomOptions, 'body'> | undefined;
 

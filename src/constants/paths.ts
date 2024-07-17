@@ -7,4 +7,5 @@ export const paths = {
     products: "/products",
     profile: "/profile",
     cart: "/cart",
+    refreshToken: "/refreshToken",
 };

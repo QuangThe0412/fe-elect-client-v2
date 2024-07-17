@@ -1,8 +1,10 @@
-import { decodeJWT, isServer } from "@/lib/utils";
+import { decodeJWT } from "@/lib/utils";
+import { isTokenExpired } from "@/lib/utilsNext";
 
 export async function POST(request: Request) {
     try {
         const { accessToken, refreshToken } = await request.json();
+
         const decodedAccess = decodeJWT(accessToken);
         const decodedRefresh = decodeJWT(refreshToken);
         if (!decodedAccess || !decodedRefresh) {
@@ -13,7 +15,8 @@ export async function POST(request: Request) {
                 }
             });
         }
-        if (decodedAccess.exp < Date.now() / 1000 || decodedRefresh.exp < Date.now() / 1000) {
+        
+        if (isTokenExpired(accessToken) || isTokenExpired(refreshToken)) {
             return Response.json({
                 status: 400,
                 payload: {
@@ -21,6 +24,7 @@ export async function POST(request: Request) {
                 }
             });
         }
+        
         const currentTimeInSeconds = Date.now() / 1000;
         const accessTokenMaxAge = decodedAccess.exp - currentTimeInSeconds;
         const refreshTokenMaxAge = decodedRefresh.exp - currentTimeInSeconds;

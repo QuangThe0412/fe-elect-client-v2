@@ -8,46 +8,34 @@ export async function POST(request: Request, response: Response) {
     try {
         const req = await request.json();
         const { refreshToken } = req;
+        const decodedRefresh = decodeJWT(refreshToken);
 
-        if (!refreshToken || isTokenExpired(refreshToken)) {
-            return handleResponse({
+        if (!decodedRefresh || isTokenExpired(refreshToken)) {
+            return Response.json({
                 status: 400,
                 payload: {
-                    code: 'BadRequest',
-                    mess: 'RefreshToken không hợp lệ',
-                    data: null
+                    mess: 'Token không hợp lệ hoặc hết hạn'
                 }
             });
         }
 
-        const result = await http.post('/auth/refresh-token', { refreshToken }) as ResponsePayloadType;
-        const { status, payload } = result;
+        const { status, payload } = await http.post('/auth/refresh-token', { refreshToken }) as ResponsePayloadType;
         if (status == 200) {
             const accessToken = payload?.data;
             const decodedAccess = decodeJWT(accessToken);
+            
             const currentTimeInSeconds = Date.now() / 1000;
             const accessTokenMaxAge = decodedAccess.exp - currentTimeInSeconds;
-            console.log('=======refreshToken==================');
 
-            cookies().set('accessToken', accessToken);
-            return handleResponse({
-                status: 200,
-                payload: {
-                    code: 'Success',
-                    mess: 'Lấy accessToken từ refreshToken thành công',
-                    data: { accessToken }
+            return Response.json(
+                { accessToken, refreshToken },
+                {
+                    status: 200,
+                    headers: {
+                        'Set-Cookie': `accessToken=${accessToken}; Path=/; Max-Age=${Math.floor(accessTokenMaxAge)}`,
+                    },
                 }
-            });
-            // const accessTokenCookie = `accessToken=${accessToken}; Path=/; Max-Age=${accessTokenMaxAge}`;
-            // return Response.json(
-            //     { accessToken, refreshToken },
-            //     {
-            //         status: 200,
-            //         headers: {
-            //             'Set-Cookie': accessTokenCookie,
-            //         },
-            //     }
-            // );
+            );
         }
 
         return handleResponse({
