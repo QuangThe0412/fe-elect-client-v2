@@ -1,13 +1,13 @@
 import configEnv from '@/configEnv'
 import { ProductResType } from '@/schemaValidations/product.schema'
 import React from 'react'
-import { ShoppingBag } from 'lucide-react'
 import useAuthStore, { TypeUsers } from '@/store/auth.store'
 import useCartStore, { TypeCartStore } from '@/store/cart.store'
 import cartApiRequest from '@/apiRequests/cart'
 import { CartDetails, CartType } from '@/schemaValidations/cart.schema'
 import { Button } from '@/components/ui/button'
 import { formatCurrency } from '@/lib/utils'
+import { BsBag } from 'react-icons/bs'
 
 function ItemProduct({ data }: { data: ProductResType }) {
     const [loading, setLoading] = React.useState(false);
@@ -84,7 +84,7 @@ function ItemProduct({ data }: { data: ProductResType }) {
                         <div className="ml-auto relative">
                             <Button disabled={loading} size="icon" variant="outline"
                                 onClick={() => handleAddToCart(IDMon)}>
-                                <ShoppingBag size={24} />
+                                <BsBag size={24} />
                                 {
                                     (numberCart ?? 0) > 0 &&
                                     <div className="absolute bottom-6 left-6 h-6 w-6 text-center 

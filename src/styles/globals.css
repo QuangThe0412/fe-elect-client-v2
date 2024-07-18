@@ -16,14 +16,14 @@
     --primary: 240 5.9% 10%;
     --primary-foreground: 0 0% 98%;
 
-    --secondary: 240 4.8% 95.9%;
+    --secondary: rgb(255, 143, 156);
     --secondary-foreground: 240 5.9% 10%;
 
-    --muted: 240 4.8% 95.9%;
+    --muted: rgb(255, 143, 156);
     --muted-foreground: 240 3.8% 46.1%;
 
-    --accent: 240 4.8% 95.9%;
-    --accent-foreground: 240 5.9% 10%;
+    --accent: rgb(255, 143, 156);
+    --accent-foreground: #ffffff;
 
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 98%;
@@ -52,20 +52,20 @@
     --primary: 0 0% 98%;
     --primary-foreground: 240 5.9% 10%;
 
-    --secondary: 240 3.7% 15.9%;
+    --secondary: rgb(255, 143, 156);
     --secondary-foreground: 0 0% 98%;
 
-    --muted: 240 3.7% 15.9%;
+    --muted: rgb(255, 143, 156);
     --muted-foreground: 240 5% 64.9%;
 
-    --accent: 240 3.7% 15.9%;
-    --accent-foreground: 0 0% 98%;
+    --accent: rgb(255, 143, 156);
+    --accent-foreground: #ffffff;
 
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 0 0% 98%;
 
-    --border: 240 3.7% 15.9%;
-    --input: 240 3.7% 15.9%;
+    --border: rgb(255, 143, 156);
+    --input: rgb(255, 143, 156);
     --ring: 240 4.9% 83.9%;
 
     --button-text-color: white;
@@ -83,6 +83,20 @@
 }
 
 @layer components {
+  :root {
+    --tw-bg-opacity: 1;
+    --tw-text-opacity: 1;
+  }
+
+  .header_top__icon_wrapper {
+    @apply bg-gray-200 rounded-md p-1.5 text-sm cursor-pointer;
+  }
+
+  .header_top__icon_wrapper:hover {
+    background-color: var(--accent);
+    color: var(--accent-foreground);
+  }
+
   .md-total-cart {
     margin-bottom: calc(var(--footer-height) + 8rem);
   }

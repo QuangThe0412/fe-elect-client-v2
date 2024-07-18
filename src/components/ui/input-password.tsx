@@ -1,7 +1,8 @@
 "use client"
 
 import { forwardRef, useState } from "react"
-import { EyeIcon, EyeOffIcon } from "lucide-react"
+import { BsEye, BsEyeSlash } from 'react-icons/bs'
+
 import { Button } from "@/components/ui/button"
 import { Input, InputProps } from "@/components/ui/input"
 import { cn } from "@/lib/utils"
@@ -28,12 +29,12 @@ const PasswordInput = forwardRef<HTMLInputElement, InputProps>(
 					disabled={disabled}
 				>
 					{showPassword && !disabled ? (
-						<EyeIcon
+						<BsEye
 							className="h-4 w-4"
 							aria-hidden="true"
 						/>
 					) : (
-						<EyeOffIcon
+						<BsEyeSlash
 							className="h-4 w-4"
 							aria-hidden="true"
 						/>

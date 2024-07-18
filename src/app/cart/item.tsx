@@ -3,10 +3,10 @@ import React from 'react'
 import { CartDetails } from '@/schemaValidations/cart.schema'
 import configEnv from '@/configEnv';
 import { emptyImage, formatCurrency, formatNumber } from '@/lib/utils';
-import { Trash2 } from 'lucide-react';
 import cartApiRequest from '@/apiRequests/cart';
 import useCartStore, { TypeCartStore } from '@/store/cart.store';
 import { Button } from '@/components/ui/button';
+import { BsTrash2 } from 'react-icons/bs';
 
 function ItemCart({ data }: { data: CartDetails }) {
     const [loading, setLoading] = React.useState(false);
@@ -123,7 +123,7 @@ function ItemCart({ data }: { data: CartDetails }) {
             <td className="text-center">{formatCurrency(total)}</td>
             <td className="text-center">
                 <div className="flex justify-center text-center" onClick={() => onRemove(IDChiTietHD)}>
-                    <Trash2 />
+                    <BsTrash2 />
                 </div>
             </td>
         </tr>

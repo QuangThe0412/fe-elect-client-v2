@@ -9,6 +9,7 @@ import { usePathname } from 'next/navigation'
 
 import AppLayout from "@/layouts/AppLayout"
 import PublicLayout from "@/layouts/PublicLayout";
+import HeaderTop from "@/components/header-top";
 
 const fontSans = FontSans({
   subsets: ["vietnamese"],
@@ -31,17 +32,18 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         "min-h-screen bg-background font-sans antialiased",
         fontSans.variable
       )} >
-          <ThemeProvider
-            attribute="class"
-            defaultTheme="system"
-            enableSystem
-            disableTransitionOnChange
-          >
-            <Layout>
-              {children}
-              <Toaster />
-            </Layout>
-          </ThemeProvider>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <HeaderTop />
+          <Layout>
+            {children}
+            <Toaster />
+          </Layout>
+        </ThemeProvider>
       </body>
     </html>
   );

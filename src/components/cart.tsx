@@ -1,5 +1,5 @@
 'use client';
-import { ShoppingCart } from "lucide-react";
+import { BsCart } from 'react-icons/bs'
 
 type CartIconProps = {
     number: number | undefined;
@@ -8,7 +8,7 @@ type CartIconProps = {
 export default function CartIcon({ number, onClick }: CartIconProps) {
     return (
         <div className="relative inline-flex items-center" onClick={onClick}>
-            <ShoppingCart />
+            <BsCart />
             {
                 (number ?? 0) > 0 &&
                 <div className="absolute bottom-4 left-4 h-6 w-6 text-center 

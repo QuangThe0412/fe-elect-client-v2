@@ -1,5 +1,6 @@
 "use client";
-import { LockKeyhole, LogOut, User } from "lucide-react"
+
+import { BsLock, BsFileLock, BsFillPersonFill } from 'react-icons/bs'
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
 import {
@@ -60,11 +61,11 @@ export function UserNav() {
           <DropdownMenuSeparator />
           <DropdownMenuGroup>
             <DropdownMenuItem onClick={() => setOpenDialogProfile(true)}>
-              <User className="mr-2 h-4 w-4" />
+              <BsFillPersonFill className="mr-2 h-4 w-4" />
               <span>Cập nhật thông tin</span>
             </DropdownMenuItem>
             <DropdownMenuItem onClick={() => setOpenDialogChangePassword(true)}>
-              <LockKeyhole className="mr-2 h-4 w-4" />
+              <BsFileLock className="mr-2 h-4 w-4" />
               <span>Đổi mật khẩu</span>
             </DropdownMenuItem>
           </DropdownMenuGroup>
@@ -76,7 +77,7 @@ export function UserNav() {
               setCart({} as CartType)
             }
           }}>
-            <LogOut className="mr-2 h-4 w-4" />
+            <BsLock className="mr-2 h-4 w-4" />
             <span>Đăng xuất</span>
           </DropdownMenuItem>
         </DropdownMenuContent>
