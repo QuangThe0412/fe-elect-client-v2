@@ -61,7 +61,6 @@ const AppLayout = ({ children }: any) => {
     }, [user])
 
     const onClickCart = () => {
-        console.log('cart', cart);
         if (user) {
             router.push(paths.cart);
         } else {

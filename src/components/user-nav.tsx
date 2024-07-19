@@ -40,9 +40,9 @@ export function UserNav() {
       <ChangePassword open={openDialogChangePassword} onClose={() => setOpenDialogChangePassword(false)} />
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <Button variant="ghost" className='p-0'>
+          <div >
             <BsFillPersonFill className="text-accent" size={25}/>
-          </Button>
+          </div>
         </DropdownMenuTrigger>
         <DropdownMenuContent className="w-56" align="end" forceMount>
           <DropdownMenuLabel className="font-normal">
