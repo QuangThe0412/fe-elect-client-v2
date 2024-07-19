@@ -152,13 +152,19 @@
   }
 
   button {
+    background-color: transparent !important;
     color: var(--button-text-color) !important;
   }
 
   button:hover {
-    background-color: var(--primary) !important;
+    background-color: var(--accent) !important;
     color: #ffffff !important;
   }
+
+  .text-brand-dark {
+    --tw-text-opacity: 1;
+    color: rgb(0 0 0 / var(--tw-text-opacity));
+}
 }
 
 @screen md {

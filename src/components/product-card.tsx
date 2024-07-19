@@ -27,17 +27,15 @@ const ProductCard = ({ data }: { data: ProductResType }) => {
     const price = formatCurrency(DonGiaBanLe);
     const priceSale = formatCurrency(DonGiaBanLe + (DonGiaBanLe * 0.2));
     return (
-        <div className="px-4 border border-gray-200 rounded-xl max-w-[400px]
+        <div className="px-4 py-4 border border-gray-200 rounded-xl max-w-[400px]
         cursor-pointer relative group hover:shadow-2xl">
-            <div className='pt-2'>
-                <Image className='w-full h-auto'
-                    priority
-                    src={src}
-                    height={200}
-                    width={300}
-                    alt={'title'}
-                />
-            </div>
+            <Image className='w-full h-auto rounded-md'
+                priority
+                src={src}
+                height={200}
+                width={300}
+                alt={'title'}
+            />
             <div className="space-y-2 py-2">
                 <h2 className="text-accent font-medium uppercase">{TenMon}</h2>
                 <p className="text-gray-500 max-w-[150px]">{TenMon}</p>
