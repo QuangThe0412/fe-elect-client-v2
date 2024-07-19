@@ -6,10 +6,9 @@ import "@styles/globals.css";
 import { Inter as FontSans } from "next/font/google"
 import { cn } from "@/lib/utils"
 import { usePathname } from 'next/navigation'
-
 import AppLayout from "@/layouts/AppLayout"
 import PublicLayout from "@/layouts/PublicLayout";
-import HeaderTop from "@/components/header-top";
+import { paths } from "@/constants/paths";
 
 const fontSans = FontSans({
   subsets: ["vietnamese"],
@@ -18,7 +17,7 @@ const fontSans = FontSans({
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   const pathname = usePathname();
-  const privatePaths = ["/login", "/register"];
+  const privatePaths = [paths.login, paths.register];
 
   let Layout = AppLayout;
   if (privatePaths.includes(pathname)) {
@@ -38,7 +37,6 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
           enableSystem
           disableTransitionOnChange
         >
-          <HeaderTop />
           <Layout>
             {children}
             <Toaster />

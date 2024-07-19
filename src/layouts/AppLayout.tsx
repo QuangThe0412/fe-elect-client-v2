@@ -23,6 +23,7 @@ import "slick-carousel/slick/slick-theme.css";
 import NewProduct from "@/components/new-product"
 import MobileNavBar from "@/components/mobile-navbar"
 import Footer from "@/components/footer"
+import HeaderTop from "@/components/header-top"
 
 const AppLayout = ({ children }: any) => {
     const router = useRouter()
@@ -76,12 +77,18 @@ const AppLayout = ({ children }: any) => {
 
     return (
         <>
+            <HeaderTop />
             <HeaderMain />
             <Navbar />
+            <LoginDialog />
             <MobileNavBar />
-            <SliderBanner />
-            <NewProduct />
+            {/* <SliderBanner /> */}
+            <div className="overflow-hidden">
+                {children}
+            </div>
+            {/* <NewProduct /> */}
             <Footer />
+
             {/* <LoginDialog />
             <div className="flex flex-col min-h-screen min-w-full">
                 <header className="header-height z-50 sticky top-0 flex items-center gap-4 border-b bg-background px-4 md:px-6">
