@@ -1,5 +1,6 @@
 import configEnv from "@/configEnv";
 import http from "@/lib/http";
+import { ProductResType } from "@/schemaValidations/product.schema";
 import { ReadonlyURLSearchParams } from "next/navigation";
 
 const limit = configEnv.NEXT_PUBLIC_LIMIT;
@@ -14,6 +15,7 @@ const productApiRequest = {
             baseUrl: ''
         });
     },
+    getNewProducts: () => http.get(`/products/newest`)
     // getDetail: (id: string) => http.get(`/api/products/${id}`, {
     //     baseUrl: ''
     // }),

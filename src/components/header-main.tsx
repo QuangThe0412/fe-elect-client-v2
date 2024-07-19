@@ -4,13 +4,14 @@ import { paths } from "@/constants/paths";
 import Link from "next/link";
 import { Search } from "./search";
 import { UserNav } from "./user-nav";
+import { useRouter } from "next/navigation";
 
 type CartIconProps = {
     number: number | undefined;
-    onClick: () => void;
 }
 
-const HeaderMain = ({ number, onClick }: CartIconProps) => {
+const HeaderMain = ({ number }: CartIconProps) => {
+    const router = useRouter()
     return (
         <div className="border-b border-gray-200 py-6">
             <div className="container sm:flex justify-between items-center">
@@ -24,7 +25,7 @@ const HeaderMain = ({ number, onClick }: CartIconProps) => {
                 <div className="hidden lg:flex gap-4 text-gray-500 text-[30px]">
                     <UserNav />
 
-                    <div className="relative" onClick={onClick}>
+                    <div className="relative" onClick={() => router.push(paths.cart)}>
                         <HiOutlineShoppingBag size={25} />
                         {
                             (number ?? 0) > 0 &&

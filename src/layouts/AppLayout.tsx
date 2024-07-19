@@ -9,7 +9,6 @@ import cartApiRequest from '@/apiRequests/cart';
 import useCartStore, { TypeCartStore } from '@/store/cart.store';
 import { CartType } from "@/schemaValidations/cart.schema"
 import { useRouter } from "next/navigation";
-import { paths } from "@/constants/paths"
 import HeaderMain from "@/components/header-main"
 import Navbar from "@/components/nav-bar"
 import "slick-carousel/slick/slick.css";
@@ -58,20 +57,12 @@ const AppLayout = ({ children }: any) => {
 
         fetchProfile()
         fetchCart();
-    }, [user])
-
-    const onClickCart = () => {
-        if (user) {
-            router.push(paths.cart);
-        } else {
-            setIsShowLoginDialog(true);
-        }
-    }
+    }, [user])    
 
     return (
         <>
             <HeaderTop />
-            <HeaderMain number={cart && cart?.details?.length} onClick={onClickCart} />
+            <HeaderMain number={cart && cart?.details?.length} />
             <Navbar />
             <LoginDialog />
             <MobileNavBar />

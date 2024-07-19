@@ -20,8 +20,11 @@ import accountApiRequest from "@/apiRequests/account"
 import useAuthStore, { TypeUsers } from "@/store/auth.store";
 import useCartStore, { TypeCartStore } from "@/store/cart.store";
 import { CartType } from "@/schemaValidations/cart.schema";
+import { useRouter } from 'next/navigation';
+import { paths } from '@/constants/paths';
 
 export function UserNav() {
+  const router = useRouter()
   const { user, setUser } = useAuthStore((state: TypeUsers) => ({
     user: state.user,
     setUser: state.setUser,
@@ -34,51 +37,65 @@ export function UserNav() {
   const [openDialogProfile, setOpenDialogProfile] = useState(false);
   const [openDialogChangePassword, setOpenDialogChangePassword] = useState(false);
 
+  const hadUser = !!(user && Object.keys(user).length);
+
   return (
     <>
       <DialogProfile open={openDialogProfile} onClose={() => setOpenDialogProfile(false)} />
       <ChangePassword open={openDialogChangePassword} onClose={() => setOpenDialogChangePassword(false)} />
-      <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <div >
-            <BsFillPersonFill className="text-accent" size={25}/>
-          </div>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent className="w-56" align="end" forceMount>
-          <DropdownMenuLabel className="font-normal">
-            <div className="flex flex-col space-y-1">
-              <p className="text-sm font-medium leading-none">
-                {user?.TenKhachHang}
-              </p>
-              <p className="text-xs leading-none text-muted-foreground">
-                {user?.DienThoai}
-              </p>
+      {
+        hadUser
+          ? (
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="ghost" className="relative h-8 w-8 rounded-full">
+                  <Avatar className="h-8 w-8">
+                    <AvatarFallback>{user?.TenKhachHang?.split('')[0]?.toUpperCase()}</AvatarFallback>
+                  </Avatar>
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent className="w-56" align="end" forceMount>
+                <DropdownMenuLabel className="font-normal">
+                  <div className="flex flex-col space-y-1">
+                    <p className="text-sm font-medium leading-none">
+                      {user?.TenKhachHang}
+                    </p>
+                    <p className="text-xs leading-none text-muted-foreground">
+                      {user?.DienThoai}
+                    </p>
+                  </div>
+                </DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <DropdownMenuGroup>
+                  <DropdownMenuItem onClick={() => setOpenDialogProfile(true)}>
+                    <BsFillPersonFill className="mr-2 h-4 w-4" />
+                    <span>Cập nhật thông tin</span>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => setOpenDialogChangePassword(true)}>
+                    <BsFileLock className="mr-2 h-4 w-4" />
+                    <span>Đổi mật khẩu</span>
+                  </DropdownMenuItem>
+                </DropdownMenuGroup>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem onClick={async () => {
+                  const { status } = await accountApiRequest.logout();
+                  if (status === 200) {
+                    setUser({} as TypeDataAccountRes)
+                    setCart({} as CartType)
+                  }
+                }}>
+                  <BsLock className="mr-2 h-4 w-4" />
+                  <span>Đăng xuất</span>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          )
+          : (
+            <div>
+              <BsFillPersonFill className="text-accent" size={25} onClick={() => router.push(paths.login)} />
             </div>
-          </DropdownMenuLabel>
-          <DropdownMenuSeparator />
-          <DropdownMenuGroup>
-            <DropdownMenuItem onClick={() => setOpenDialogProfile(true)}>
-              <BsFillPersonFill className="mr-2 h-4 w-4" />
-              <span>Cập nhật thông tin</span>
-            </DropdownMenuItem>
-            <DropdownMenuItem onClick={() => setOpenDialogChangePassword(true)}>
-              <BsFileLock className="mr-2 h-4 w-4" />
-              <span>Đổi mật khẩu</span>
-            </DropdownMenuItem>
-          </DropdownMenuGroup>
-          <DropdownMenuSeparator />
-          <DropdownMenuItem onClick={async () => {
-            const { status } = await accountApiRequest.logout();
-            if (status === 200) {
-              setUser({} as TypeDataAccountRes)
-              setCart({} as CartType)
-            }
-          }}>
-            <BsLock className="mr-2 h-4 w-4" />
-            <span>Đăng xuất</span>
-          </DropdownMenuItem>
-        </DropdownMenuContent>
-      </DropdownMenu>
+          )
+      }
     </>
   )
 }

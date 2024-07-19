@@ -1,4 +1,3 @@
-"use client";
 import SliderBanner from "@/components/slider"
 import NewProduct from "@/components/new-product"
 

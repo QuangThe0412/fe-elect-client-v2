@@ -154,6 +154,11 @@
   button {
     color: var(--button-text-color) !important;
   }
+
+  button:hover {
+    background-color: var(--primary) !important;
+    color: #ffffff !important;
+  }
 }
 
 @screen md {
