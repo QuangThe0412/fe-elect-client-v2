@@ -13,8 +13,8 @@
     --popover: 0 0% 100%;
     --popover-foreground: 240 10% 3.9%;
 
-    --primary: 240 5.9% 10%;
-    --primary-foreground: 0 0% 98%;
+    --primary: #FF8f9C;
+    --primary-foreground: #ffffff;
 
     --secondary: rgb(255, 143, 156);
     --secondary-foreground: 240 5.9% 10%;
@@ -22,7 +22,7 @@
     --muted: rgb(255, 143, 156);
     --muted-foreground: 240 3.8% 46.1%;
 
-    --accent: rgb(255, 143, 156);
+    --accent: #FF8f9C;
     --accent-foreground: #ffffff;
 
     --destructive: 0 84.2% 60.2%;
@@ -37,6 +37,10 @@
     --header-height: 4rem;
     --footer-height: 4rem;
     --button-text-color: black;
+
+    --tw-bg-opacity: 1;
+    --tw-text-opacity: 1;
+    --blackish: #1b1b1b;
   }
 
   .dark {
@@ -83,18 +87,52 @@
 }
 
 @layer components {
-  :root {
-    --tw-bg-opacity: 1;
-    --tw-text-opacity: 1;
-  }
-
   .header_top__icon_wrapper {
-    @apply bg-gray-200 rounded-md p-1.5 text-sm cursor-pointer;
+    @apply bg-gray-200 rounded-md p-1.5 text-sm cursor-pointer text-white;
+    color: var(--button-text-color);
   }
 
   .header_top__icon_wrapper:hover {
-    background-color: var(--accent);
-    color: var(--accent-foreground);
+    background-color: var(--primary);
+    color: var(--primary-foreground);
+  }
+
+  .bg-blackish {
+    background-color: var(--blackish);
+  }
+
+  .text-blackish {
+    color: var(--blackish);
+  }
+
+  .text-accent {
+    color: var(--accent) !important;
+  }
+
+  .navbar__link {
+    @apply text-blackish;
+  }
+
+  .navbar__link:after {
+    position: absolute;
+    content: "";
+    background-color: #ff8f9c;
+    height: 3px;
+    width: 100%;
+    bottom: -5px;
+    left: 0;
+    scale: 0;
+    transform-origin: left;
+    transition: all .4s;
+  }
+
+  .navbar__link:hover {
+    color: #ff8f9c;
+    transition: all .4s;
+  }
+
+  .navbar__link:hover:after {
+    scale: 1;
   }
 
   .md-total-cart {

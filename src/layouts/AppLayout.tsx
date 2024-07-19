@@ -15,6 +15,14 @@ import useCartStore, { TypeCartStore } from '@/store/cart.store';
 import { CartType } from "@/schemaValidations/cart.schema"
 import { useRouter } from "next/navigation";
 import { paths } from "@/constants/paths"
+import HeaderMain from "@/components/header-main"
+import Navbar from "@/components/nav-bar"
+import SliderBanner from "@/components/slider"
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
+import NewProduct from "@/components/new-product"
+import MobileNavBar from "@/components/mobile-navbar"
+import Footer from "@/components/footer"
 
 const AppLayout = ({ children }: any) => {
     const router = useRouter()
@@ -68,7 +76,13 @@ const AppLayout = ({ children }: any) => {
 
     return (
         <>
-            <LoginDialog />
+            <HeaderMain />
+            <Navbar />
+            <MobileNavBar />
+            <SliderBanner />
+            <NewProduct />
+            <Footer />
+            {/* <LoginDialog />
             <div className="flex flex-col min-h-screen min-w-full">
                 <header className="header-height z-50 sticky top-0 flex items-center gap-4 border-b bg-background px-4 md:px-6">
                     <MainNav className="mx-6" />
@@ -87,7 +101,7 @@ const AppLayout = ({ children }: any) => {
                         <p className="text-sm text-gray-400">© 2021</p>
                     </div>
                 </footer>
-            </div>
+            </div> */}
         </>
     )
 }

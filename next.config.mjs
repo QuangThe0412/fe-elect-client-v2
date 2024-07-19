@@ -9,6 +9,12 @@ const nextConfig = {
 				port: '',
 				pathname: '/u/0/d/',
 			},
+			{
+				protocol: 'https',
+				hostname: 'shopping-web-app.vercel.app',
+				port: '',
+				pathname: '/',
+			},
 		],
 	},
 };
