@@ -19,13 +19,13 @@ const Slide: React.FC<props> = ({ img, title, mainTitle, price }) => {
                 <h3 className="text-[24px] text-gray-500">
                     <b className="text-[20px] md:text-[24px] lg:text-[30px]">{price}</b>
                 </h3>
-                <div className="bg-accent text-white text-[14px] md:text-[16px] 
+                <div className="bg-accent-custom text-white text-[14px] md:text-[16px] 
                 p-2 px-4 rounded-lg inline-block cursor-pointer hover:bg-blackish">
                     Shop Now
                 </div>
             </div>
             <Image className='w-[100%] h-[300px] md:h-auto rounded-xl object-cover object-right md:object-left-bottom'
-                loader={() => src}
+                priority
                 src={src}
                 height={2000}
                 width={2000}

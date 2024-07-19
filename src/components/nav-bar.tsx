@@ -1,10 +1,15 @@
-import { paths, paths1 } from '@/constants/paths'
+import { pathsArray } from '@/constants/paths'
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import React from 'react'
 
 const Navbar = () => {
-    const Paths = paths1.map((item) => {
+    const pathname = usePathname();
+    const Paths = pathsArray.filter(m => !m.isHide).map((item) => {
         return (
-            <a className="navbar__link relative" href={item.path}>{item.name}</a>
+            <Link key={item.path} className={`navbar__link relative 
+                ${pathname === item.path ? 'active' : ''}`}
+                href={item.path}>{item.name}</Link>
         )
     });
     return (

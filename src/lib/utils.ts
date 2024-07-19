@@ -85,5 +85,5 @@ export const formatNumber = (value: number | string | undefined) => {
 }
 
 export const emptyImage = (e: any) => {
-  e.target.src = {emptyImg}
+  e.target.src = { emptyImg }
 };

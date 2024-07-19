@@ -1,4 +1,8 @@
-import { profile } from "console";
+type PathTypeConfig = {
+    name: string;
+    path: string;
+    isHide?: boolean;
+}
 
 export const paths = {
     home: "/",
@@ -10,7 +14,7 @@ export const paths = {
     refreshToken: "/refreshToken",
 };
 
-export const paths1 = [
+export const pathsArray: PathTypeConfig[] = [
     {
         name: "HOME",
         path: paths.home,
@@ -18,10 +22,12 @@ export const paths1 = [
     {
         name: "LOGIN",
         path: paths.login,
+        isHide: true,
     },
     {
         name: "REGISTER",
         path: paths.register,
+        isHide: true,
     },
     {
         name: "PRODUCTS",
@@ -30,13 +36,16 @@ export const paths1 = [
     {
         name: "PROFILE",
         path: paths.profile,
+        isHide: true,
     },
     {
         name: "CART",
         path: paths.cart,
+        isHide: true,
     },
     {
         name: "REFRESH TOKEN",
         path: paths.refreshToken,
+        isHide: true,
     },
 ];

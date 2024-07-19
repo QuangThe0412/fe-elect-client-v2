@@ -98,7 +98,11 @@
   }
 
   .bg-blackish {
-    background-color: var(--blackish);
+    background-color: var(--blackish) !important;
+  }
+
+  .bg-accent-custom {
+    background-color: var(--accent) !important;
   }
 
   .text-blackish {
@@ -132,6 +136,14 @@
   }
 
   .navbar__link:hover:after {
+    scale: 1;
+  }
+
+  .navbar__link.active {
+    color: #ff8f9c;
+  }
+
+  .navbar__link.active:after {
     scale: 1;
   }
 

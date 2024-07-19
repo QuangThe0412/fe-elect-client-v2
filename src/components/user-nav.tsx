@@ -1,6 +1,6 @@
 "use client";
 
-import { BsLock, BsFileLock, BsFillPersonFill } from 'react-icons/bs'
+import { BsLock, BsFileLock, BsFillPersonFill, BsChevronRight } from 'react-icons/bs'
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
 import {
@@ -40,11 +40,8 @@ export function UserNav() {
       <ChangePassword open={openDialogChangePassword} onClose={() => setOpenDialogChangePassword(false)} />
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <Button variant="ghost" className="relative h-8 w-8 rounded-full">
-            <Avatar className="h-8 w-8">
-              {/* <AvatarImage src="/avatars/01.png" alt="@shadcn" /> */}
-              <AvatarFallback>{user?.TenKhachHang?.split('')[0]?.toUpperCase()}</AvatarFallback>
-            </Avatar>
+          <Button variant="ghost" className='p-0'>
+            <BsFillPersonFill className="text-accent" size={25}/>
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent className="w-56" align="end" forceMount>

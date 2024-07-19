@@ -23,16 +23,14 @@ export function Search() {
   }, 300);
 
   return (
-    <div>
       <Input
         type="search"
-        placeholder="Tìm kiếm"
-        className="h-9 md:w-[100px] lg:w-[300px]"
+        placeholder="Tìm kiếm..."
+        className="border-gray-200 border p-2 pl-2 pr-6 rounded-lg w-full"
         onChange={(e) => {
           handleSearch(e.target.value);
         }}
         defaultValue={searchParams.get('query')?.toString()}
       />
-    </div>
   )
 }

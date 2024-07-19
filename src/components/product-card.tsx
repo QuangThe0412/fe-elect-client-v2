@@ -1,7 +1,16 @@
 import React from 'react'
-import { ProductCardType } from './new-product';
+
 import Image from 'next/image';
 import { FaStar, FaRegStar } from "react-icons/fa";
+
+export type ProductCardType = {
+    id: number;
+    img: string;
+    title: string;
+    decs: string;
+    rating: number;
+    price: number;
+}
 
 type ProductCardProps = {
     item: ProductCardType;
@@ -19,6 +28,7 @@ const generateRating = (rating: number) => {
     return stars;
 }
 
+
 const ProductCard: React.FC<ProductCardProps> = ({ item }) => {
     const { id, img, title, decs, rating, price } = item;
     const src = img;
@@ -27,7 +37,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ item }) => {
         <div className="px-4 border border-gray-200 rounded-xl max-w-[400px]">
             <div>
                 <Image className='w-full h-auto'
-                    loader={() => src}
+                    priority
                     src={src}
                     height={200}
                     width={300}

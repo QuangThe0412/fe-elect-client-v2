@@ -1,14 +1,5 @@
 import React from 'react'
-import ProductCard from './product-card';
-
-export type ProductCardType = {
-    id: number;
-    img: string;
-    title: string;
-    decs: string;
-    rating: number;
-    price: number;
-}
+import ProductCard, { ProductCardType } from './product-card';
 
 const mockData: ProductCardType[] = [
     {

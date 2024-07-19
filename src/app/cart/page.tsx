@@ -12,7 +12,6 @@ export default function Cart() {
     return (
         <div className="bg-gray-100 h-screen py-8 h-full">
             <div className="container mx-auto px-4 h-full">
-                <h1 className="text-2xl font-semibold mb-4">Giỏ hàng</h1>
                 <div className="flex flex-col md:flex-row gap-4 h-full overflow-auto">
                     <div className="h-full md:w-3/4">
                         <div className="flex bg-white rounded-lg shadow-md p-6 mb-4 height-wraper-table">
