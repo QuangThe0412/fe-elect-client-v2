@@ -1,6 +1,6 @@
 import configEnv from "@/configEnv";
 import http from "@/lib/http";
-import { parseHandleQuery } from "@/lib/utils";
+import { buildQueryString, parseHandleQuery } from "@/lib/utils";
 
 const limit = configEnv.NEXT_PUBLIC_LIMIT;
 
@@ -22,7 +22,11 @@ const productApiRequest = {
                 baseUrl: '',
             });
     },
-    getNewProducts: () => http.get(`/products/newest`)
+    getNewProducts: () => http.get(`/products/newest`),
+    getProducts: (query: string, sortKey: string, sortType: string) => {
+        const queryString = buildQueryString({ query, sortKey, sortType });
+        return http.get(`/products?${queryString}`);
+    }
     // getDetail: (id: string) => http.get(`/api/products/${id}`, {
     //     baseUrl: ''
     // }),

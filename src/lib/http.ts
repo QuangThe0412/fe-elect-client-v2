@@ -25,7 +25,7 @@ const request = async<Response>(
     const baseUrl = options?.baseUrl === undefined ? process.env.NEXT_PUBLIC_API_URL : 'http://localhost:4005';
     const fullUrl = url.startsWith('/') ? `${baseUrl}${url}` : `/${baseUrl}${url}`
     // console.log(options?.headers);
-    // console.log({ fullUrl });
+    console.log({ fullUrl });
     const res = await fetch(fullUrl, {
       ...options,
       headers: {

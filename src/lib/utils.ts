@@ -150,3 +150,10 @@ export const parseHandleQuery = (handle: string): Record<string, string> => {
   });
   return queryParams;
 }
+
+export function buildQueryString(params: Record<string, any>): string {
+  return Object.keys(params)
+    .filter(key => params[key] !== undefined && params[key] !== null && params[key] !== '')
+    .map(key => `${encodeURIComponent(key)}=${encodeURIComponent(params[key])}`)
+    .join('&');
+}
