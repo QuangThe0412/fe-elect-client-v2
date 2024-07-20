@@ -1,6 +1,6 @@
 import { STATUS_ENUM } from "@/constants/status";
 import http from "@/lib/http";
-import { handleResponse, tryGetAccessToken } from "@/lib/utilsNext";
+import { handleResponse, tryGetAccessToken }  from "@/lib/utils";
 
 async function HandleCart(method: string, request: Request, body?: any) {
     try {

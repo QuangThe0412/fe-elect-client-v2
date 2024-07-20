@@ -1,7 +1,5 @@
 import ProductCard from '@/components/product-card';
-import ItemProduct from './item';
 import { ProductResType } from '@/schemaValidations/product.schema';
-import { ScrollArea } from '@radix-ui/react-scroll-area';
 
 function DataProduct({ products }: { products: ProductResType[] }) {
     const template = () => {

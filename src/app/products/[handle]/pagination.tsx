@@ -25,7 +25,7 @@ export const PaginationProduct: React.FC<PaginationProps> = ({
   const createPageURL = (pageNumber: number | string) => {
     const params = new URLSearchParams(searchParams);
     params.set('page', pageNumber.toString());
-    return `${pathname}?${params.toString()}`;
+    return `${pathname}/page=${pageNumber}`;
   };
 
   const showLeftEllipsis = currentPage - 1 > totalPagesToDisplay / 2;

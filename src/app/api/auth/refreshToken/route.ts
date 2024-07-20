@@ -1,7 +1,7 @@
 import authApiRequest from "@/apiRequests/auth";
 import http, { ResponsePayloadType } from "@/lib/http";
 import { decodeJWT, isServer } from "@/lib/utils";
-import { handleResponse, isTokenExpired } from "@/lib/utilsNext";
+import { handleResponse, isTokenExpired } from "@/lib/utils";
 import { cookies } from 'next/headers'
 
 export async function POST(request: Request, response: Response) {

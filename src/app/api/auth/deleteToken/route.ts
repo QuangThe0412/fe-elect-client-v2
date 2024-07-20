@@ -1,4 +1,4 @@
-import { handleResponse } from "@/lib/utilsNext";
+import { handleResponse }  from "@/lib/utils";
 import { cookies } from 'next/headers'
 
 export async function DELETE(request: Request, response: Response, nameToken: string = '') {

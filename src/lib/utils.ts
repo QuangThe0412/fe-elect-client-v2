@@ -4,6 +4,8 @@ import { toast } from '@/components/ui/use-toast'
 import { UseFormSetError } from 'react-hook-form'
 import jwt from 'jsonwebtoken'
 import emptyImg from '../../public/emptyCard.png'
+import authApiRequest from "@/apiRequests/auth";
+import { ResponsePayloadType } from "./http";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
@@ -87,3 +89,64 @@ export const formatNumber = (value: number | string | undefined) => {
 export const emptyImage = (e: any) => {
   e.target.src = { emptyImg }
 };
+
+
+export const tryGetAccessToken = async () => {
+  // const cookieStore = {};
+  // const accessToken = cookieStore.get('accessToken')?.value ?? '';
+  // if (!accessToken || isTokenExpired(accessToken)) {
+  //     const resultDeleteAccess = await authApiRequest.deleteToken('accessToken');
+  //     if (resultDeleteAccess.status !== 200) {
+  //         return null;
+  //     }
+  //     const refreshToken = cookieStore.get('refreshToken')?.value ?? '';
+  //     if (!refreshToken || isTokenExpired(refreshToken)) {
+  //         const resultDeleteRefresh = await authApiRequest.deleteToken('refreshToken');
+  //         if (resultDeleteRefresh.status !== 200) {
+  //             return null;
+  //         }
+  //     } else {
+  //         const result = await authApiRequest.refreshToken({ refreshToken });
+  //         console.log({ result });
+  //         const { payload, status } = result as any;
+  //         if (status == 200) {
+  //             const newAccessToken = payload?.data?.accessToken;
+
+  //             return newAccessToken;
+  //             // const resultSetToken = await authApiRequest.setToken({ accessToken: newAccessToken, refreshToken });                
+  //             // return resultSetToken.status === 200 ? (result?.payload as any)?.data?.accessToken : null;
+  //         }
+  //     }
+  //     return accessToken;
+  // }
+  return null;
+};
+
+export const isTokenExpired = (token: string) => {
+  const exp = decodeJWT<{ exp: number }>(token)?.exp;
+  return getDateRemaining(exp) < 1;
+};
+
+export const handleResponse = async (result: any) => {
+  const { status, payload } = result as ResponsePayloadType;
+  if (!payload) {
+    return new Response(JSON.stringify({ code: 'Error', mess: 'Unknown error', data: null }), { status: status || 500 });
+  }
+  const { data, code, mess } = payload;
+  return new Response(JSON.stringify({ data, code, mess }), { status });
+}
+
+export const getParamFromUrl = (url: string, key: string) => {
+  const urlParams = new URLSearchParams(url);
+  return urlParams.get(key);
+};
+
+export const parseHandleQuery = (handle: string): Record<string, string> => {
+  const decodedHandle = decodeURIComponent(handle);
+  const queryParams: Record<string, string> = {};
+  decodedHandle.split('&').forEach(pair => {
+    const [key, value] = pair.split('=');
+    queryParams[key] = value;
+  });
+  return queryParams;
+}

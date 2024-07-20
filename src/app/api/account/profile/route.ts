@@ -1,5 +1,5 @@
 import http from "@/lib/http";
-import { handleResponse, tryGetAccessToken } from "@/lib/utilsNext";
+import { handleResponse, tryGetAccessToken } from  from "@/lib/utils";
 
 async function fetchProfile(method: string, request: Request, body?: any) {
     try {

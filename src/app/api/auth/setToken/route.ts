@@ -1,5 +1,5 @@
 import { decodeJWT } from "@/lib/utils";
-import { isTokenExpired } from "@/lib/utilsNext";
+import { isTokenExpired }  from "@/lib/utils";
 
 export async function POST(request: Request) {
     try {

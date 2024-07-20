@@ -1,22 +1,22 @@
 "use client";
 import { paths } from '@/constants/paths'
 import { CategoryResType } from '@/schemaValidations/product.schema'
-import { useSearchParams } from 'next/navigation'
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation'
 import React from 'react'
 import { BsHammer } from 'react-icons/bs'
 
 const ChildSlideBar = ({ category }: { category: CategoryResType }) => {
     const { IDLoaiMon, TenLoai } = category;
-    const searchParams = useSearchParams();
     const router = useRouter();
-    const currenCategory = searchParams.get('category');
+    const pathname = usePathname()
+    const searchParams = new URLSearchParams(pathname.split('&')[1]);
+    const currentCategory = searchParams.get('category');
 
     const HandleClickLink = (idLoaiMon: number | undefined) => {
-        if (idLoaiMon === Number(currenCategory)) {
-            router.push(`${paths.products}?page=1`);
+        if (idLoaiMon === Number(currentCategory)) {
+            router.push(`${paths.products}/page=1`);
         } else {
-            router.push(`${paths.products}?page=1&category=${IDLoaiMon}`);
+            router.push(`${paths.products}/page=1&category=${IDLoaiMon}`);
         }
     }
 
@@ -28,7 +28,7 @@ const ChildSlideBar = ({ category }: { category: CategoryResType }) => {
                                       hover:bg-primary-foreground hover:text-primary-background
                                       px-3.5 py-3.5 
                                       rounded-md cursor-pointer transition-colors duration-300 ease-in-out
-                                      ${(Number(currenCategory) === IDLoaiMon) && 'bg-primary-foreground text-primary-background'}
+                                      ${(Number(currentCategory) === IDLoaiMon) && 'bg-primary-foreground text-primary-background'}
                                       `
             }
         >

@@ -1,5 +1,5 @@
 import http from "@/lib/http";
-import { handleResponse, tryGetAccessToken } from "@/lib/utilsNext";
+import { handleResponse, tryGetAccessToken } from "@/lib/utils";
 
 export async function PUT(request: Request) {
     try {

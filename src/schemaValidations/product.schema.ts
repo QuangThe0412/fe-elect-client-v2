@@ -17,3 +17,11 @@ export type ProductResType = {
     ThoiGianBH?: number;
     GhiChu?: string;
 }
+
+export type DataProductResType = {
+    result: ProductResType[],
+    totalPages: number,
+    currentPage: number,
+    itemsPerPage: number,
+    totalItems: number
+}
