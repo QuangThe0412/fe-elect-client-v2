@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
-import { paths } from './constants/paths';
+import { paths } from './lib/paths';
 import { cookies } from 'next/headers'
 
 export function middleware(request: NextRequest) {

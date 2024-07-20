@@ -1,7 +1,7 @@
 import cartApiRequest from '@/apiRequests/cart';
 import { AlertDialogCustom } from '@/components/dialog-alert';
 import { Button } from '@/components/ui/button';
-import { paths } from '@/constants/paths';
+import { paths } from '@/lib/paths';
 import { STATUS_ENUM } from '@/constants/status';
 import { formatCurrency } from '@/lib/utils';
 import { CartType } from '@/schemaValidations/cart.schema';

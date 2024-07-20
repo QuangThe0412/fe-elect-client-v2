@@ -1,23 +1,27 @@
-import productApiRequest from '@/apiRequests/product'
-import DataProduct from '@/app/search/data';
+import React from 'react';
+import { defaultSort, sorting } from '@lib/constants';
+import productApiRequest from '@/apiRequests/product';
 import { Button } from '@/components/ui/button';
-import { formatNumber } from '@/lib/utils';
-import { DataProductResType } from '@/schemaValidations/product.schema';
-import React from 'react'
-import { MdOutlineKeyboardArrowDown } from 'react-icons/md';
 import { VscSettings } from 'react-icons/vsc';
+import { formatNumber } from '@/lib/utils';
+import { MdOutlineKeyboardArrowDown } from 'react-icons/md';
+import DataProduct from './data';
 
-const fetchProducts = async (handle: string) => {
-    const { status, payload } = await productApiRequest.getList(handle);
-    if (status === 200) {
-        return (payload as any)?.data as DataProductResType;
-    }
-    return {} as DataProductResType;
-}
+export const metadata = {
+    title: 'Search',
+    description: 'Search for products in the store.'
+};
 
-const ProductPage = async ({ params }: { params: { handle: string } }) => {
-    const products = await fetchProducts(params.handle);
-    const { result, totalPages, currentPage, itemsPerPage, totalItems } = products;
+const SearchPage = async ({ searchParams }: { searchParams?: { [key: string]: string | string[] | undefined } }) => {
+    const { sort, query } = searchParams as { [key: string]: string };
+    const { sortKey, sortType } = sorting.find((item) => item.slug === sort) || defaultSort;
+
+    const { status, payload } = await productApiRequest.getProducts(
+        query,
+        sortKey,
+        sortType
+    );
+    const { result, totalPages, currentPage, itemsPerPage, totalItems } = (payload as any)?.data || {};
 
     return (
         <>
@@ -68,4 +72,4 @@ const ProductPage = async ({ params }: { params: { handle: string } }) => {
     )
 }
 
-export default ProductPage
+export default SearchPage

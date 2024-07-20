@@ -21,7 +21,7 @@ import useAuthStore, { TypeUsers } from "@/store/auth.store";
 import useCartStore, { TypeCartStore } from "@/store/cart.store";
 import { CartType } from "@/schemaValidations/cart.schema";
 import { useRouter } from 'next/navigation';
-import { paths } from '@/constants/paths';
+import { paths } from '@/lib/paths';
 
 export function UserNav() {
   const router = useRouter()

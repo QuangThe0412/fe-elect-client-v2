@@ -1,4 +1,4 @@
-import { pathsArray } from '@/constants/paths'
+import { pathsArray } from '@/lib/paths'
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import React from 'react'

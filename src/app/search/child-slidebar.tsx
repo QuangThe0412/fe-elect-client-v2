@@ -1,22 +1,24 @@
 "use client";
-import { paths } from '@/constants/paths'
+import { paths } from '@/lib/paths'
+import { removeAccentAndSpecialChars } from '@/lib/utils';
 import { CategoryResType } from '@/schemaValidations/product.schema'
 import { usePathname, useRouter } from 'next/navigation'
 import React from 'react'
 import { BsHammer } from 'react-icons/bs'
 
+
 const ChildSlideBar = ({ category }: { category: CategoryResType }) => {
     const { IDLoaiMon, TenLoai } = category;
     const router = useRouter();
     const pathname = usePathname()
-    const searchParams = new URLSearchParams(pathname.split('&')[1]);
-    const currentCategory = searchParams.get('category');
+    const categoryName = pathname.split('/')[2];
+    const currentIdCategory = TenLoai === categoryName ? IDLoaiMon : undefined;
 
     const HandleClickLink = (idLoaiMon: number | undefined) => {
-        if (idLoaiMon === Number(currentCategory)) {
-            router.push(`${paths.products}/page=1`);
+        if (idLoaiMon === Number(currentIdCategory)) {
+            router.push(`${paths.products}`);
         } else {
-            router.push(`${paths.products}/page=1&category=${IDLoaiMon}`);
+            router.push(`${paths.products}/${removeAccentAndSpecialChars(TenLoai)}`);
         }
     }
 
@@ -28,7 +30,7 @@ const ChildSlideBar = ({ category }: { category: CategoryResType }) => {
                                       hover:bg-primary-foreground hover:text-primary-background
                                       px-3.5 py-3.5 
                                       rounded-md cursor-pointer transition-colors duration-300 ease-in-out
-                                      ${(Number(currentCategory) === IDLoaiMon) && 'bg-primary-foreground text-primary-background'}
+                                      ${(Number(currentIdCategory) === IDLoaiMon) && 'bg-primary-foreground text-primary-background'}
                                       `
             }
         >

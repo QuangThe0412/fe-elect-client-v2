@@ -20,7 +20,7 @@ import { handleErrorApi } from '@/lib/utils'
 import { useState } from 'react'
 import Link from "next/link"
 import { Label } from "@/components/ui/label"
-import { paths } from "@/constants/paths"
+import { paths } from "@/lib/paths"
 import { PasswordInput } from '@/components/ui/input-password'
 import { ResponsePayloadType } from '@/lib/http'
 import { ToastAction } from '@/components/ui/toast'

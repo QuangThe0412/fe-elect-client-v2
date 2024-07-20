@@ -7,7 +7,7 @@ const CategoryPage = ({
     params: { collection: string };
     searchParams?: { [key: string]: string | string[] | undefined };
 }) => {
-    console.log({ params, searchParams })
+    // console.log({ params, searchParams })
     return (
         <div>CategoryPage</div>
     )

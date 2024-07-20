@@ -4,7 +4,6 @@ import { toast } from '@/components/ui/use-toast'
 import { UseFormSetError } from 'react-hook-form'
 import jwt from 'jsonwebtoken'
 import emptyImg from '../../public/emptyCard.png'
-import authApiRequest from "@/apiRequests/auth";
 import { ResponsePayloadType } from "./http";
 
 export function cn(...inputs: ClassValue[]) {
@@ -156,4 +155,8 @@ export function buildQueryString(params: Record<string, any>): string {
     .filter(key => params[key] !== undefined && params[key] !== null && params[key] !== '')
     .map(key => `${encodeURIComponent(key)}=${encodeURIComponent(params[key])}`)
     .join('&');
+}
+
+export const removeAccentAndSpecialChars = (str:string | undefined) => {
+  return str?.normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-zA-Z0-9]/g, '');
 }

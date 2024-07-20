@@ -8,7 +8,7 @@ export const paths = {
     home: "/",
     login: "/login",
     register: "/register",
-    products: "/products",
+    products: "/search",
     profile: "/profile",
     cart: "/cart",
     refreshToken: "/refreshToken",

@@ -1,6 +1,6 @@
 import { BsBag, BsFillPersonFill, BsSearch } from "react-icons/bs"
 import { HiOutlineShoppingBag } from "react-icons/hi2";
-import { paths } from "@/constants/paths";
+import { paths } from "@/lib/paths";
 import Link from "next/link";
 import { Search } from "./search";
 import { UserNav } from "./user-nav";

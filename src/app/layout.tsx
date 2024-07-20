@@ -8,7 +8,7 @@ import { cn } from "@/lib/utils"
 import { usePathname } from 'next/navigation'
 import AppLayout from "@/layouts/AppLayout"
 import PublicLayout from "@/layouts/PublicLayout";
-import { paths } from "@/constants/paths";
+import { paths } from "@/lib/paths";
 
 const fontSans = FontSans({
   subsets: ["vietnamese"],

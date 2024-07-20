@@ -1,7 +1,7 @@
 import authApiRequest from '@/apiRequests/auth';
 import React from 'react'
 import { cookies } from 'next/headers'
-import { paths } from '@/constants/paths';
+import { paths } from '@/lib/paths';
 import { redirect } from 'next/navigation';
 import { ResponsePayloadType } from '@/lib/http';
 

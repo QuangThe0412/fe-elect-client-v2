@@ -29,7 +29,6 @@
       "@styles/*": ["./src/styles/*"],
       "@assets/*": ["./src/assets/*"],
       "@services/*": ["./src/services/*"],
-      "@constants/*": ["./src/constants/*"],
       "@layouts/*": ["./src/layouts/*"],
       "@api/*": ["./src/api/*"],
       "@theme/*": ["./src/theme/*"],

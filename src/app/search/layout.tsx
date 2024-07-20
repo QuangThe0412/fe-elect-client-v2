@@ -1,4 +1,4 @@
-import { SidebarProduct } from '@/app/products/[handle]/silebarProduct'
+import { SidebarProduct } from './silebarProduct'
 
 function ProductLayout({ children }: { children: React.ReactNode }) {
     return (

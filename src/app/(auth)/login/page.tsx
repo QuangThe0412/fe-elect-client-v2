@@ -6,7 +6,7 @@ import {
   CardTitle,
 } from "@/components/ui/card"
 import LoginForm from "./login-form"
-import { paths } from "@/constants/paths";
+import { paths } from "@/lib/paths";
 import { redirect } from 'next/navigation'
 import { cookies } from 'next/headers'
 

@@ -1,6 +1,6 @@
 'use client';
 import { Input } from "@/components/ui/input"
-import { paths } from "@/constants/paths";
+import { paths } from "@/lib/paths";
 import { useSearchParams, useRouter } from 'next/navigation';
 import { useDebouncedCallback } from 'use-debounce';
 

@@ -1,7 +1,7 @@
 import Image from "next/image"
 import image from "../../public/login.png"
 import { usePathname } from "next/navigation"
-import { paths } from "@/constants/paths"
+import { paths } from "@/lib/paths"
 
 const PublicLayout = ({ children }: any) => {
     const pathname = usePathname()
