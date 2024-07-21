@@ -32,6 +32,7 @@ const productApiRequest = {
         return http.get(`/products/category/${nameCollection}?${queryString}`);
     },
     getDetail: (idProduct: string) => http.get(`/products/details/${idProduct}`),
+    getRelatedProducts: (idCategory: number) => http.get(`/products/related/${idCategory}`),
 }
 
 export default productApiRequest;

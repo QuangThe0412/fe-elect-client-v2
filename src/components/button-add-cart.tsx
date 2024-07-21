@@ -61,11 +61,13 @@ const ButtonAddCart = ({ id }: { id: number }) => {
     }
 
     return (
-        <Button loading={loading}
-            onClick={() => handleAddToCart(id)}
-            className="bg-accent text-white px-4 py-2 rounded-lg">
-            <BsCart size={20} />
-        </Button>
+        <div className='block text-right'>
+            <Button loading={loading}
+                onClick={() => handleAddToCart(id)}
+                className="bg-accent text-white px-4 py-2 rounded-lg">
+                <BsCart size={20} />
+            </Button>
+        </div>
     )
 }
 
