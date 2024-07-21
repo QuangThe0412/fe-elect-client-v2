@@ -26,10 +26,12 @@ const productApiRequest = {
     getProducts: (query: string, sortKey: string, sortType: string) => {
         const queryString = buildQueryString({ query, sortKey, sortType });
         return http.get(`/products?${queryString}`);
-    }
-    // getDetail: (id: string) => http.get(`/api/products/${id}`, {
-    //     baseUrl: ''
-    // }),
+    },
+    getCollectionProducts: (nameCollection: string, query: string, sortKey: string, sortType: string) => {
+        const queryString = buildQueryString({ query, sortKey, sortType });
+        return http.get(`/products/category/${nameCollection}?${queryString}`);
+    },
+    getDetail: (idProduct: string) => http.get(`/products/details/${idProduct}`),
 }
 
 export default productApiRequest;

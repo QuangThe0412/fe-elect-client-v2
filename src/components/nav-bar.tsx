@@ -5,10 +5,12 @@ import React from 'react'
 
 const Navbar = () => {
     const pathname = usePathname();
-    const Paths = pathsArray.filter(m => !m.isHide).map((item) => {
+    const firstPath = pathname?.split('/')[1];
+    const Paths = pathsArray.map((item) => {
+        const path = item.path.split('/')[1];
         return (
             <Link key={item.path} className={`navbar__link relative 
-                ${pathname === item.path ? 'active' : ''}`}
+                ${firstPath === path ? 'active' : ''}`}
                 href={item.path}>{item.name}</Link>
         )
     });

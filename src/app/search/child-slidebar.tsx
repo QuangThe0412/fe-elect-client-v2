@@ -12,13 +12,13 @@ const ChildSlideBar = ({ category }: { category: CategoryResType }) => {
     const router = useRouter();
     const pathname = usePathname()
     const categoryName = pathname.split('/')[2];
-    const currentIdCategory = TenLoai === categoryName ? IDLoaiMon : undefined;
+    const currentIdCategory = removeAccentAndSpecialChars(TenLoai) === categoryName ? IDLoaiMon : undefined;
 
     const HandleClickLink = (idLoaiMon: number | undefined) => {
         if (idLoaiMon === Number(currentIdCategory)) {
-            router.push(`${paths.products}`);
+            router.push(`${paths.search}`);
         } else {
-            router.push(`${paths.products}/${removeAccentAndSpecialChars(TenLoai)}`);
+            router.push(`${paths.search}/${removeAccentAndSpecialChars(TenLoai)}`);
         }
     }
 

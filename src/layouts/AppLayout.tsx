@@ -8,7 +8,6 @@ import { getCookie } from "@/lib/utils"
 import cartApiRequest from '@/apiRequests/cart';
 import useCartStore, { TypeCartStore } from '@/store/cart.store';
 import { CartType } from "@/schemaValidations/cart.schema"
-import { useRouter } from "next/navigation";
 import HeaderMain from "@/components/header-main"
 import Navbar from "@/components/nav-bar"
 import "slick-carousel/slick/slick.css";
@@ -18,11 +17,9 @@ import Footer from "@/components/footer"
 import HeaderTop from "@/components/header-top"
 
 const AppLayout = ({ children }: any) => {
-    const router = useRouter()
-    const { user, setUser, setIsShowLoginDialog } = useAuthStore((state: TypeUsers) => ({
+    const { user, setUser } = useAuthStore((state: TypeUsers) => ({
         user: state.user,
         setUser: state.setUser,
-        setIsShowLoginDialog: state.setIsShowLoginDialog,
     }))
     const hadUser = !!(user && Object.keys(user).length);
 
@@ -57,7 +54,7 @@ const AppLayout = ({ children }: any) => {
 
         fetchProfile()
         fetchCart();
-    }, [user])    
+    }, [user])
 
     return (
         <>

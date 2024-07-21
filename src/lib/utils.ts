@@ -150,6 +150,7 @@ export const parseHandleQuery = (handle: string): Record<string, string> => {
   return queryParams;
 }
 
+// những tham số có giá trị mới được thêm vào chuỗi truy vấn của URL.
 export function buildQueryString(params: Record<string, any>): string {
   return Object.keys(params)
     .filter(key => params[key] !== undefined && params[key] !== null && params[key] !== '')

@@ -1,51 +1,27 @@
-type PathTypeConfig = {
+type PathMenu = {
     name: string;
     path: string;
-    isHide?: boolean;
 }
 
 export const paths = {
     home: "/",
     login: "/login",
     register: "/register",
-    products: "/search",
+    search: "/search",
+    products: "/products",
     profile: "/profile",
     cart: "/cart",
     refreshToken: "/refreshToken",
+    details: "/details"
 };
 
-export const pathsArray: PathTypeConfig[] = [
+export const pathsArray: PathMenu[] = [
     {
         name: "HOME",
         path: paths.home,
     },
     {
-        name: "LOGIN",
-        path: paths.login,
-        isHide: true,
-    },
-    {
-        name: "REGISTER",
-        path: paths.register,
-        isHide: true,
-    },
-    {
         name: "PRODUCTS",
-        path: paths.products,
-    },
-    {
-        name: "PROFILE",
-        path: paths.profile,
-        isHide: true,
-    },
-    {
-        name: "CART",
-        path: paths.cart,
-        isHide: true,
-    },
-    {
-        name: "REFRESH TOKEN",
-        path: paths.refreshToken,
-        isHide: true,
-    },
+        path: paths.search,
+    }
 ];

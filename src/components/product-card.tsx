@@ -6,6 +6,8 @@ import configEnv from '@/configEnv';
 import ButtonAddCart from './button-add-cart';
 import { formatCurrency } from '@/lib/utils';
 import Image from 'next/image';
+import Link from 'next/link';
+import { paths } from '@/lib/paths';
 
 const generateRating = (rating: number) => {
     const stars = [];
@@ -27,8 +29,8 @@ const ProductCard = ({ data }: { data: ProductResType }) => {
     const price = formatCurrency(DonGiaBanLe);
     const priceSale = formatCurrency(DonGiaBanLe + (DonGiaBanLe * 0.2));
     return (
-        <div className="px-4 py-4 border border-gray-200 rounded-xl max-w-[400px]
-        cursor-pointer relative group hover:shadow-2xl">
+        <Link className="px-4 py-4 border border-gray-200 rounded-xl max-w-[400px]
+        cursor-pointer relative group hover:shadow-2xl" href={`/products/${IDMon}`}>
             <Image className='w-full h-auto rounded-md'
                 priority
                 src={src}
@@ -52,7 +54,7 @@ const ProductCard = ({ data }: { data: ProductResType }) => {
                     <ButtonAddCart id={IDMon ?? 0} />
                 </div>
             </div>
-        </div>
+        </Link>
     )
 }
 
