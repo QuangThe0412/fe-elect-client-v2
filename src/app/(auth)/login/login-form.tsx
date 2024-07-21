@@ -114,7 +114,7 @@ const LoginForm = () => {
                         )}
                     />
 
-                    <Button disabled={loading} type="submit" className="w-full text-white">Đăng nhập</Button>
+                    <Button disabled={loading} type="submit" className="w-full text-white bg-accent-custom">Đăng nhập</Button>
                 </form>
             </Form>
             <div className="mt-4 text-center text-sm">

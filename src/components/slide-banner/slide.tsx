@@ -25,6 +25,7 @@ const Slide: React.FC<props> = ({ img, title, mainTitle, price }) => {
                 src={src}
                 height={2000}
                 width={2000}
+                priority
                 alt={mainTitle}
             />
         </div>

@@ -103,6 +103,12 @@
 
   .bg-accent-custom {
     background-color: var(--accent) !important;
+    color: white !important;
+  }
+
+  .bg-accent-custom:hover {
+    background-color: var(--blackish) !important;
+    color: white !important;
   }
 
   .text-blackish {
@@ -164,7 +170,7 @@
   .text-brand-dark {
     --tw-text-opacity: 1;
     color: rgb(0 0 0 / var(--tw-text-opacity));
-}
+  }
 }
 
 @screen md {

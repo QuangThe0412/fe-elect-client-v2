@@ -1,4 +1,4 @@
-import { STATUS_ENUM } from "@/constants/status";
+import { STATUS_ENUM } from "@/lib/constants";
 import http from "@/lib/http";
 import { handleResponse, tryGetAccessToken }  from "@/lib/utils";
 
