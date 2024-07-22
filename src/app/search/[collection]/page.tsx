@@ -2,9 +2,30 @@ import productApiRequest from '@/apiRequests/product';
 import { defaultSort, sorting } from '@/lib/constants';
 import { Button } from '@/components/ui/button';
 import { VscSettings } from 'react-icons/vsc';
-import { formatNumber } from '@/lib/utils';
+import { formatNumber, removeAccentAndSpecialChars } from '@/lib/utils';
 import { MdOutlineKeyboardArrowDown } from 'react-icons/md';
 import DataProduct from '../data';
+import ButtonSeeMore from './button-see-more';
+import { Metadata } from 'next';
+import { notFound } from 'next/navigation';
+import { CategoryResType } from '@/schemaValidations/product.schema';
+
+export async function generateMetadata({
+    params
+}: {
+    params: { collection: string };
+}): Promise<Metadata> {
+    const collection = await productApiRequest.getCollectionDetails(params.collection);
+    const { status, payload } = collection;
+    const { TenLoai } = (payload as any)?.data as CategoryResType;
+    const title = TenLoai || params.collection;
+    if (!collection) return notFound();
+
+    return {
+        title: title,
+        description: 'Sản phẩm của ' + TenLoai
+    };
+}
 
 const CategoryPage = async ({
     params,
@@ -36,7 +57,8 @@ const CategoryPage = async ({
                 </span>
             </Button>
             <div className="flex items-center justify-end w-full lg:justify-between">
-                <div className="shrink-0 text-brand-dark font-medium text-15px leading-4 md:ltr:mr-6 md:rtl:ml-6 hidden lg:block mt-0.5">
+                <div className="shrink-0 text-brand-dark font-medium text-15px leading-4 
+                            md:ltr:mr-6 md:rtl:ml-6 hidden lg:block mt-0.5">
                     {formatNumber(totalItems)} sản phẩm
                 </div>
                 <div className="relative ltr:ml-2 rtl:mr-2 lg:ltr:ml-0 lg:rtl:mr-0 min-w-[160px]">
@@ -52,7 +74,8 @@ const CategoryPage = async ({
                             <span className="block truncate">
                                 Lowest Price
                             </span>
-                            <span className="absolute flex items-end pointer-events-none top-1 ltr:right-0 rtl:left-0 ltr:pl-1 rtl:pr-1">
+                            <span className="absolute flex items-end pointer-events-none top-1 
+                                                    ltr:right-0 rtl:left-0 ltr:pl-1 rtl:pr-1">
                                 <MdOutlineKeyboardArrowDown />
                             </span>
                         </Button>
@@ -64,9 +87,7 @@ const CategoryPage = async ({
             <DataProduct products={result} />
         </div>
         <div className='flex justify-center text-center p-8'>
-            <Button className='bg-accent text-brand-dark font-semibold text-15px border border-border-base rounded-lg px-4 py-2'>
-                Xem thêm
-            </Button>
+            <ButtonSeeMore />
         </div>
     </>
     )

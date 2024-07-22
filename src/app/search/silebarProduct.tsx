@@ -5,7 +5,7 @@ import ChildSlideBar from "./child-slidebar";
 
 const fetchCategories = async () => {
     const result = [] as CategoryResType[];
-    return productApiRequest.getCategories().then((res) => {
+    return productApiRequest.getCollection().then((res) => {
         const { status, payload } = res;
         if (status === 200) {
             result.push(...(payload as any)?.data)

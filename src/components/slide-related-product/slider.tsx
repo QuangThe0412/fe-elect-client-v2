@@ -16,8 +16,8 @@ function SlideRelated({ data }: { data: ProductResType[] }) {
     return (
         <div className="container p-0">
             <Slider {...settings}>
-                {data.map((slide) => (
-                    <Slide data={slide} />
+                {data.map((slide, index) => (
+                    <Slide key={index} data={slide} />
                 ))}
             </Slider>
         </div>

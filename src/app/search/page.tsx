@@ -6,6 +6,7 @@ import { VscSettings } from 'react-icons/vsc';
 import { formatNumber } from '@/lib/utils';
 import { MdOutlineKeyboardArrowDown } from 'react-icons/md';
 import DataProduct from './data';
+import ButtonSeeMore from './[collection]/button-see-more';
 
 export const metadata = {
     title: 'Search',
@@ -13,13 +14,13 @@ export const metadata = {
 };
 
 const SearchPage = async ({ searchParams }: { searchParams?: { [key: string]: string | string[] | undefined } }) => {
-    const { sort, query } = searchParams as { [key: string]: string };
-    const { sortKey, sortType } = sorting.find((item) => item.slug === sort) || defaultSort;
+    const { sortKey, sortType, page, query } = searchParams as { [key: string]: string };
 
     const { status, payload } = await productApiRequest.getProducts(
         query,
-        sortKey,
-        sortType
+        page,
+        sortKey || defaultSort.sortKey,
+        sortType || defaultSort.sortType
     );
     const { result, totalPages, currentPage, itemsPerPage, totalItems } = (payload as any)?.data || {};
 
@@ -64,9 +65,7 @@ const SearchPage = async ({ searchParams }: { searchParams?: { [key: string]: st
                 <DataProduct products={result} />
             </div>
             <div className='flex justify-center text-center p-8'>
-                <Button className='bg-accent text-brand-dark font-semibold text-15px border border-border-base rounded-lg px-4 py-2'>
-                    Xem thêm
-                </Button>
+                <ButtonSeeMore />
             </div>
         </>
     )
