@@ -5,11 +5,12 @@ import Slide from "./slide";
 import { ProductResType } from "@/schemaValidations/product.schema";
 
 function SlideRelated({ data }: { data: ProductResType[] }) {
+    const numberConfig = 5;
     const settings = {
         dots: true,
-        infinite: true,
-        slidesToShow: 5,
-        slidesToScroll: 5,
+        infinite: data.length > numberConfig,
+        slidesToShow: numberConfig,
+        slidesToScroll: numberConfig,
         autoplay: true,
         pauseOnHover: true,
     };

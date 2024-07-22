@@ -6,7 +6,6 @@ import { VscSettings } from 'react-icons/vsc';
 import { formatNumber } from '@/lib/utils';
 import { MdOutlineKeyboardArrowDown } from 'react-icons/md';
 import DataProduct from './data';
-import ButtonSeeMore from './[collection]/button-see-more';
 import { PaginationProduct } from '@/components/pagination';
 
 export const metadata = {

@@ -49,11 +49,12 @@ const slideData = [
 ]
 
 function SliderBanner() {
+    const numberConfig = 1;
     const settings = {
         dots: true,
-        infinite: true,
-        slidesToShow: 1,
-        slidesToScroll: 1,
+        infinite: numberConfig > 1,
+        slidesToShow: numberConfig,
+        slidesToScroll: numberConfig,
         autoplay: true,
         pauseOnHover: true,
     };
