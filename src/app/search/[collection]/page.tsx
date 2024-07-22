@@ -9,6 +9,7 @@ import ButtonSeeMore from './button-see-more';
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { CategoryResType } from '@/schemaValidations/product.schema';
+import { PaginationProduct } from '@/components/pagination';
 
 export async function generateMetadata({
     params
@@ -86,7 +87,8 @@ const CategoryPage = async ({
             <DataProduct products={result} />
         </div>
         <div className='flex justify-center text-center p-8'>
-            {currentPage < totalPages && <ButtonSeeMore />}
+            {/* {currentPage <= totalPages && <ButtonSeeMore />} */}
+            {totalItems > 0 && <PaginationProduct totalPages={totalPages} />}
         </div>
     </>
     )

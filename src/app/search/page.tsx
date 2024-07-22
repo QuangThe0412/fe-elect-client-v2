@@ -7,6 +7,7 @@ import { formatNumber } from '@/lib/utils';
 import { MdOutlineKeyboardArrowDown } from 'react-icons/md';
 import DataProduct from './data';
 import ButtonSeeMore from './[collection]/button-see-more';
+import { PaginationProduct } from '@/components/pagination';
 
 export const metadata = {
     title: 'Search',
@@ -72,7 +73,8 @@ const SearchPage = async ({ searchParams }
                 <DataProduct products={result} />
             </div>
             <div className='flex justify-center text-center p-8'>
-                {currentPage <= totalPages && <ButtonSeeMore />}
+                {/* {currentPage <= totalPages && <ButtonSeeMore />} */}
+                {totalItems > 0 && <PaginationProduct totalPages={totalPages} />}
             </div>
         </>
     )

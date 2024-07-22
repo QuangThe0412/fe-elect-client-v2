@@ -8,7 +8,9 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination"
-import { usePathname, useSearchParams } from "next/navigation";
+import { defaultSort } from "@/lib/constants";
+import { paths } from "@/lib/paths";
+import { useSearchParams } from "next/navigation";
 export interface PaginationProps {
   totalPages: number;
   totalPagesToDisplay?: number;
@@ -18,14 +20,13 @@ export const PaginationProduct: React.FC<PaginationProps> = ({
   totalPages,
   totalPagesToDisplay = 5,
 }: PaginationProps) => {
-  const pathname = usePathname();
   const searchParams = useSearchParams();
   const currentPage = Number(searchParams.get('page')) || 1;
-  
-  const createPageURL = (pageNumber: number | string) => {
-    const params = new URLSearchParams(searchParams);
-    params.set('page', pageNumber.toString());
-    return `${pathname}/page=${pageNumber}`;
+
+  const createURL = (pageNumber: number) => {
+    const sortKey = searchParams.get('sortKey') || defaultSort.sortKey;
+    const sortType = searchParams.get('sortType') || defaultSort.sortType;
+    return `${paths.search}/?sortKey=${sortKey}&sortType=${sortType}&page=${pageNumber}`;
   };
 
   const showLeftEllipsis = currentPage - 1 > totalPagesToDisplay / 2;
@@ -65,13 +66,9 @@ export const PaginationProduct: React.FC<PaginationProps> = ({
     return pageNumbers.map((pageNumber) => (
       <PaginationItem key={pageNumber}>
         <PaginationLink
-          href='#'
+          href={createURL(pageNumber)}
           isActive={pageNumber === currentPage}
-          onClick={(e) => {
-            e.preventDefault();
-            const newUrl = createPageURL(pageNumber);
-            window.history.pushState({ path: newUrl }, '', newUrl);
-          }}
+        // onClick={(e) => {handleClick(pageNumber)}}
         >
           {pageNumber}
         </PaginationLink>
@@ -85,12 +82,8 @@ export const PaginationProduct: React.FC<PaginationProps> = ({
         <PaginationItem>
           <PaginationPrevious
             className={currentPage <= 1 ? 'cursor-not-allowed pointer-events-none opacity-50' : ''}
-            href='#'
-            onClick={(e) => {
-              e.preventDefault();
-              const newUrl = createPageURL(currentPage - 1);
-              window.history.pushState({ path: newUrl }, '', newUrl);
-            }}
+            href={createURL(currentPage - 1)}
+          // onClick={(e) => { handleClick(currentPage - 1) }}
           />
         </PaginationItem>
         {showLeftEllipsis && (
@@ -107,12 +100,8 @@ export const PaginationProduct: React.FC<PaginationProps> = ({
         <PaginationItem>
           <PaginationNext
             className={currentPage >= totalPages ? 'cursor-not-allowed pointer-events-none opacity-50' : ''}
-            href='#'
-            onClick={(e) => {
-              e.preventDefault();
-              const newUrl = createPageURL(currentPage + 1);
-              window.history.pushState({ path: newUrl }, '', newUrl);
-            }}
+            href={createURL(currentPage + 1)}
+          // onClick={(e) => { handleClick(currentPage + 1) }}
           />
         </PaginationItem>
       </PaginationContent>
