@@ -44,7 +44,6 @@ const CategoryPage = async ({
         sortType
     );
     const { result, totalPages, currentPage, itemsPerPage, totalItems } = (payload as any)?.data || {};
-
     return (<>
         <div className="flex items-center justify-between mb-4">
             <Button className="flex items-center px-4 py-2 text-sm 
@@ -87,7 +86,7 @@ const CategoryPage = async ({
             <DataProduct products={result} />
         </div>
         <div className='flex justify-center text-center p-8'>
-            <ButtonSeeMore />
+            {currentPage < totalPages && <ButtonSeeMore />}
         </div>
     </>
     )

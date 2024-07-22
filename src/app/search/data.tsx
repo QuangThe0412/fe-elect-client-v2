@@ -2,23 +2,17 @@ import ProductCard from '@/components/product-card';
 import { ProductResType } from '@/schemaValidations/product.schema';
 
 function DataProduct({ products }: { products: ProductResType[] }) {
-    const template = () => {
-        if (products.length > 0) {
-            return (
-                products?.map((item: ProductResType) => (
-                    <ProductCard data={item} key={item.IDMon} />
-                ))
-            )
-        } else {
-            return (
-                <div className='text-center text-lg text-gray-500'>Không tìm thấy sản phẩm</div>
-            )
-        }
-    }
-
     return (
         <>
-            {template()}
+            {products.length > 0 ? (
+                products.map((item) => (
+                    <ProductCard data={item} key={item.IDMon} />
+                ))
+            ) : (
+                <p className="text-center text-brand-dark font-semibold text-15px">
+                    Không tìm thấy sản phẩm nào
+                </p>
+            )}
         </>
     );
 }

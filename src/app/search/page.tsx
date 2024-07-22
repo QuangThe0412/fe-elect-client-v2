@@ -13,16 +13,23 @@ export const metadata = {
     description: 'Search for products in the store.'
 };
 
-const SearchPage = async ({ searchParams }: { searchParams?: { [key: string]: string | string[] | undefined } }) => {
-    const { sortKey, sortType, page, query } = searchParams as { [key: string]: string };
-
-    const { status, payload } = await productApiRequest.getProducts(
-        query,
-        page,
-        sortKey || defaultSort.sortKey,
-        sortType || defaultSort.sortType
-    );
+const fetchData = async ({ query, page, sortKey, sortType }
+    : { query: string, page: string, sortKey: string, sortType: string }) => {
+    const { status, payload } = await productApiRequest.getProducts(query, page, sortKey, sortType);
     const { result, totalPages, currentPage, itemsPerPage, totalItems } = (payload as any)?.data || {};
+
+    return { result, totalPages, currentPage, itemsPerPage, totalItems };
+}
+
+const SearchPage = async ({ searchParams }
+    : { searchParams?: { [key: string]: string | string[] | undefined } }) => {
+    const { query, page, sortKey, sortType } = searchParams as { [key: string]: string };
+    const { result, totalPages, currentPage, itemsPerPage, totalItems } = await fetchData({
+        query,
+        page: page || '1',
+        sortKey: sortKey || defaultSort.sortKey,
+        sortType: sortType || defaultSort.sortType
+    });
 
     return (
         <>
@@ -65,7 +72,7 @@ const SearchPage = async ({ searchParams }: { searchParams?: { [key: string]: st
                 <DataProduct products={result} />
             </div>
             <div className='flex justify-center text-center p-8'>
-                <ButtonSeeMore />
+                {currentPage <= totalPages && <ButtonSeeMore />}
             </div>
         </>
     )

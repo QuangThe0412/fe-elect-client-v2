@@ -1,6 +1,6 @@
 'use client';
 import React from 'react';
-import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { defaultSort } from '@/lib/constants';
 import { paths } from '@/lib/paths';
