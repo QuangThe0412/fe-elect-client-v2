@@ -4,6 +4,7 @@ import { paths } from './lib/paths';
 import { cookies } from 'next/headers'
 
 export function middleware(request: NextRequest) {
+    console.log('middleware============111111111');
     const cookieStore = cookies();
     const accessToken = cookieStore.get('accessToken');
     const refreshToken = cookieStore.get('refreshToken');

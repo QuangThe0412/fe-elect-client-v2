@@ -5,6 +5,7 @@ import { UseFormSetError } from 'react-hook-form'
 import jwt from 'jsonwebtoken'
 import emptyImg from '../../public/emptyCard.png'
 import { ResponsePayloadType } from "./http";
+import authApiRequest from "@/apiRequests/auth"
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
@@ -30,25 +31,7 @@ export const normalizePath = (path: string) => {
   return path.startsWith('/') ? path.slice(1) : path
 }
 
-export const decodeJWT = <Payload = any>(token: string) => {
-  return jwt.decode(token) as Payload
-}
-
 export const isServer = () => typeof window === 'undefined';
-
-export const getDateRemaining = (exp: number | undefined) => {
-  if (!exp) return 0;
-
-  const expDate = new Date(exp * 1000);
-  expDate.setDate(expDate.getDate() + 1); // add 1 day to the expiration date
-  const now = new Date();
-
-  const expDateAccess = expDate.getTime() - now.getTime();
-
-  const daysUntilExpAccess = Math.ceil(expDateAccess / (1000 * 60 * 60 * 24));
-
-  return daysUntilExpAccess;
-}
 
 export const getCookie = (name: string) => {
   if (isServer()) return null;
@@ -91,35 +74,43 @@ export const emptyImage = (e: any) => {
 
 
 export const tryGetAccessToken = async () => {
-  // const cookieStore = {};
-  // const accessToken = cookieStore.get('accessToken')?.value ?? '';
-  // if (!accessToken || isTokenExpired(accessToken)) {
-  //     const resultDeleteAccess = await authApiRequest.deleteToken('accessToken');
-  //     if (resultDeleteAccess.status !== 200) {
-  //         return null;
-  //     }
-  //     const refreshToken = cookieStore.get('refreshToken')?.value ?? '';
-  //     if (!refreshToken || isTokenExpired(refreshToken)) {
-  //         const resultDeleteRefresh = await authApiRequest.deleteToken('refreshToken');
-  //         if (resultDeleteRefresh.status !== 200) {
-  //             return null;
-  //         }
-  //     } else {
-  //         const result = await authApiRequest.refreshToken({ refreshToken });
-  //         console.log({ result });
-  //         const { payload, status } = result as any;
-  //         if (status == 200) {
-  //             const newAccessToken = payload?.data?.accessToken;
+  if (isServer()) return null; // must be run at client side
 
-  //             return newAccessToken;
-  //             // const resultSetToken = await authApiRequest.setToken({ accessToken: newAccessToken, refreshToken });                
-  //             // return resultSetToken.status === 200 ? (result?.payload as any)?.data?.accessToken : null;
-  //         }
-  //     }
-  //     return accessToken;
-  // }
-  return null;
+  let accessToken = getCookie('accessToken');
+  if (!accessToken || isTokenExpired(accessToken)) {
+    removeCookie('accessToken');
+    let refreshToken = getCookie('refreshToken');
+    if (!refreshToken || isTokenExpired(refreshToken)) {
+      removeCookie('refreshToken');
+      return null;
+    }
+    const result = await authApiRequest.refreshToken({ refreshToken });
+    const { status, payload } = result as any;
+    if (status === 200) {
+      accessToken = payload?.accessToken;
+      return accessToken;
+    }
+  }
+  return accessToken;
 };
+
+export const getDateRemaining = (exp: number | undefined) => {
+  if (!exp) return 0;
+
+  const expDate = new Date(exp * 1000);
+  expDate.setDate(expDate.getDate() + 1); // add 1 day to the expiration date
+  const now = new Date();
+
+  const expDateAccess = expDate.getTime() - now.getTime();
+
+  const daysUntilExpAccess = Math.ceil(expDateAccess / (1000 * 60 * 60 * 24));
+
+  return daysUntilExpAccess;
+}
+
+export const decodeJWT = <Payload = any>(token: string) => {
+  return jwt.decode(token) as Payload
+}
 
 export const isTokenExpired = (token: string) => {
   const exp = decodeJWT<{ exp: number }>(token)?.exp;
@@ -158,6 +149,6 @@ export function buildQueryString(params: Record<string, any>): string {
     .join('&');
 }
 
-export const removeAccentAndSpecialChars = (str:string | undefined) => {
+export const removeAccentAndSpecialChars = (str: string | undefined) => {
   return str?.normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-zA-Z0-9]/g, '');
 }

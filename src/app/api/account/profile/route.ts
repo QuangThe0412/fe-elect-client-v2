@@ -1,15 +1,29 @@
+import authApiRequest from "@/apiRequests/auth";
 import http from "@/lib/http";
-import { handleResponse, tryGetAccessToken } from  from "@/lib/utils";
+import { handleResponse, tryGetAccessToken }  from "@/lib/utils";
+import { cookies } from 'next/headers';
 
 async function fetchProfile(method: string, request: Request, body?: any) {
     try {
-        const accessToken = await tryGetAccessToken();
-        if (!accessToken) {
-            return handleResponse({
-                status: 401,
-                payload: { code: 'Unauthorized', mess: 'Chưa xác thực', data: null }
-            });
+        const cookieStore = cookies();  
+        let accessTokenCookie = cookieStore.get('accessToken');
+        let accessToken = accessTokenCookie?.value;
+        if(!accessTokenCookie) {
+            const refreshTokenCookie = cookieStore.get('refreshToken');
+            if(!refreshTokenCookie){
+                return handleResponse({
+                    status: 401,
+                    payload: { code: 'Unauthorized', mess: 'RefreshToken hết hạn', data: null }
+                });
+            }
+            const resultRefreshToken = await authApiRequest.refreshToken({ refreshToken: refreshTokenCookie?.value });
+            const { status, payload } = resultRefreshToken as any;
+            if(status === 200) {
+                const { accessToken : newAccessToken, refreshToken } = payload?.data;
+                accessToken = newAccessToken;
+            }
         }
+
         const config = {
             headers: { Authorization: `${accessToken}` },
             ...(method === 'PUT' && { body: JSON.stringify(body) })

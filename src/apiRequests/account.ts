@@ -2,8 +2,8 @@ import http from "@/lib/http";
 
 const accountApiRequest = {
     //server next side
-    profile: () => http.get('/api/account/profile', {
-        baseUrl: ''
+    profile: (accessToken: string) => http.get('/account/profile', {
+        headers: { Authorization: `${accessToken}` },
     }),
     updateProfile: (body: any) => http.put('/api/account/profile', body, {
         baseUrl: ''

@@ -4,7 +4,7 @@ import { useEffect } from "react"
 import { TypeDataAccountRes } from "@/schemaValidations/account.schema"
 import "@/styles/layout.css"
 import { LoginDialog } from "@/components/dialog-login"
-import { getCookie } from "@/lib/utils"
+import { tryGetAccessToken } from "@/lib/utils"
 import cartApiRequest from '@/apiRequests/cart';
 import useCartStore, { TypeCartStore } from '@/store/cart.store';
 import { CartType } from "@/schemaValidations/cart.schema"
@@ -29,32 +29,37 @@ const AppLayout = ({ children }: any) => {
     }))
 
     useEffect(() => {
-        const accessToken = getCookie('accessToken');
-        const fetchProfile = async () => {
-            if (!hadUser && accessToken) {
-                const result = await accountApiRequest.profile();
+        const init = async () => {
+            const accessToken = await tryGetAccessToken() as string;
+
+            if (accessToken) {
+                await fetchProfile(accessToken);
+                await fetchCart(accessToken);
+            }
+        };
+
+        const fetchProfile = async (accessToken: string) => {
+            if (!hadUser) {
+                const result = await accountApiRequest.profile(accessToken);
                 const { status, payload } = result;
                 if (status === 200) {
                     const data = (payload as any)?.data as TypeDataAccountRes;
                     setUser(data);
                 }
             }
-        }
+        };
 
-        const fetchCart = async () => {
-            if (accessToken) {
-                const response = await cartApiRequest.getCart();
-                const { payload, status } = response as any;
-                if (status === 200) {
-                    const data = payload?.data as CartType;
-                    setCart(data);
-                }
+        const fetchCart = async (accessToken: string) => {
+            const response = await cartApiRequest.getCart(accessToken); 
+            const { payload, status } = response;
+            if (status === 200) {
+                const data = (payload as any)?.data as CartType;
+                setCart(data);
             }
-        }
+        };
 
-        fetchProfile()
-        fetchCart();
-    }, [user])
+        init();
+    }, [user]);
 
     return (
         <>

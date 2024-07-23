@@ -1,10 +1,10 @@
 import { STATUS_ENUM } from "@/lib/constants";
 import http from "@/lib/http";
-import { handleResponse, tryGetAccessToken }  from "@/lib/utils";
+import { handleResponse } from "@/lib/utils";
 
 async function HandleCart(method: string, request: Request, body?: any) {
     try {
-        const accessToken = await tryGetAccessToken();
+        const accessToken = request?.headers?.get('Authorization');
         if (!accessToken) return handleResponse(
             {
                 status: 401,

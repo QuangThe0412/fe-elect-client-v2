@@ -1,3 +1,5 @@
+import { tryGetAccessToken } from "./utils";
+
 type CustomOptions = RequestInit & { baseUrl?: string | undefined };
 type CustomOptionsWithoutBody = Omit<CustomOptions, 'body'> | undefined;
 
@@ -16,9 +18,11 @@ const request = async<Response>(
   options?: CustomOptions,
 ) => {
   try {
+    // const authorization = await tryGetAccessToken() as string;
     const body = options?.body ? JSON.stringify(options.body) : undefined;
     const baseHeaders = {
       'Content-Type': 'application/json',
+      // Authorization: authorization ? `${authorization}` : '',
     };
     //Nếu không truyền baseUrl thì là gọi ServerBackEnd
     //Nếu truyền baseUrl = '' thì gọi API của nextjs
@@ -35,7 +39,7 @@ const request = async<Response>(
       body,
       method,
     });
-    
+
     const payload: Response = await res?.json();
     const data = {
       status: res.status,

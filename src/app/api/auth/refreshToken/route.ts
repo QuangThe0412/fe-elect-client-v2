@@ -1,13 +1,11 @@
-import authApiRequest from "@/apiRequests/auth";
 import http, { ResponsePayloadType } from "@/lib/http";
-import { decodeJWT, isServer } from "@/lib/utils";
+import { decodeJWT } from "@/lib/utils";
 import { handleResponse, isTokenExpired } from "@/lib/utils";
-import { cookies } from 'next/headers'
 
 export async function POST(request: Request, response: Response) {
     try {
         const req = await request.json();
-        const { refreshToken } = req;
+        const refreshToken =  req?.refreshToken;
         const decodedRefresh = decodeJWT(refreshToken);
 
         if (!decodedRefresh || isTokenExpired(refreshToken)) {
@@ -23,12 +21,12 @@ export async function POST(request: Request, response: Response) {
         if (status == 200) {
             const accessToken = payload?.data;
             const decodedAccess = decodeJWT(accessToken);
-            
+
             const currentTimeInSeconds = Date.now() / 1000;
             const accessTokenMaxAge = decodedAccess.exp - currentTimeInSeconds;
 
             return Response.json(
-                { accessToken, refreshToken },
+                { accessToken },
                 {
                     status: 200,
                     headers: {
