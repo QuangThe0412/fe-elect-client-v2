@@ -15,6 +15,7 @@ import "slick-carousel/slick/slick-theme.css";
 import MobileNavBar from "@/components/mobile-navbar"
 import Footer from "@/components/footer"
 import HeaderTop from "@/components/header-top"
+import { ResponsePayloadType } from '@/lib/http'
 
 const AppLayout = ({ children }: any) => {
     const { user, setUser } = useAuthStore((state: TypeUsers) => ({
@@ -41,9 +42,9 @@ const AppLayout = ({ children }: any) => {
         const fetchProfile = async (accessToken: string) => {
             if (!hadUser) {
                 const result = await accountApiRequest.profile(accessToken);
-                const { status, payload } = result;
+                const { status, payload } = result as ResponsePayloadType;
                 if (status === 200) {
-                    const data = (payload as any)?.data as TypeDataAccountRes;
+                    const data = payload?.data as TypeDataAccountRes;
                     setUser(data);
                 }
             }
@@ -51,9 +52,9 @@ const AppLayout = ({ children }: any) => {
 
         const fetchCart = async () => {
             const response = await cartApiRequest.getCart(); 
-            const { payload, status } = response;
+            const { status, payload } = response as ResponsePayloadType;
             if (status === 200) {
-                const data = (payload as any)?.data as CartType;
+                const data = payload?.data as CartType;
                 setCart(data);
             }
         };

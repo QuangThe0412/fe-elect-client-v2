@@ -1,5 +1,5 @@
 import authApiRequest from "@/apiRequests/auth";
-import http from "@/lib/http";
+import http, { ResponsePayloadType } from "@/lib/http";
 import { handleResponse, tryGetAccessToken }  from "@/lib/utils";
 import { cookies } from 'next/headers';
 
@@ -17,7 +17,7 @@ async function fetchProfile(method: string, request: Request, body?: any) {
                 });
             }
             const resultRefreshToken = await authApiRequest.refreshToken({ refreshToken: refreshTokenCookie?.value });
-            const { status, payload } = resultRefreshToken as any;
+            const { status, payload } = resultRefreshToken as ResponsePayloadType;
             if(status === 200) {
                 const { accessToken : newAccessToken, refreshToken } = payload?.data;
                 accessToken = newAccessToken;

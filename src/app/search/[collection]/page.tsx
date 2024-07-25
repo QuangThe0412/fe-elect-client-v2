@@ -10,6 +10,7 @@ import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { CategoryResType } from '@/schemaValidations/product.schema';
 import { PaginationProduct } from '@/components/pagination';
+import { ResponsePayloadType } from '@/lib/http';
 
 export async function generateMetadata({
     params
@@ -17,7 +18,7 @@ export async function generateMetadata({
     params: { collection: string };
 }): Promise<Metadata> {
     const collection = await productApiRequest.getCollectionDetails(params.collection);
-    const { status, payload } = collection;
+    const { status, payload } = collection as ResponsePayloadType;
     const { TenLoai } = (payload as any)?.data as CategoryResType;
     const title = TenLoai || params.collection;
     if (!collection) return notFound();
@@ -43,7 +44,7 @@ const CategoryPage = async ({
         query,
         sortKey,
         sortType
-    );
+    ) as ResponsePayloadType;
     const { result, totalPages, currentPage, itemsPerPage, totalItems } = (payload as any)?.data || {};
     return (<>
         <div className="flex items-center justify-between mb-4">

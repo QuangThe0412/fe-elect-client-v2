@@ -40,8 +40,7 @@ const ProfileForm = ({ onClose }: { onClose: () => void }) => {
         if (loading) return;
         setLoading(true);
         try {
-            const result = await accountApiRequest.updateProfile(values) as ResponsePayloadType;
-            const { status, payload } = result;
+            const { status, payload } = await accountApiRequest.updateProfile(values) as ResponsePayloadType;
             const { mess, data } = payload;
             if (status == 200) {
                 setUser(data);

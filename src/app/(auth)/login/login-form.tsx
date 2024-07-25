@@ -55,7 +55,7 @@ const LoginForm = () => {
                 toast({ description: payload.mess, duration: 5000 });
 
                 const { accessToken, refreshToken } = payload.data;
-                const resultNextServer = await authApiRequest.setToken({ accessToken, refreshToken });
+                const resultNextServer = await authApiRequest.setToken({ accessToken, refreshToken }) as ResponsePayloadType;
                 if (resultNextServer.status === 200) {
                     if (isShowLoginDialog) {
                         setIsShowLoginDialog(false)

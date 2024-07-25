@@ -7,6 +7,7 @@ import { formatNumber } from '@/lib/utils';
 import { MdOutlineKeyboardArrowDown } from 'react-icons/md';
 import DataProduct from './data';
 import { PaginationProduct } from '@/components/pagination';
+import { ResponsePayloadType } from '@/lib/http';
 
 export const metadata = {
     title: 'Search',
@@ -15,7 +16,7 @@ export const metadata = {
 
 const fetchData = async ({ query, page, sortKey, sortType }
     : { query: string, page: string, sortKey: string, sortType: string }) => {
-    const { status, payload } = await productApiRequest.getProducts(query, page, sortKey, sortType);
+    const { status, payload } = await productApiRequest.getProducts(query, page, sortKey, sortType) as ResponsePayloadType;
     const { result, totalPages, currentPage, itemsPerPage, totalItems } = (payload as any)?.data || {};
 
     return { result, totalPages, currentPage, itemsPerPage, totalItems };

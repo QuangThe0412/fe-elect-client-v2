@@ -2,10 +2,11 @@ import React from 'react'
 import SlideRelated from '../slide-related-product/slider'
 import productApiRequest from '@/apiRequests/product'
 import { ProductResType } from '@/schemaValidations/product.schema'
+import { ResponsePayloadType } from '@/lib/http'
 
 const fetchRelateData = async (idCategory: number | undefined) => {
     return productApiRequest.getRelatedProducts(idCategory ?? 0).then((res) => {
-        const { status, payload } = res;
+        const { status, payload } = res as ResponsePayloadType;
         if (status === 200) {
             return (payload as any)?.data as ProductResType[];
         }

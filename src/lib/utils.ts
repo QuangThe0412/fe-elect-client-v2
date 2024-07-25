@@ -72,10 +72,8 @@ export const emptyImage = (e: any) => {
   e.target.src = { emptyImg }
 };
 
-
 export const tryGetAccessToken = async () => {
   if (isServer()) return null; // must be run at client side
-
   let accessToken = getCookie('accessToken');
   if (!accessToken || isTokenExpired(accessToken)) {
     removeCookie('accessToken');
@@ -89,6 +87,10 @@ export const tryGetAccessToken = async () => {
     if (status === 200) {
       accessToken = payload?.accessToken;
       return accessToken;
+    } if (status === 401) {
+      removeCookie('accessToken');
+      removeCookie('refreshToken');
+      return null;
     }
   }
   return accessToken;
@@ -118,7 +120,10 @@ export const isTokenExpired = (token: string) => {
 };
 
 export const handleResponse = async (result: any) => {
-  const { status, payload } = result as ResponsePayloadType;
+  const { status, payload } = result as ResponsePayloadType | any;
+  if (status === 401) {
+    return new Response(JSON.stringify({ code: 'Error', mess: 'Not Authorize', data: null }), { status: 401 });
+  }
   if (!payload) {
     return new Response(JSON.stringify({ code: 'Error', mess: 'Unknown error', data: null }), { status: status || 500 });
   }

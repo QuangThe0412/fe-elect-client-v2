@@ -2,11 +2,12 @@ import { ScrollArea } from "@/components/ui/scroll-area"
 import productApiRequest from "@/apiRequests/product";
 import { CategoryResType } from "@/schemaValidations/product.schema";
 import ChildSlideBar from "./child-slidebar";
+import { ResponsePayloadType } from "@/lib/http";
 
 const fetchCategories = async () => {
     const result = [] as CategoryResType[];
     return productApiRequest.getCollection().then((res) => {
-        const { status, payload } = res;
+        const { status, payload } = res as ResponsePayloadType;
         if (status === 200) {
             result.push(...(payload as any)?.data)
         }

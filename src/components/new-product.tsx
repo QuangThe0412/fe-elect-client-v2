@@ -2,10 +2,11 @@ import React from 'react'
 import ProductCard from './product-card';
 import productApiRequest from '@/apiRequests/product';
 import { ProductResType } from '@/schemaValidations/product.schema';
+import { ResponsePayloadType } from '@/lib/http';
 
 const dataNewProduct = [] as ProductResType[];
 productApiRequest.getNewProducts().then((res) => {
-    const { status, payload } = res;
+    const { status, payload } = res as ResponsePayloadType;
     if (status === 200) {
         dataNewProduct.push(...((payload as any)?.data || []));
     }

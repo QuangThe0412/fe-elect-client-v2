@@ -6,9 +6,10 @@ import Image from 'next/image';
 import React from 'react'
 import ButtonAddCartPageDetails from '../../../components/products/button-add-cart-details';
 import RelatedProducts from '../../../components/products/related-products';
+import { ResponsePayloadType } from '@/lib/http';
 
 const fetchDetailProducts = async (id: string) => {
-    const { status, payload } = await productApiRequest.getDetail(id);
+    const { status, payload } = await productApiRequest.getDetail(id) as ResponsePayloadType;
     if (status === 200) {
         return (payload as any)?.data as ProductResType;
     }

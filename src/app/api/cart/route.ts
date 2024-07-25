@@ -1,5 +1,5 @@
 import { STATUS_ENUM } from "@/lib/constants";
-import http from "@/lib/http";
+import http, { ResponsePayloadType } from "@/lib/http";
 import { handleResponse } from "@/lib/utils";
 import { cookies } from "next/headers";
 
@@ -47,6 +47,8 @@ async function HandleCart(method: string, request: Request, body?: any) {
         }
         return handleResponse(result);
     } catch (error: any) {
+        console.log({ error });
+        console.log('==========HandleCart==============');
         throw new Error(error);
     }
 }
