@@ -34,7 +34,7 @@ const AppLayout = ({ children }: any) => {
 
             if (accessToken) {
                 await fetchProfile(accessToken);
-                await fetchCart(accessToken);
+                await fetchCart();
             }
         };
 
@@ -49,8 +49,8 @@ const AppLayout = ({ children }: any) => {
             }
         };
 
-        const fetchCart = async (accessToken: string) => {
-            const response = await cartApiRequest.getCart(accessToken); 
+        const fetchCart = async () => {
+            const response = await cartApiRequest.getCart(); 
             const { payload, status } = response;
             if (status === 200) {
                 const data = (payload as any)?.data as CartType;

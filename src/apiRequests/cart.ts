@@ -2,9 +2,8 @@ import http from "@/lib/http";
 
 const cartApiRequest = {
     //server next side
-    getCart: (accessToken: string) => http.get('/api/cart', {
+    getCart: () => http.get('/api/cart', {
         baseUrl: '',
-        // headers: { Authorization: `${accessToken}` },
     }),
     deleteCart: (body: any) => http.delete(`/api/cart`, body, {
         baseUrl: ''

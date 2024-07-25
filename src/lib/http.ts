@@ -26,7 +26,7 @@ const request = async<Response>(
     };
     //Nếu không truyền baseUrl thì là gọi ServerBackEnd
     //Nếu truyền baseUrl = '' thì gọi API của nextjs
-    const baseUrl = options?.baseUrl === undefined ? process.env.NEXT_PUBLIC_API_URL : 'http://localhost:4005';
+    const baseUrl = options?.baseUrl === undefined ? process.env.NEXT_PUBLIC_API_URL : process.env.NEXT_PUBLIC_DOMAIN;
     const fullUrl = url.startsWith('/') ? `${baseUrl}${url}` : `/${baseUrl}${url}`
     // console.log(options?.headers);
     console.log({ fullUrl });

@@ -1,16 +1,21 @@
 import { STATUS_ENUM } from "@/lib/constants";
 import http from "@/lib/http";
 import { handleResponse } from "@/lib/utils";
+import { cookies } from "next/headers";
 
 async function HandleCart(method: string, request: Request, body?: any) {
     try {
-        const accessToken = request?.headers?.get('Authorization');
-        if (!accessToken) return handleResponse(
-            {
-                status: 401,
-                payload: { code: 'Error', mess: 'Not Authorize', data: null }
-            }
-        );
+        const cookieStore = cookies();
+        const accessToken = cookieStore.get("accessToken")?.value;
+        if (!accessToken) {
+            return handleResponse(
+                {
+                    status: 401,
+                    payload: { code: 'Error', mess: 'Not Authorize', data: null }
+                }
+            );
+        }
+
         const idChiTietHd = Number(body?.IDChiTietHD ?? 0);
         const idHoaDon = Number(body?.IDHoaDon ?? 0);
 
