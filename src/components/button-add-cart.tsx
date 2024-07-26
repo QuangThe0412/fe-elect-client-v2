@@ -6,6 +6,7 @@ import useAuthStore, { TypeUsers } from '@/store/auth.store';
 import useCartStore, { TypeCartStore } from '@/store/cart.store';
 import cartApiRequest from '@/apiRequests/cart';
 import { CartDetails, CartType } from '@/schemaValidations/cart.schema';
+import { ResponsePayloadType } from '@/lib/http';
 
 const ButtonAddCart = ({ id }: { id: number }) => {
     const [loading, setLoading] = React.useState(false);
@@ -29,7 +30,7 @@ const ButtonAddCart = ({ id }: { id: number }) => {
         } else {
             if (IDHoaDon) {
                 const response = await cartApiRequest.addToCart({ IDHoaDon, IDMon: idMon, SoLuong: 1 });
-                const { payload, status } = response as any;
+                const { payload, status } = response as ResponsePayloadType;
                 if (status === 200) {
                     const data = payload?.data as CartDetails[];
                     const updatedCartDetails = [...(cart?.details || [])];
@@ -46,10 +47,10 @@ const ButtonAddCart = ({ id }: { id: number }) => {
                 }
             } else {
                 const response = await cartApiRequest.addToCart({ IDMon: idMon, SoLuong: 1 });
-                const { payload, status } = response as any;
+                const { payload, status } = response as ResponsePayloadType;
                 if (status === 200) {
                     const newCartGet = await cartApiRequest.getCart();
-                    const { payload, status } = newCartGet as any;
+                    const { payload, status } = newCartGet as ResponsePayloadType;
                     if (status === 200) {
                         const data = payload?.data as CartType;
                         setCart(data);

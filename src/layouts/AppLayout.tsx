@@ -2,7 +2,6 @@ import useAuthStore, { TypeUsers } from '@/store/auth.store'
 import accountApiRequest from "@/apiRequests/account"
 import { useEffect } from "react"
 import { TypeDataAccountRes } from "@/schemaValidations/account.schema"
-import "@/styles/layout.css"
 import { LoginDialog } from "@/components/dialog-login"
 import { tryGetAccessToken } from "@/lib/utils"
 import cartApiRequest from '@/apiRequests/cart';

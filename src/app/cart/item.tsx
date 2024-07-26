@@ -6,7 +6,9 @@ import { emptyImage, formatCurrency, formatNumber } from '@/lib/utils';
 import cartApiRequest from '@/apiRequests/cart';
 import useCartStore, { TypeCartStore } from '@/store/cart.store';
 import { Button } from '@/components/ui/button';
-import { BsTrash2 } from 'react-icons/bs';
+import { BsFillTrash3Fill, BsPlusLg } from 'react-icons/bs';
+import { ResponsePayloadType } from '@/lib/http';
+import { HiOutlineMinus } from 'react-icons/hi2';
 
 function ItemCart({ data }: { data: CartDetails }) {
     const [loading, setLoading] = React.useState(false);
@@ -22,8 +24,7 @@ function ItemCart({ data }: { data: CartDetails }) {
     const onRemove = async (idChiTietHd: number | undefined) => {
         setLoading(true);
         const body = { IDChiTietHD: idChiTietHd }
-        const result = await cartApiRequest.deleteCart(body);
-        const { payload, status } = result;
+        const { payload, status } = await cartApiRequest.deleteCart(body) as ResponsePayloadType;
         if (status === 200) {
             const _cart = cart?.details?.filter(item => item.IDChiTietHD !== idChiTietHd);
             const newcart = { ...cart, details: _cart };
@@ -38,8 +39,7 @@ function ItemCart({ data }: { data: CartDetails }) {
             IDChiTietHD: idChiTietHd,
             SoLuong: SoLuong + 1
         }
-        const result = await cartApiRequest.putCart(body);
-        const { payload, status } = result;
+        const { payload, status } = await cartApiRequest.putCart(body) as ResponsePayloadType;
         if (status === 200) {
             const _cart = cart?.details?.map(item => {
                 const { IDChiTietHD, SoLuong = 0, DonGia = 0, ChietKhau = 0 } = item;
@@ -74,8 +74,7 @@ function ItemCart({ data }: { data: CartDetails }) {
             IDChiTietHD: idChiTietHd,
             SoLuong: SoLuong - 1
         }
-        const result = await cartApiRequest.putCart(body);
-        const { payload, status } = result;
+        const { payload, status } = await cartApiRequest.putCart(body) as ResponsePayloadType;
         if (status === 200) {
             const _cart = cart?.details?.map(item => {
                 const { IDChiTietHD, SoLuong = 0, DonGia = 0, ChietKhau = 0 } = item;
@@ -114,16 +113,20 @@ function ItemCart({ data }: { data: CartDetails }) {
             <td className="text-center">{formatNumber(DonGia)}</td>
             <td className="text-center">
                 <div className="flex items-center justify-center">
-                    <Button disabled={loading} className="border rounded-md py-2 px-4 mr-2" onClick={() => onMinus(IDChiTietHD)}>-</Button>
+                    <Button disabled={loading} className="border rounded-md py-2 px-4 mr-2" onClick={() => onMinus(IDChiTietHD)}>
+                        <HiOutlineMinus />
+                    </Button>
                     <span className="text-center w-8">{formatNumber(SoLuong)}</span>
-                    <Button disabled={loading} className="border rounded-md py-2 px-4 ml-2" onClick={() => onPlus(IDChiTietHD)}>+</Button>
+                    <Button disabled={loading} className="border rounded-md py-2 px-4 ml-2" onClick={() => onPlus(IDChiTietHD)}>
+                        <BsPlusLg />
+                    </Button>
                 </div>
             </td>
             <td className="text-center">{ChietKhau}%</td>
             <td className="text-center">{formatCurrency(total)}</td>
             <td className="text-center">
-                <div className="flex justify-center text-center" onClick={() => onRemove(IDChiTietHD)}>
-                    <BsTrash2 />
+                <div className="flex justify-center cursor-pointer text-center" onClick={() => onRemove(IDChiTietHD)}>
+                    <BsFillTrash3Fill />
                 </div>
             </td>
         </tr>

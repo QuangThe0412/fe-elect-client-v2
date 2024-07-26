@@ -8,6 +8,7 @@ import useAuthStore, { TypeUsers } from '@/store/auth.store';
 import useCartStore, { TypeCartStore } from '@/store/cart.store';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
+import { ResponsePayloadType } from '@/lib/http';
 
 function TotalCart() {
     const router = useRouter();
@@ -30,8 +31,8 @@ function TotalCart() {
 
     const onClickPayment = async () => {
         setLoading(true);
-        const response = await cartApiRequest.paymentCart({ IDHoaDon: cart.IDHoaDon, TrangThai: STATUS_ENUM.PROCESSING });
-        const { payload, status } = response as any;
+        const { payload, status } = await cartApiRequest.paymentCart(
+            { IDHoaDon: cart.IDHoaDon, TrangThai: STATUS_ENUM.PROCESSING }) as ResponsePayloadType;
         if (status === 200) {
             setIsShowDialog(true);
             setCart({});
@@ -56,7 +57,7 @@ function TotalCart() {
                 setIsOpen={setIsShowDialog}
                 textCancel="Hủy" textConfirm="Tiếp tục mua sắm"
                 title="Thông báo" description={description()}
-                callBack={() => router.push(paths.products)}
+                callBack={() => router.push(paths.search)}
             />
             <div className="bg-white rounded-lg shadow-md p-6">
                 <h2 className="text-lg font-semibold mb-4">Tổng tiền</h2>
@@ -73,7 +74,8 @@ function TotalCart() {
                     <span className="font-semibold">Tổng</span>
                     <span className="font-semibold">{formatCurrency(totalAfter)}</span>
                 </div>
-                <Button disabled={disablePayment} className="bg-blue-500 !text-white py-2 px-4 rounded-lg mt-4 w-full"
+                <Button disabled={disablePayment} 
+                className="bg-accent-custom py-2 px-4 rounded-lg mt-4 w-full"
                     onClick={onClickPayment}
                 >
                     Thanh toán
