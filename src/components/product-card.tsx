@@ -29,10 +29,10 @@ const ProductCard = ({ data }: { data: ProductResType }) => {
     const price = formatCurrency(DonGiaBanLe);
     const priceSale = formatCurrency(DonGiaBanLe + (DonGiaBanLe * 0.2));
     return (
-        <div className="px-4 py-4 border border-gray-200 rounded-xl max-w-[400px]
+        <div className="px-4 py-4 border border-gray-200 rounded-xl min-w-[250px]
         cursor-pointer relative group hover:shadow-2xl">
             <Link href={`${paths.products}/${IDMon}`}>
-                <Image className='w-full h-auto rounded-md'
+                <Image className='img-card rounded-md'
                     priority
                     src={src}
                     height={200}

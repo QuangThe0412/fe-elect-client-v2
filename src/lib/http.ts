@@ -26,6 +26,8 @@ const request = async <ResponsePayloadType>(
     };
     const baseUrl = options?.baseUrl === undefined ? process.env.NEXT_PUBLIC_API_URL : process.env.NEXT_PUBLIC_DOMAIN;
     const fullUrl = url.startsWith('/') ? `${baseUrl}${url}` : `/${baseUrl}${url}`;
+    console.log({ fullUrl });
+    
     const res = await fetch(fullUrl, {
       ...options,
       headers: {

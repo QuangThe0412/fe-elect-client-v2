@@ -50,7 +50,7 @@ const AppLayout = ({ children }: any) => {
         };
 
         const fetchCart = async () => {
-            const response = await cartApiRequest.getCart(); 
+            const response = await cartApiRequest.getCart();
             const { status, payload } = response as ResponsePayloadType;
             if (status === 200) {
                 const data = payload?.data as CartType;
@@ -67,7 +67,7 @@ const AppLayout = ({ children }: any) => {
             <HeaderMain number={cart && cart?.details?.length} />
             <Navbar />
             <LoginDialog />
-            <MobileNavBar />
+            <MobileNavBar numberCart={cart && cart?.details?.length} />
             <div className="overflow-hidden">
                 {children}
             </div>

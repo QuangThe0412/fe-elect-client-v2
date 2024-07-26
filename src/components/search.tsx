@@ -12,25 +12,25 @@ export function Search() {
     const params = new URLSearchParams(searchParams);
     params.delete('page');
     params.delete('category');
-    
+
     if (term) {
       params.set('query', term);
     } else {
       params.set('query', '');
     }
 
-    replace(`${paths.products}?${params.toString()}`);
-  }, 300);
+    replace(`${paths.search}?${params.toString()}`);
+  }, 1000);
 
   return (
-      <Input
-        type="search"
-        placeholder="Tìm kiếm..."
-        className="border-gray-200 border p-2 pl-2 pr-6 rounded-lg w-full"
-        onChange={(e) => {
-          handleSearch(e.target.value);
-        }}
-        defaultValue={searchParams.get('query')?.toString()}
-      />
+    <Input
+      type="search"
+      placeholder="Tìm kiếm..."
+      className="border-gray-200 border p-2 pl-2 pr-6 rounded-lg w-full"
+      onChange={(e) => {
+        handleSearch(e.target.value);
+      }}
+      defaultValue={searchParams.get('query')?.toString()}
+    />
   )
 }

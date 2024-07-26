@@ -84,9 +84,18 @@
   body {
     @apply bg-background text-foreground;
   }
+
+  img {
+    width: inherit;
+    height: inherit;
+  }
 }
 
 @layer components {
+  .img-card {
+    @apply w-full h-48 object-contain;
+  }
+
   .header_top__icon_wrapper {
     @apply bg-gray-200 rounded-md p-1.5 text-sm cursor-pointer text-white;
     color: var(--button-text-color);
@@ -158,8 +167,16 @@
     scale: 1;
   }
 
-  .md-total-cart {
-    margin-bottom: calc(var(--footer-height) + 8rem);
+  .navbar__link_mobile {
+    @apply text-blackish flex items-center justify-center py-2;
+  }
+
+  .navbar__link_mobile:hover {
+    color: #ff8f9c;
+  }
+
+  .navbar__link_mobile.active {
+    color: #ff8f9c;
   }
 
   button {
@@ -212,4 +229,8 @@ tbody {
   flex: 1;
   display: block;
   overflow-y: auto;
+}
+
+[vaul-drawer][vaul-drawer-direction=right]::after {
+  width: unset !important;
 }

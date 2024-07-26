@@ -17,11 +17,11 @@ export const paths = {
 
 export const pathsArray: PathMenu[] = [
     {
-        name: "HOME",
+        name: "TRANG CHỦ",
         path: paths.home,
     },
     {
-        name: "PRODUCTS",
+        name: "SẢN PHẨM",
         path: paths.search,
     }
 ];

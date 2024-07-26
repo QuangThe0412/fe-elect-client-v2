@@ -39,7 +39,7 @@ const ButtonAddCartPageDetails = ({ idProduct }: { idProduct: number }) => {
                     const data = payload?.data as CartDetails[];
                     const updatedCartDetails = [...(cart?.details || [])];
 
-                    data.forEach((dataItem) => {
+                    data?.forEach((dataItem) => {
                         const index = updatedCartDetails.findIndex(cartItem => cartItem.IDMon === dataItem.IDMon);
                         if (index > -1) {
                             updatedCartDetails[index] = { ...updatedCartDetails[index], ...dataItem };

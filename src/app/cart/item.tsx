@@ -23,7 +23,7 @@ function ItemCart({ data }: { data: CartDetails }) {
     const src = `${(configEnv.NEXT_PUBLIC_LINK_IMAGE_GG ?? '') + image}`
     const total = DonGia * SoLuong
 
-    const onRemove = async (idChiTietHd: number | undefined) => {
+    const onRemove = async (idChiTietHd: number) => {
         setLoadingCart(true);
         const body = { IDChiTietHD: idChiTietHd }
         const { payload, status } = await cartApiRequest.deleteCart(body) as ResponsePayloadType;
@@ -35,7 +35,7 @@ function ItemCart({ data }: { data: CartDetails }) {
         }
     }
 
-    const onPlus = async (idChiTietHd: number | undefined) => {
+    const onPlus = async (idChiTietHd: number) => {
         setLoadingCart(true);
         const body = {
             IDChiTietHD: idChiTietHd,
@@ -66,7 +66,7 @@ function ItemCart({ data }: { data: CartDetails }) {
         }
     }
 
-    const onMinus = async (idChiTietHd: number | undefined) => {
+    const onMinus = async (idChiTietHd: number) => {
         setLoadingCart(true);
         if (SoLuong <= 1) {
             await onRemove(idChiTietHd);
@@ -107,31 +107,31 @@ function ItemCart({ data }: { data: CartDetails }) {
                 <Link className="flex items-center" href={`${paths.products}/${IDMon}`}>
                     <Image width={100} height={100} className="px-4 py-4"
                         src={src}
-                        onError={emptyImage}
-                        alt="Product image" />
-                    <span title={TenMon} className="text-sm line-clamp-2">{TenMon}</span>
+                        // onError={emptyImage}
+                        alt={`${TenMon}`} />
+                    <span title={TenMon} className="text-sm line-clamp-2 hidden md:block">{TenMon}</span>
                 </Link>
             </td>
             <td className="text-center">{formatNumber(DonGia)}</td>
             <td className="text-center">
                 <div className="flex items-center justify-center">
-                    <Button disabled={loadingCart} className="border rounded-md py-2 px-4 mr-2"
-                        onClick={() => onMinus(IDChiTietHD)}>
+                    <Button disabled={loadingCart} className="border rounded-md mr-0 py-0 px-0 md:py-2 px-4 mr-2"
+                        onClick={() => onMinus(Number(IDChiTietHD))}>
                         <HiOutlineMinus />
                     </Button>
                     <span className="text-center w-8">{formatNumber(SoLuong)}</span>
-                    <Button disabled={loadingCart} className="border rounded-md py-2 px-4 ml-2"
-                        onClick={() => onPlus(IDChiTietHD)}>
+                    <Button disabled={loadingCart} className="border rounded-md mr-0 py-0 px-0 md:py-2 px-4 mr-2"
+                        onClick={() => onPlus(Number(IDChiTietHD))}>
                         <BsPlusLg />
                     </Button>
                 </div>
             </td>
-            <td className="text-center">{ChietKhau}%</td>
+            <td className="text-center hidden md:table-cell">{ChietKhau}%</td>
             <td className="text-center">{formatCurrency(total)}</td>
-            <td className="text-center">
+            <td className="text-center hidden md:table-cell">
                 <Button className="flex justify-center cursor-pointer text-center"
                     disabled={loadingCart}
-                    onClick={() => onRemove(IDChiTietHD)}>
+                    onClick={() => onRemove(Number(IDChiTietHD))}>
                     <BsFillTrash3Fill />
                 </Button>
             </td>

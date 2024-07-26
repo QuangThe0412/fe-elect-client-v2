@@ -7,16 +7,14 @@ import Link from 'next/link';
 import { paths } from '@/lib/paths';
 
 const Slide = ({ data }: { data: ProductResType }) => {
-    const { IDMon, IDLoaiMon, TenMon = '', Image: image,
-        DVTMon, DonGiaBanSi, DonGiaBanLe, DonGiaVon,
-        SoLuongTonKho, ThoiGianBH, GhiChu } = data;
+    const { IDMon, TenMon = '', Image: image, DonGiaBanLe, } = data;
     const src = `${(configEnv.NEXT_PUBLIC_LINK_IMAGE_GG ?? '') + image}`
     return (
-        <Link className='group flex h-full w-full items-center 
+        <div className='group flex h-full w-full items-center 
         justify-center overflow-hidden rounded-lg border 
         bg-white hover:border-blue-600 dark:bg-black relative
-         border-neutral-200 dark:border-neutral-800' href={`${paths.products}/${IDMon}`}>
-            <Image className='rounded-md object-contain'
+         border-neutral-200 dark:border-neutral-800'>
+            <Image className='img-card rounded-md'
                 priority
                 src={src}
                 height={500}
@@ -24,7 +22,7 @@ const Slide = ({ data }: { data: ProductResType }) => {
                 sizes="100vw"
                 alt={TenMon}
             />
-            <div className="absolute bottom-0 left-0 flex w-full px-4 pb-4">
+            <Link className="absolute bottom-0 left-0 flex w-full px-4 pb-4" href={`${paths.products}/${IDMon}`}>
                 <div className="flex items-center rounded-full border bg-white/70 
                 p-1 text-xs font-semibold text-black backdrop-blur-md 
                 dark:border-neutral-800 dark:bg-black/70 dark:text-white">
@@ -35,8 +33,8 @@ const Slide = ({ data }: { data: ProductResType }) => {
                         {formatCurrency(DonGiaBanLe)}
                     </p>
                 </div>
-            </div>
-        </Link>
+            </Link>
+        </div>
     )
 }
 
