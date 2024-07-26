@@ -125,9 +125,11 @@ function ItemCart({ data }: { data: CartDetails }) {
             <td className="text-center">{ChietKhau}%</td>
             <td className="text-center">{formatCurrency(total)}</td>
             <td className="text-center">
-                <div className="flex justify-center cursor-pointer text-center" onClick={() => onRemove(IDChiTietHD)}>
+                <Button className="flex justify-center cursor-pointer text-center"
+                    disabled={loading}
+                    onClick={() => onRemove(IDChiTietHD)}>
                     <BsFillTrash3Fill />
-                </div>
+                </Button>
             </td>
         </tr>
     )

@@ -22,6 +22,7 @@ import useCartStore, { TypeCartStore } from "@/store/cart.store";
 import { CartType } from "@/schemaValidations/cart.schema";
 import { useRouter } from 'next/navigation';
 import { paths } from '@/lib/paths';
+import { ResponsePayloadType } from '@/lib/http';
 
 export function UserNav() {
   const router = useRouter()
@@ -48,7 +49,7 @@ export function UserNav() {
           ? (
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="ghost" className="relative h-8 w-8 rounded-full">
+                <Button variant="ghost" className="relative h-8 w-8 rounded-full bg-accent-custom">
                   <Avatar className="h-8 w-8">
                     <AvatarFallback>{user?.TenKhachHang?.split('')[0]?.toUpperCase()}</AvatarFallback>
                   </Avatar>
@@ -78,7 +79,7 @@ export function UserNav() {
                 </DropdownMenuGroup>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem onClick={async () => {
-                  const { status } = await accountApiRequest.logout();
+                  const { status } = await accountApiRequest.logout() as ResponsePayloadType;
                   if (status === 200) {
                     setUser({} as TypeDataAccountRes)
                     setCart({} as CartType)

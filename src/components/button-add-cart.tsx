@@ -9,14 +9,15 @@ import { CartDetails, CartType } from '@/schemaValidations/cart.schema';
 import { ResponsePayloadType } from '@/lib/http';
 
 const ButtonAddCart = ({ id }: { id: number }) => {
-    const [loading, setLoading] = React.useState(false);
     const { user, setIsShowLoginDialog } = useAuthStore((state: TypeUsers) => ({
         user: state.user,
         setIsShowLoginDialog: state.setIsShowLoginDialog
     }))
-    const { cart, setCart } = useCartStore((state: TypeCartStore) => ({
+    const { cart, setCart, loadingCart, setLoadingCart } = useCartStore((state: TypeCartStore) => ({
         cart: state.cart,
         setCart: state.setCart,
+        loadingCart: state.loadingCart,
+        setLoadingCart: state.setLoadingCart
     }))
 
     const IDHoaDon = cart?.IDHoaDon;
@@ -24,7 +25,7 @@ const ButtonAddCart = ({ id }: { id: number }) => {
     const hadUser = !!(user && Object.keys(user).length);
 
     const handleAddToCart = async (idMon: number | undefined) => {
-        setLoading(true);
+        setLoadingCart(true);
         if (!hadUser) {
             setIsShowLoginDialog(true);
         } else {
@@ -58,12 +59,12 @@ const ButtonAddCart = ({ id }: { id: number }) => {
                 }
             }
         }
-        setLoading(false);
+        setLoadingCart(false);
     }
 
     return (
         <div className='block text-right'>
-            <Button loading={loading}
+            <Button loading={loadingCart}
                 onClick={() => handleAddToCart(id)}
                 className="bg-accent text-white px-4 py-2 rounded-lg">
                 <BsCart size={20} />
