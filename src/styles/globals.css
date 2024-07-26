@@ -101,6 +101,11 @@
     background-color: var(--blackish) !important;
   }
 
+  .bg-transparent {
+    background-color: transparent !important;
+    border: none !important;
+  }
+
   .bg-accent-custom {
     background-color: var(--accent) !important;
     color: white !important;

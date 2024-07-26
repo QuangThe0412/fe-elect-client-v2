@@ -1,12 +1,14 @@
 "use client";
 import React from 'react'
 import { Button } from './ui/button';
-import { BsCart } from 'react-icons/bs';
+import { BsCart, BsPlusLg } from 'react-icons/bs';
 import useAuthStore, { TypeUsers } from '@/store/auth.store';
 import useCartStore, { TypeCartStore } from '@/store/cart.store';
 import cartApiRequest from '@/apiRequests/cart';
 import { CartDetails, CartType } from '@/schemaValidations/cart.schema';
 import { ResponsePayloadType } from '@/lib/http';
+import { HiOutlineMinus } from 'react-icons/hi2';
+import { formatNumber } from '@/lib/utils';
 
 const ButtonAddCart = ({ id }: { id: number }) => {
     const { user, setIsShowLoginDialog } = useAuthStore((state: TypeUsers) => ({
@@ -19,6 +21,8 @@ const ButtonAddCart = ({ id }: { id: number }) => {
         loadingCart: state.loadingCart,
         setLoadingCart: state.setLoadingCart
     }))
+
+    const monExistedInCart = cart?.details?.find(item => item.IDMon === id) as CartDetails;
 
     const IDHoaDon = cart?.IDHoaDon;
 
@@ -62,14 +66,110 @@ const ButtonAddCart = ({ id }: { id: number }) => {
         setLoadingCart(false);
     }
 
+    const onRemove = async (idChiTietHd: number | undefined) => {
+        setLoadingCart(true);
+        const body = { IDChiTietHD: idChiTietHd }
+        const { payload, status } = await cartApiRequest.deleteCart(body) as ResponsePayloadType;
+        if (status === 200) {
+            const _cart = cart?.details?.filter(item => item.IDChiTietHD !== idChiTietHd);
+            const newcart = { ...cart, details: _cart };
+            setCart(newcart);
+            setLoadingCart(false);
+        }
+    }
+
+    const onPlus = async (idChiTietHd: number | undefined) => {
+        setLoadingCart(true);
+        const body = {
+            IDChiTietHD: idChiTietHd,
+            SoLuong: (monExistedInCart?.SoLuong ?? 0) + 1
+        }
+        const { payload, status } = await cartApiRequest.putCart(body) as ResponsePayloadType;
+        if (status === 200) {
+            const _cart = cart?.details?.map(item => {
+                const { IDChiTietHD, SoLuong = 0, DonGia = 0, ChietKhau = 0 } = item;
+                const _soLuong = SoLuong + 1;
+                const moneyBefore = DonGia * _soLuong;
+                const moneyDiscount = (moneyBefore * ChietKhau) / 100;
+                const moneyAfter = moneyBefore - moneyDiscount;
+                if (IDChiTietHD === idChiTietHd) {
+                    return {
+                        ...item,
+                        TienChuaCK: moneyBefore,
+                        TienCK: moneyDiscount,
+                        TienSauCK: moneyAfter,
+                        SoLuong: _soLuong
+                    }
+                }
+                return item;
+            });
+            const newcart = { ...cart, details: _cart };
+            setCart(newcart);
+            setLoadingCart(false);
+        }
+    }
+
+    const onMinus = async (idChiTietHd: number | undefined) => {
+        setLoadingCart(true);
+        if ((monExistedInCart?.SoLuong ?? 0) <= 1) {
+            await onRemove(idChiTietHd);
+            return;
+        }
+        const body = {
+            IDChiTietHD: idChiTietHd,
+            SoLuong: (monExistedInCart?.SoLuong ?? 0) - 1
+        }
+        const { payload, status } = await cartApiRequest.putCart(body) as ResponsePayloadType;
+        if (status === 200) {
+            const _cart = cart?.details?.map(item => {
+                const { IDChiTietHD, SoLuong = 0, DonGia = 0, ChietKhau = 0 } = item;
+                const _soLuong = SoLuong - 1;
+                const moneyBefore = DonGia * _soLuong;
+                const moneyDiscount = (moneyBefore * ChietKhau) / 100;
+                const moneyAfter = moneyBefore - moneyDiscount;
+                if (IDChiTietHD === idChiTietHd) {
+                    return {
+                        ...item,
+                        TienChuaCK: moneyBefore,
+                        TienCK: moneyDiscount,
+                        TienSauCK: moneyAfter,
+                        SoLuong: _soLuong
+                    }
+                }
+                return item;
+            });
+            const newcart = { ...cart, details: _cart };
+            setCart(newcart);
+            setLoadingCart(false);
+        }
+    }
+
     return (
-        <div className='block text-right'>
-            <Button loading={loadingCart}
-                onClick={() => handleAddToCart(id)}
-                className="bg-accent text-white px-4 py-2 rounded-lg">
-                <BsCart size={20} />
-            </Button>
-        </div>
+        <>
+            {
+                monExistedInCart?.IDMon === id ?
+                    <div className="flex items-center justify-center">
+                        <Button disabled={loadingCart} className="border rounded-md py-2 px-4 mr-2"
+                            onClick={() => onMinus(monExistedInCart?.IDChiTietHD)}
+                        >
+                            <HiOutlineMinus />
+                        </Button>
+                        <span className="text-center w-8">{formatNumber(monExistedInCart?.SoLuong)}</span>
+                        <Button disabled={loadingCart} className="border rounded-md py-2 px-4 ml-2"
+                            onClick={() => onPlus(monExistedInCart?.IDChiTietHD)}
+                        >
+                            <BsPlusLg />
+                        </Button>
+                    </div>
+                    :
+                    <div className='block text-right'>
+                        <Button disabled={loadingCart} onClick={() => handleAddToCart(id)}
+                            className='bg-accent-custom text-white text-left'>
+                            <BsCart className='inline-block' />
+                        </Button>
+                    </div>
+            }
+        </>
     )
 }
 

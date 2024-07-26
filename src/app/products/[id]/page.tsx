@@ -53,7 +53,7 @@ const ProductDetailPage = async ({ params }: { params: { id: string } }) => {
                         <h2 className='mb-2 text-xl font-semibold'>Chi tiết</h2>
                         <p className='text-base'>{GhiChu}</p>
                     </div>
-                    <div className='text-center'>
+                    <div className='text-center mt-4'>
                         <ButtonAddCartPageDetails idProduct={IDMon ?? 0} />
                     </div>
                 </div>

@@ -7,6 +7,9 @@ import { Button } from '@/components/ui/button';
 import { BsFillTrash3Fill, BsPlusLg } from 'react-icons/bs';
 import { ResponsePayloadType } from '@/lib/http';
 import { HiOutlineMinus } from 'react-icons/hi2';
+import { paths } from '@/lib/paths';
+import Link from 'next/link';
+import Image from 'next/image';
 
 function ItemCart({ data }: { data: CartDetails }) {
     const { cart, setCart, loadingCart, setLoadingCart } = useCartStore((state: TypeCartStore) => ({
@@ -16,8 +19,8 @@ function ItemCart({ data }: { data: CartDetails }) {
         setLoadingCart: state.setLoadingCart,
     }))
 
-    const { IDChiTietHD, TenMon, SoLuong = 0, DonGia = 0, ChietKhau = 0, Image } = data
-    const src = `${(configEnv.NEXT_PUBLIC_LINK_IMAGE_GG ?? '') + Image}`
+    const { IDChiTietHD, TenMon, SoLuong = 0, DonGia = 0, ChietKhau = 0, Image: image, IDMon } = data
+    const src = `${(configEnv.NEXT_PUBLIC_LINK_IMAGE_GG ?? '') + image}`
     const total = DonGia * SoLuong
 
     const onRemove = async (idChiTietHd: number | undefined) => {
@@ -101,13 +104,13 @@ function ItemCart({ data }: { data: CartDetails }) {
     return (
         <tr key={IDChiTietHD} className='border'>
             <td>
-                <div className="flex items-center">
-                    <img width={100} height={100} className="px-4 py-4"
+                <Link className="flex items-center" href={`${paths.products}/${IDMon}`}>
+                    <Image width={100} height={100} className="px-4 py-4"
                         src={src}
                         onError={emptyImage}
                         alt="Product image" />
                     <span title={TenMon} className="text-sm line-clamp-2">{TenMon}</span>
-                </div>
+                </Link>
             </td>
             <td className="text-center">{formatNumber(DonGia)}</td>
             <td className="text-center">
