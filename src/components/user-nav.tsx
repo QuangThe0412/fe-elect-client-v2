@@ -23,6 +23,7 @@ import { CartType } from "@/schemaValidations/cart.schema";
 import { useRouter } from 'next/navigation';
 import { paths } from '@/lib/paths';
 import { ResponsePayloadType } from '@/lib/http';
+import { FaSpinner } from 'react-icons/fa';
 
 export function UserNav() {
   const router = useRouter()
@@ -39,6 +40,12 @@ export function UserNav() {
   const [openDialogChangePassword, setOpenDialogChangePassword] = useState(false);
 
   const hadUser = !!(user && Object.keys(user).length);
+
+  const [loading, setLoading] = useState(false)
+  const handleClick = () => {
+    setLoading(true);
+    router.push(paths.login);
+  };
 
   return (
     <>
@@ -93,7 +100,11 @@ export function UserNav() {
           )
           : (
             <div>
-              <BsFillPersonFill className="text-accent" size={25} onClick={() => router.push(paths.login)} />
+              {loading ? (
+                <FaSpinner className="text-accent animate-spin" size={25} />
+              ) : (
+                <BsFillPersonFill className="text-accent" size={25} onClick={handleClick} />
+              )}
             </div>
           )
       }

@@ -13,13 +13,14 @@ import { ResponsePayloadType } from '@/lib/http';
 function TotalCart() {
     const router = useRouter();
     const [isShowDialog, setIsShowDialog] = useState(false);
-    const [loading, setLoading] = useState(false);
     const { user } = useAuthStore((state: TypeUsers) => ({
         user: state.user,
     }))
-    const { cart, setCart } = useCartStore((state: TypeCartStore) => ({
+    const { cart, setCart, loadingCart, setLoadingCart } = useCartStore((state: TypeCartStore) => ({
         cart: state.cart,
         setCart: state.setCart,
+        loadingCart: state.loadingCart,
+        setLoadingCart: state.setLoadingCart,
     }))
 
     const details = cart?.details ?? [];
@@ -27,18 +28,18 @@ function TotalCart() {
     const totalAfter = details.reduce((acc, item) => acc + (item.TienSauCK ?? 0), 0);
     const totalDiscount = details.reduce((acc, item) => acc + (item.TienCK ?? 0), 0);
 
-    const disablePayment = loading || !cart?.IDHoaDon;
+    const disablePayment = loadingCart || !cart?.IDHoaDon;
 
     const onClickPayment = async () => {
-        setLoading(true);
+        setLoadingCart(true);
         const { payload, status } = await cartApiRequest.paymentCart(
             { IDHoaDon: cart.IDHoaDon, TrangThai: STATUS_ENUM.PROCESSING }) as ResponsePayloadType;
         if (status === 200) {
             setIsShowDialog(true);
             setCart({});
-            setLoading(false);
+            setLoadingCart(false);
         }
-        setLoading(false);
+        setLoadingCart(false);
     }
 
     const description = () => {

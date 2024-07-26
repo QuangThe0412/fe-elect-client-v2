@@ -1,5 +1,3 @@
-"use client";
-import React from 'react'
 import { CartDetails } from '@/schemaValidations/cart.schema'
 import configEnv from '@/configEnv';
 import { emptyImage, formatCurrency, formatNumber } from '@/lib/utils';
@@ -11,10 +9,11 @@ import { ResponsePayloadType } from '@/lib/http';
 import { HiOutlineMinus } from 'react-icons/hi2';
 
 function ItemCart({ data }: { data: CartDetails }) {
-    const [loading, setLoading] = React.useState(false);
-    const { cart, setCart } = useCartStore((state: TypeCartStore) => ({
+    const { cart, setCart, loadingCart, setLoadingCart } = useCartStore((state: TypeCartStore) => ({
         cart: state.cart,
         setCart: state.setCart,
+        loadingCart: state.loadingCart,
+        setLoadingCart: state.setLoadingCart,
     }))
 
     const { IDChiTietHD, TenMon, SoLuong = 0, DonGia = 0, ChietKhau = 0, Image } = data
@@ -22,19 +21,19 @@ function ItemCart({ data }: { data: CartDetails }) {
     const total = DonGia * SoLuong
 
     const onRemove = async (idChiTietHd: number | undefined) => {
-        setLoading(true);
+        setLoadingCart(true);
         const body = { IDChiTietHD: idChiTietHd }
         const { payload, status } = await cartApiRequest.deleteCart(body) as ResponsePayloadType;
         if (status === 200) {
             const _cart = cart?.details?.filter(item => item.IDChiTietHD !== idChiTietHd);
             const newcart = { ...cart, details: _cart };
             setCart(newcart);
-            setLoading(false);
+            setLoadingCart(false);
         }
     }
 
     const onPlus = async (idChiTietHd: number | undefined) => {
-        setLoading(true);
+        setLoadingCart(true);
         const body = {
             IDChiTietHD: idChiTietHd,
             SoLuong: SoLuong + 1
@@ -60,12 +59,12 @@ function ItemCart({ data }: { data: CartDetails }) {
             });
             const newcart = { ...cart, details: _cart };
             setCart(newcart);
-            setLoading(false);
+            setLoadingCart(false);
         }
     }
 
     const onMinus = async (idChiTietHd: number | undefined) => {
-        setLoading(true);
+        setLoadingCart(true);
         if (SoLuong <= 1) {
             await onRemove(idChiTietHd);
             return;
@@ -95,7 +94,7 @@ function ItemCart({ data }: { data: CartDetails }) {
             });
             const newcart = { ...cart, details: _cart };
             setCart(newcart);
-            setLoading(false);
+            setLoadingCart(false);
         }
     }
 
@@ -113,11 +112,13 @@ function ItemCart({ data }: { data: CartDetails }) {
             <td className="text-center">{formatNumber(DonGia)}</td>
             <td className="text-center">
                 <div className="flex items-center justify-center">
-                    <Button disabled={loading} className="border rounded-md py-2 px-4 mr-2" onClick={() => onMinus(IDChiTietHD)}>
+                    <Button disabled={loadingCart} className="border rounded-md py-2 px-4 mr-2"
+                        onClick={() => onMinus(IDChiTietHD)}>
                         <HiOutlineMinus />
                     </Button>
                     <span className="text-center w-8">{formatNumber(SoLuong)}</span>
-                    <Button disabled={loading} className="border rounded-md py-2 px-4 ml-2" onClick={() => onPlus(IDChiTietHD)}>
+                    <Button disabled={loadingCart} className="border rounded-md py-2 px-4 ml-2"
+                        onClick={() => onPlus(IDChiTietHD)}>
                         <BsPlusLg />
                     </Button>
                 </div>
@@ -126,7 +127,7 @@ function ItemCart({ data }: { data: CartDetails }) {
             <td className="text-center">{formatCurrency(total)}</td>
             <td className="text-center">
                 <Button className="flex justify-center cursor-pointer text-center"
-                    disabled={loading}
+                    disabled={loadingCart}
                     onClick={() => onRemove(IDChiTietHD)}>
                     <BsFillTrash3Fill />
                 </Button>
