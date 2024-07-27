@@ -1,6 +1,8 @@
 "use client";
 
-import { BsLock, BsFileLock, BsFillPersonFill, BsChevronRight } from 'react-icons/bs'
+import { BsFillPersonFill } from 'react-icons/bs'
+import { RiLogoutCircleLine } from "react-icons/ri";
+import { IoSettingsOutline } from "react-icons/io5";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
 import {
@@ -27,9 +29,11 @@ import { FaSpinner } from 'react-icons/fa';
 
 export function UserNav() {
   const router = useRouter()
-  const { user, setUser } = useAuthStore((state: TypeUsers) => ({
+  const { user, setUser, isShowLoginDialog, setIsShowLoginDialog } = useAuthStore((state: TypeUsers) => ({
     user: state.user,
     setUser: state.setUser,
+    isShowLoginDialog: state.isShowLoginDialog,
+    setIsShowLoginDialog: state.setIsShowLoginDialog
   }))
 
   const { setCart } = useCartStore((state: TypeCartStore) => ({
@@ -44,7 +48,8 @@ export function UserNav() {
   const [loading, setLoading] = useState(false)
   const handleClick = () => {
     setLoading(true);
-    router.push(paths.login);
+    setIsShowLoginDialog(true);
+    // router.push(paths.login);
   };
 
   return (
@@ -80,7 +85,7 @@ export function UserNav() {
                     <span>Cập nhật thông tin</span>
                   </DropdownMenuItem>
                   <DropdownMenuItem onClick={() => setOpenDialogChangePassword(true)}>
-                    <BsFileLock className="mr-2 h-4 w-4" />
+                    <IoSettingsOutline className="mr-2 h-4 w-4" />
                     <span>Đổi mật khẩu</span>
                   </DropdownMenuItem>
                 </DropdownMenuGroup>
@@ -92,7 +97,7 @@ export function UserNav() {
                     setCart({} as CartType)
                   }
                 }}>
-                  <BsLock className="mr-2 h-4 w-4" />
+                  <RiLogoutCircleLine className="mr-2 h-4 w-4" />
                   <span>Đăng xuất</span>
                 </DropdownMenuItem>
               </DropdownMenuContent>

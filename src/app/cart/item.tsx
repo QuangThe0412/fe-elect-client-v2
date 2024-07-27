@@ -112,15 +112,15 @@ function ItemCart({ data }: { data: CartDetails }) {
                     <span title={TenMon} className="text-sm line-clamp-2 hidden md:block">{TenMon}</span>
                 </Link>
             </td>
-            <td className="text-center">{formatNumber(DonGia)}</td>
+            <td className="text-center">{formatCurrency(DonGia)}</td>
             <td className="text-center">
                 <div className="flex items-center justify-center">
-                    <Button disabled={loadingCart} className="border rounded-md mr-0 py-0 px-0 md:py-2 px-4 mr-2"
+                    <Button disabled={loadingCart} className="border rounded-md mr-0 py-0 px-1 md:py-2 md:px-4 md:mr-2"
                         onClick={() => onMinus(Number(IDChiTietHD))}>
                         <HiOutlineMinus />
                     </Button>
                     <span className="text-center w-8">{formatNumber(SoLuong)}</span>
-                    <Button disabled={loadingCart} className="border rounded-md mr-0 py-0 px-0 md:py-2 px-4 mr-2"
+                    <Button disabled={loadingCart} className="border rounded-md mr-0 py-0 px-1 md:py-2 md:px-4 md:mr-2"
                         onClick={() => onPlus(Number(IDChiTietHD))}>
                         <BsPlusLg />
                     </Button>

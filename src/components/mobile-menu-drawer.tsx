@@ -30,12 +30,12 @@ const MobileMenuDrawer = () => {
     });
     return (
         <Drawer direction='right' open={open} onOpenChange={setOpen}>
-            <DrawerTrigger asChild>
+            <DrawerTrigger>
                 <LuMenu />
             </DrawerTrigger>
             <DrawerPortal>
                 <DrawerOverlay className="fixed inset-0 bg-black/40 w-auto" />
-                <DrawerContent className="bg-white flex flex-col rounded-t-[10px] 
+                <DrawerContent className="bg-white flex flex-col rounded-t-lg 
                 h-full w-[200px] mt-24 ml-auto fixed bottom-0 right-0">
                     <div className="p-4 bg-white flex-1 h-full">
                         <div className="w-auto mx-auto" onClick={() => setOpen(false)}>
