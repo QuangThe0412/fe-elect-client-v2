@@ -66,7 +66,6 @@ const ProductDetailPage = async ({ params }: { params: { id: string } }) => {
                             src={src}
                             height={500}
                             width={600}
-                            sizes="100vw"
                             alt={TenMon}
                         />
                     </div>
