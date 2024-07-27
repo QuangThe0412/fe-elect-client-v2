@@ -33,7 +33,7 @@ const MobileNavBar = ({ numberCart }: MobileNavBarProps) => {
     return (
         <>
             <div className="lg:hidden fixed bottom-0 w-full 
-                                bg-white left-[50%] -translate-x-[50%] max-w-[500px] 
+                                bg-white left-[50%] -translate-x-[50%]
                                 mob_navbar px-8 z-10 border">
                 <div className="flex justify-between items-center text-[28px] py-2">
                     <MobileMenuDrawer />

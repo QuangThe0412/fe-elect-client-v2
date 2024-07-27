@@ -4,6 +4,7 @@ import { paths } from "@/lib/paths";
 import { Search } from "./search";
 import { UserNav } from "./user-nav";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 type CartIconProps = {
     number: number | undefined;
@@ -15,7 +16,7 @@ const HeaderMain = ({ number }: CartIconProps) => {
         <div className="border-b border-gray-200 py-6">
             <div className="container sm:flex justify-between items-center">
                 <div className="font-bold text-4xl text-center pb-4 sm:pb-0 text-blackish">
-                    <span className="text-accent">Tâm nhi</span>
+                    <Link href={paths.home} className="text-accent">Tâm nhi</Link>
                 </div>
                 <div className="w-full sm:w-[300px] md:w-[70%] relative">
                     <Search />

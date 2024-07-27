@@ -97,7 +97,7 @@
   }
 
   .header_top__icon_wrapper {
-    @apply bg-gray-200 rounded-md p-1.5 text-sm cursor-pointer text-white;
+    @apply bg-gray-200 rounded-md px-2 py-1 text-base cursor-pointer text-white;
     color: var(--button-text-color);
   }
 
