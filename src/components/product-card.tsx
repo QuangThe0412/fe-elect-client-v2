@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { FaStar, FaRegStar } from "react-icons/fa";
 import { ProductResType } from '@/schemaValidations/product.schema';
 import configEnv from '@/configEnv';

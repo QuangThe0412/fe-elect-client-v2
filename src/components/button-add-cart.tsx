@@ -1,5 +1,4 @@
 "use client";
-import React from 'react'
 import { Button } from './ui/button';
 import { BsCart, BsPlusLg } from 'react-icons/bs';
 import useAuthStore, { TypeUsers } from '@/store/auth.store';

@@ -1,4 +1,3 @@
-import React from 'react'
 import SlideRelated from '../slide-related-product/slider'
 import productApiRequest from '@/apiRequests/product'
 import { ProductResType } from '@/schemaValidations/product.schema'

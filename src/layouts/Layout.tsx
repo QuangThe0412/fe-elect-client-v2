@@ -1,7 +1,6 @@
 "use client";
 import { paths } from '@/lib/paths';
 import { usePathname } from 'next/navigation';
-import React from 'react'
 import AppLayout from './AppLayout';
 import PublicLayout from './PublicLayout';
 import { Toaster } from '@/components/ui/toaster';

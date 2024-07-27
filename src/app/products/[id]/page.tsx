@@ -3,7 +3,6 @@ import configEnv from '@/configEnv';
 import { formatCurrency, formatNumber, removeAccentAndSpecialChars } from '@/lib/utils';
 import { ProductResType } from '@/schemaValidations/product.schema';
 import Image from 'next/image';
-import React from 'react'
 import ButtonAddCartPageDetails from '../../../components/products/button-add-cart-details';
 import RelatedProducts from '../../../components/products/related-products';
 import { ResponsePayloadType } from '@/lib/http';

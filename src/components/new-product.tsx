@@ -1,4 +1,3 @@
-import React from 'react'
 import ProductCard from './product-card';
 import productApiRequest from '@/apiRequests/product';
 import { ProductResType } from '@/schemaValidations/product.schema';

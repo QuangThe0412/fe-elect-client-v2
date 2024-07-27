@@ -1,5 +1,4 @@
 'use client';
-import React from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { defaultSort } from '@/lib/constants';

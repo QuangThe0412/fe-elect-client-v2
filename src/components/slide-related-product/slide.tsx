@@ -1,4 +1,3 @@
-import React from 'react'
 import { ProductResType } from '@/schemaValidations/product.schema';
 import configEnv from '@/configEnv';
 import Image from 'next/image';

@@ -1,4 +1,3 @@
-import React from 'react'
 import {
     Drawer,
     DrawerContent,
@@ -14,9 +13,10 @@ import { usePathname } from 'next/navigation'
 import { pathsArray } from '@/lib/paths'
 import Link from 'next/link'
 import { Separator } from "@/components/ui/separator"
+import { useState } from "react"
 
 const MobileMenuDrawer = () => {
-    const [open, setOpen] = React.useState(false);
+    const [open, setOpen] = useState(false);
     const pathname = usePathname();
     const firstPath = pathname?.split('/')[1];
     const Paths = pathsArray.map((item) => {

@@ -3,7 +3,6 @@ import { paths } from '@/lib/paths'
 import { removeAccentAndSpecialChars } from '@/lib/utils';
 import { CategoryResType } from '@/schemaValidations/product.schema'
 import { usePathname, useRouter } from 'next/navigation'
-import React from 'react'
 import { BsHammer } from 'react-icons/bs'
 
 

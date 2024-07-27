@@ -1,4 +1,3 @@
-import React from 'react';
 import { defaultSort } from '@lib/constants';
 import productApiRequest from '@/apiRequests/product';
 import { formatNumber } from '@/lib/utils';

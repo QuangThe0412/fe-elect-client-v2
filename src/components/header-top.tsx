@@ -1,5 +1,3 @@
-
-import React from 'react'
 import { ZaloQR } from './zalo'
 const HeaderTop = () => {
     return (

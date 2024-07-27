@@ -1,6 +1,5 @@
 import { paths } from '@/lib/paths'
 import Link from 'next/link'
-import React from 'react'
 import img404 from '../../public/notfound.gif'
 import Image from 'next/image'
 
@@ -25,8 +24,12 @@ const NotFoundPage = () => {
                         Quay lại trang chủ
                     </Link>
                 </div>
-                <div className="max-w-lg">
-                    <Image className='rounded-lg' width={500} height={500} src={img404} alt="404" />
+                <div className="max-w-lg relative">
+                    <Image
+                        priority
+                        className='rounded-lg'
+                        width={500} height={500}
+                        src={img404} alt="404" />
                 </div>
             </div>
         </div>
