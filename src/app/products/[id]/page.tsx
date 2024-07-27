@@ -9,6 +9,7 @@ import { ResponsePayloadType } from '@/lib/http';
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { cache } from 'react';
+import Script from 'next/script'
 
 const fetchDetail = cache(productApiRequest.getDetail);
 
@@ -32,11 +33,28 @@ export async function generateMetadata({ params }: { params: { id: string } }): 
 }
 
 const ProductDetailPage = async ({ params }: { params: { id: string } }) => {
-    const products = await fetchDetailProducts(params.id);
+    const product = await fetchDetailProducts(params.id);
     const { IDMon, IDLoaiMon, TenMon = '', Image: image,
         DVTMon, DonGiaBanSi, DonGiaBanLe, DonGiaVon,
-        SoLuongTonKho, ThoiGianBH, GhiChu } = products;
+        SoLuongTonKho, ThoiGianBH, GhiChu } = product;
     const src = `${(configEnv.NEXT_PUBLIC_LINK_IMAGE_GG ?? '') + image}`
+
+    const productJsonLd = {
+        '@context': 'https://schema.org',
+        '@type': 'Product',
+        name: TenMon,
+        description: GhiChu,
+        image: src,
+        offers: {
+            '@type': 'AggregateOffer',
+            availability: SoLuongTonKho
+                ? 'https://schema.org/InStock'
+                : 'https://schema.org/OutOfStock',
+            priceCurrency: DonGiaBanLe,
+            highPrice: DonGiaBanLe,
+            lowPrice: DonGiaBanSi
+        }
+    };
 
     return (
         <div className='container pt-6 lg:pt-0'>
@@ -79,6 +97,9 @@ const ProductDetailPage = async ({ params }: { params: { id: string } }) => {
             <div>
                 <RelatedProducts idCategory={IDLoaiMon} />
             </div>
+            <Script strategy='lazyOnload' type="application/ld+json"
+                dangerouslySetInnerHTML={{ __html: JSON.stringify(productJsonLd) }}
+            />
         </div>
     )
 }
