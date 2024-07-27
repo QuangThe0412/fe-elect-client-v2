@@ -1,4 +1,9 @@
+import { Metadata } from 'next'
 import { SidebarProduct } from './silebarProduct'
+
+export const metadata: Metadata = {
+    title: 'Danh sách sản phẩm',
+}
 
 function ProductLayout({ children }: { children: React.ReactNode }) {
     return (

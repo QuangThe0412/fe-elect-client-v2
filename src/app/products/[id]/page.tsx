@@ -1,19 +1,35 @@
 import productApiRequest from '@/apiRequests/product'
 import configEnv from '@/configEnv';
-import { formatCurrency, formatNumber } from '@/lib/utils';
+import { formatCurrency, formatNumber, removeAccentAndSpecialChars } from '@/lib/utils';
 import { ProductResType } from '@/schemaValidations/product.schema';
 import Image from 'next/image';
 import React from 'react'
 import ButtonAddCartPageDetails from '../../../components/products/button-add-cart-details';
 import RelatedProducts from '../../../components/products/related-products';
 import { ResponsePayloadType } from '@/lib/http';
+import { Metadata } from 'next';
+import { notFound } from 'next/navigation';
+import { cache } from 'react';
+
+const fetchDetail = cache(productApiRequest.getDetail);
 
 const fetchDetailProducts = async (id: string) => {
-    const { status, payload } = await productApiRequest.getDetail(id) as ResponsePayloadType;
+    const { status, payload } = await fetchDetail(id) as ResponsePayloadType;
     if (status === 200) {
         return (payload as any)?.data as ProductResType;
     }
     return {} as ProductResType;
+}
+
+export async function generateMetadata({ params }: { params: { id: string } }): Promise<Metadata> {
+    const collection = await fetchDetailProducts(params.id);
+    const { TenMon = '' } = collection;
+
+    if (!collection) return notFound();
+    return {
+        title: TenMon,
+        description: `Sản phẩm + ${TenMon}, ${TenMon} chất lượng, ${TenMon} giá rẻ,${removeAccentAndSpecialChars(TenMon)}`
+    };
 }
 
 const ProductDetailPage = async ({ params }: { params: { id: string } }) => {

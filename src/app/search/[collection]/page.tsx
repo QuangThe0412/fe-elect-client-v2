@@ -1,11 +1,7 @@
 import productApiRequest from '@/apiRequests/product';
-import { defaultSort, sorting } from '@/lib/constants';
-import { Button } from '@/components/ui/button';
-import { VscSettings } from 'react-icons/vsc';
-import { formatNumber, removeAccentAndSpecialChars } from '@/lib/utils';
-import { MdOutlineKeyboardArrowDown } from 'react-icons/md';
+import { defaultSort } from '@/lib/constants';
+import { formatNumber } from '@/lib/utils';
 import DataProduct from '../data';
-import ButtonSeeMore from './button-see-more';
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { CategoryResType } from '@/schemaValidations/product.schema';
@@ -13,6 +9,7 @@ import { PaginationProduct } from '@/components/pagination';
 import { ResponsePayloadType } from '@/lib/http';
 import { MobileCategory } from '../mobile-category';
 import { Filter } from '../filter';
+import { cache } from 'react';
 
 export async function generateMetadata({
     params
@@ -21,13 +18,14 @@ export async function generateMetadata({
 }): Promise<Metadata> {
     const collection = await productApiRequest.getCollectionDetails(params.collection);
     const { status, payload } = collection as ResponsePayloadType;
+    if (status !== 200) return notFound();
     const { TenLoai } = (payload as any)?.data as CategoryResType;
     const title = TenLoai || params.collection;
     if (!collection) return notFound();
 
     return {
-        title: title,
-        description: 'Sản phẩm của ' + TenLoai
+        title: 'Loại sản phẩm ' + title,
+        description: 'Danh sách sản phẩm thuộc ' + TenLoai
     };
 }
 

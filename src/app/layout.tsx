@@ -1,28 +1,24 @@
-'use client';
-
 import { ThemeProvider } from "@/components/theme-provider"
-import { Toaster } from "@/components/ui/toaster"
 import "@styles/globals.css";
 import { Inter as FontSans } from "next/font/google"
 import { cn } from "@/lib/utils"
-import { usePathname } from 'next/navigation'
-import AppLayout from "@/layouts/AppLayout"
-import PublicLayout from "@/layouts/PublicLayout";
-import { paths } from "@/lib/paths";
+import { Metadata } from "next";
+import Layout from "@/layouts/Layout";
 
 const fontSans = FontSans({
   subsets: ["vietnamese"],
   variable: "--font-sans",
 })
 
-export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
-  const pathname = usePathname();
-  const privatePaths = [paths.login, paths.register];
+export const metadata: Metadata = {
+  title: {
+    template: "%s - Điện nước",
+    default: "Điện nước Tâm Nhi",
+  },
+  description: 'Điện nước, dien nuoc,giá rẻ,gia re, chất lượng, chat luong, uy tín, uy tin, chính hãng, chinh hang',
+}
 
-  let Layout = AppLayout;
-  if (privatePaths.includes(pathname)) {
-    Layout = PublicLayout;
-  }
+export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
 
   return (
     <html lang="en" suppressHydrationWarning>
@@ -39,7 +35,6 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         >
           <Layout>
             {children}
-            <Toaster />
           </Layout>
         </ThemeProvider>
       </body>

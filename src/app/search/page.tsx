@@ -1,20 +1,13 @@
 import React from 'react';
-import { defaultSort, sorting } from '@lib/constants';
+import { defaultSort } from '@lib/constants';
 import productApiRequest from '@/apiRequests/product';
-import { Button } from '@/components/ui/button';
-import { VscSettings } from 'react-icons/vsc';
 import { formatNumber } from '@/lib/utils';
-import { MdOutlineKeyboardArrowDown } from 'react-icons/md';
 import DataProduct from './data';
 import { PaginationProduct } from '@/components/pagination';
 import { ResponsePayloadType } from '@/lib/http';
 import { Filter } from './filter';
 import { MobileCategory } from './mobile-category';
 
-export const metadata = {
-    title: 'Search',
-    description: 'Search for products in the store.'
-};
 
 const fetchData = async ({ query, page, sortKey, sortType }
     : { query: string, page: string, sortKey: string, sortType: string }) => {
