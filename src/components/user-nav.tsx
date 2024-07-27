@@ -26,13 +26,13 @@ import { useRouter } from 'next/navigation';
 import { paths } from '@/lib/paths';
 import { ResponsePayloadType } from '@/lib/http';
 import { FaSpinner } from 'react-icons/fa';
+import { isMobile } from 'react-device-detect';
 
 export function UserNav() {
   const router = useRouter()
-  const { user, setUser, isShowLoginDialog, setIsShowLoginDialog } = useAuthStore((state: TypeUsers) => ({
+  const { user, setUser, setIsShowLoginDialog } = useAuthStore((state: TypeUsers) => ({
     user: state.user,
     setUser: state.setUser,
-    isShowLoginDialog: state.isShowLoginDialog,
     setIsShowLoginDialog: state.setIsShowLoginDialog
   }))
 
@@ -47,9 +47,12 @@ export function UserNav() {
 
   const [loading, setLoading] = useState(false)
   const handleClick = () => {
-    setLoading(true);
-    setIsShowLoginDialog(true);
-    // router.push(paths.login);
+    if (isMobile) {
+      setIsShowLoginDialog(true);
+    } else {
+      setLoading(true);
+      router.push(paths.login);
+    }
   };
 
   return (
