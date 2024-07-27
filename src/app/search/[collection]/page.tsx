@@ -11,6 +11,8 @@ import { notFound } from 'next/navigation';
 import { CategoryResType } from '@/schemaValidations/product.schema';
 import { PaginationProduct } from '@/components/pagination';
 import { ResponsePayloadType } from '@/lib/http';
+import { MobileCategory } from '../mobile-category';
+import { Filter } from '../filter';
 
 export async function generateMetadata({
     params
@@ -36,50 +38,31 @@ const CategoryPage = async ({
     params: { collection: string };
     searchParams?: { [key: string]: string | string[] | undefined };
 }) => {
-    const { sort, query } = searchParams as { [key: string]: string };
-    const { sortKey, sortType } = sorting.find((item) => item.slug === sort) || defaultSort;
+    const { query, page, sortKey, sortType } = searchParams as { [key: string]: string };
+    const { collection } = params;
 
     const { status, payload } = await productApiRequest.getCollectionProducts(
-        params.collection,
+        collection,
         query,
-        sortKey,
-        sortType
+        page || '1',
+        sortKey || defaultSort.sortKey,
+        sortType || defaultSort.sortType
     ) as ResponsePayloadType;
     const { result, totalPages, currentPage, itemsPerPage, totalItems } = (payload as any)?.data || {};
     return (<>
         <div className="flex items-center justify-between mb-4">
-            <Button className="flex items-center px-4 py-2 text-sm 
-                font-semibold transition duration-200 ease-in-out border 
-                rounded-md lg:hidden text-brand-dark border-border-base 
-                focus:outline-none hover:border-brand hover:text-brand">
-                <VscSettings />
-                <span className="ltr:pl-2.5 rtl:pr-2.5">
-                    Filters
-                </span>
-            </Button>
-            <div className="flex items-center justify-end w-full lg:justify-between">
-                <div className="shrink-0 text-brand-dark font-medium text-15px leading-4 
-                            md:ltr:mr-6 md:rtl:ml-6 hidden lg:block mt-0.5">
+            <div className="flex items-center justify-between w-full lg:justify-between">
+                <div className="shrink-0 text-brand-dark font-medium text-15px leading-4 md:ltr:mr-6 md:rtl:ml-6 hidden lg:block mt-0.5">
                     {formatNumber(totalItems)} sản phẩm
+                </div>
+                <div className="relative block md:hidden ltr:ml-2 rtl:mr-2 lg:ltr:ml-0 lg:rtl:mr-0 min-w-[160px]">
+                    <div className="flex items-center">
+                        <MobileCategory />
+                    </div>
                 </div>
                 <div className="relative ltr:ml-2 rtl:mr-2 lg:ltr:ml-0 lg:rtl:mr-0 min-w-[160px]">
                     <div className="flex items-center">
-                        <div className="shrink-0 text-15px ltr:mr-2 rtl:ml-2 text-brand-dark text-opacity-70">
-                            Sort by:
-                        </div>
-                        <Button className="relative w-full text-sm font-semibold rounded-lg cursor-pointer ltr:pr-5 rtl:pl-5
-                             text-brand-dark ltr:text-left rtl:text-right focus:outline-none focus-visible:ring-2
-                              focus-visible:ring-opacity-75 focus-visible:ring-white focus-visible:ring-offset-brand 
-                              focus-visible:ring-offset-2 focus-visible:border-indigo-500 sm:text-sm"
-                            id="headlessui-listbox-button-2" type="button" aria-haspopup="true" aria-expanded="false">
-                            <span className="block truncate">
-                                Lowest Price
-                            </span>
-                            <span className="absolute flex items-end pointer-events-none top-1 
-                                                    ltr:right-0 rtl:left-0 ltr:pl-1 rtl:pr-1">
-                                <MdOutlineKeyboardArrowDown />
-                            </span>
-                        </Button>
+                        <Filter />
                     </div>
                 </div>
             </div>

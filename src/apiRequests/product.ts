@@ -6,14 +6,14 @@ const limit = configEnv.NEXT_PUBLIC_LIMIT;
 
 const productApiRequest = {
     getCollection: () => http.get('/categories'),
-    getCollectionDetails: (nameCategory:string) => http.get(`/categories/${nameCategory}`),
+    getCollectionDetails: (nameCategory: string) => http.get(`/categories/${nameCategory}`),
     getNewProducts: () => http.get(`/products/newest`),
     getProducts: (query: string, page: string, sortKey: string, sortType: string) => {
         const queryString = buildQueryString({ query, page, sortKey, sortType });
         return http.get(`/products?${queryString}`);
     },
-    getCollectionProducts: (nameCollection: string, query: string, sortKey: string, sortType: string) => {
-        const queryString = buildQueryString({ query, sortKey, sortType });
+    getCollectionProducts: (nameCollection: string, query: string, page: string, sortKey: string, sortType: string) => {
+        const queryString = buildQueryString({ query, page, sortKey, sortType });
         return http.get(`/products/category/${nameCollection}?${queryString}&limit=${limit}`);
     },
     getDetail: (idProduct: string) => http.get(`/products/details/${idProduct}`),

@@ -25,7 +25,7 @@ export function ZaloQR() {
                         Quét mã để liên hệ với chúng tôi qua Zalo.
                     </AlertDialogDescription>
                 </AlertDialogHeader>
-                <Image src={imgQr} width={500} height={500} alt="Zalo QR" className="w-full" />
+                <Image src={imgQr} width={50} height={50} alt="Zalo QR" className="w-full" />
                 <AlertDialogFooter>
                     <AlertDialogCancel>Đóng</AlertDialogCancel>
                 </AlertDialogFooter>
