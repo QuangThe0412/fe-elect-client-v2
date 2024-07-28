@@ -1,0 +1,236 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 240 10% 3.9%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 240 10% 3.9%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 240 10% 3.9%;
+
+    --primary: #FF8f9C;
+    --primary-foreground: #ffffff;
+
+    --secondary: rgb(255, 143, 156);
+    --secondary-foreground: 240 5.9% 10%;
+
+    --muted: rgb(255, 143, 156);
+    --muted-foreground: 240 3.8% 46.1%;
+
+    --accent: #FF8f9C;
+    --accent-foreground: #ffffff;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+
+    --border: 240 5.9% 90%;
+    --input: 240 5.9% 90%;
+    --ring: 240 10% 3.9%;
+
+    --radius: 0.5rem;
+
+    --header-height: 4rem;
+    --footer-height: 4rem;
+    --button-text-color: black;
+
+    --tw-bg-opacity: 1;
+    --tw-text-opacity: 1;
+    --blackish: #1b1b1b;
+  }
+
+  .dark {
+    --background: 240 10% 3.9%;
+    --foreground: 0 0% 98%;
+
+    --card: 240 10% 3.9%;
+    --card-foreground: 0 0% 98%;
+
+    --popover: 240 10% 3.9%;
+    --popover-foreground: 0 0% 98%;
+
+    --primary: 0 0% 98%;
+    --primary-foreground: 240 5.9% 10%;
+
+    --secondary: rgb(255, 143, 156);
+    --secondary-foreground: 0 0% 98%;
+
+    --muted: rgb(255, 143, 156);
+    --muted-foreground: 240 5% 64.9%;
+
+    --accent: rgb(255, 143, 156);
+    --accent-foreground: #ffffff;
+
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 98%;
+
+    --border: rgb(255, 143, 156);
+    --input: rgb(255, 143, 156);
+    --ring: 240 4.9% 83.9%;
+
+    --button-text-color: white;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+  }
+
+  img {
+    width: inherit;
+    height: inherit;
+  }
+}
+
+@layer components {
+  .img-card {
+    @apply w-full h-48 object-contain;
+  }
+
+  .header_top__icon_wrapper {
+    @apply bg-gray-200 rounded-md px-2 py-1 text-base cursor-pointer text-white;
+    color: var(--button-text-color);
+  }
+
+  .header_top__icon_wrapper:hover {
+    background-color: var(--primary);
+    color: var(--primary-foreground);
+  }
+
+  .bg-blackish {
+    background-color: var(--blackish) !important;
+  }
+
+  .bg-transparent {
+    background-color: transparent !important;
+    border: none !important;
+  }
+
+  .bg-accent-custom {
+    background-color: var(--accent) !important;
+    color: white !important;
+  }
+
+  .bg-accent-custom:hover {
+    background-color: var(--blackish) !important;
+    color: white !important;
+  }
+
+  .text-blackish {
+    color: var(--blackish);
+  }
+
+  .text-accent {
+    color: var(--accent) !important;
+  }
+
+  .navbar__link {
+    @apply text-blackish;
+  }
+
+  .navbar__link:after {
+    position: absolute;
+    content: "";
+    background-color: #ff8f9c;
+    height: 3px;
+    width: 100%;
+    bottom: -5px;
+    left: 0;
+    scale: 0;
+    transform-origin: left;
+    transition: all .4s;
+  }
+
+  .navbar__link:hover {
+    color: #ff8f9c;
+    transition: all .4s;
+  }
+
+  .navbar__link:hover:after {
+    scale: 1;
+  }
+
+  .navbar__link.active {
+    color: #ff8f9c;
+  }
+
+  .navbar__link.active:after {
+    scale: 1;
+  }
+
+  .navbar__link_mobile {
+    @apply text-blackish flex items-center justify-center py-2;
+  }
+
+  .navbar__link_mobile:hover {
+    color: #ff8f9c;
+  }
+
+  .navbar__link_mobile.active {
+    color: #ff8f9c;
+  }
+
+  button {
+    background-color: transparent !important;
+    color: var(--button-text-color) !important;
+  }
+
+  button:hover {
+    background-color: var(--accent) !important;
+    color: #ffffff !important;
+  }
+
+  .text-brand-dark {
+    --tw-text-opacity: 1;
+    color: rgb(0 0 0 / var(--tw-text-opacity));
+  }
+}
+
+@screen md {
+  .height-wraper-table {
+    height: calc(90% - var(--footer-height)) !important;
+  }
+}
+
+.text-active {
+  color: deepskyblue;
+}
+
+.height-wraper-table {
+  height: 100%;
+}
+
+.height-body {
+  height: 95% !important;
+}
+
+table {
+  width: 100%;
+  display: table;
+}
+
+thead,
+tbody tr {
+  display: table;
+  width: 100%;
+  table-layout: fixed;
+}
+
+tbody {
+  flex: 1;
+  display: block;
+  overflow-y: auto;
+}
+
+[vaul-drawer][vaul-drawer-direction=right]::after {
+  width: unset !important;
+}
