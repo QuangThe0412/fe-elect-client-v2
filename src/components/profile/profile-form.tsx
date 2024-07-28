@@ -13,7 +13,7 @@ import {
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { useToast } from '@/components/ui/use-toast'
-import { handleErrorApi } from '@/lib/utils'
+import { handleErrorApi, tryGetAccessToken } from '@/lib/utils'
 import { useState } from 'react'
 import { ResponsePayloadType } from '@/lib/http'
 import useAuthStore, { TypeUsers } from '@/store/auth.store'
@@ -40,7 +40,8 @@ const ProfileForm = ({ onClose }: { onClose: () => void }) => {
         if (loading) return;
         setLoading(true);
         try {
-            const { status, payload } = await accountApiRequest.updateProfile(values) as ResponsePayloadType;
+            const accessToken = await tryGetAccessToken() as string;
+            const { status, payload } = await accountApiRequest.updateProfile(accessToken, values) as ResponsePayloadType;
             const { mess, data } = payload;
             if (status == 200) {
                 setUser(data);
@@ -101,7 +102,7 @@ const ProfileForm = ({ onClose }: { onClose: () => void }) => {
                             </FormItem>
                         )}
                     />
-                    <Button disabled={loading} type="submit" className="w-full mt-4">Cập nhật</Button>
+                    <Button disabled={loading} type="submit" className="w-full mt-4 bg-accent-custom">Cập nhật</Button>
                 </form>
             </Form>
         </>

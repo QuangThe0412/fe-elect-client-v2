@@ -14,6 +14,8 @@ export type ResponsePayloadType<T = any> = {
   }
 }
 
+let availableCall = true;
+
 const request = async <ResponsePayloadType>(
   method: 'GET' | 'POST' | 'PUT' | 'DELETE',
   url: string,
@@ -26,8 +28,8 @@ const request = async <ResponsePayloadType>(
     };
     const baseUrl = options?.baseUrl === undefined ? process.env.NEXT_PUBLIC_API_URL : process.env.NEXT_PUBLIC_DOMAIN;
     const fullUrl = url.startsWith('/') ? `${baseUrl}${url}` : `/${baseUrl}${url}`;
-    console.log({ fullUrl });
-    
+    // console.log({ fullUrl });
+
     const res = await fetch(fullUrl, {
       ...options,
       headers: {
@@ -42,9 +44,13 @@ const request = async <ResponsePayloadType>(
       if (status === 401) {
         let resultTry = await tryGetAccessToken();
         if (!resultTry) {
+          availableCall = false;
           throw new Error(JSON.stringify({ status, code: 'Error', mess: 'Not Authorize', data: null }));
         } else {
-          return request(method, url, options);
+          if (availableCall) {
+            availableCall = false;
+            return request(method, url, options);
+          }
         }
       }
     }
@@ -54,8 +60,10 @@ const request = async <ResponsePayloadType>(
       status,
       payload
     }
+    availableCall = true;
     return data as ResponsePayloadType;
   } catch (error: any) {
+    availableCall = false;
     console.log({ error });
     const errorJson = JSON.parse(error.message);
     if (errorJson.status === 401) {

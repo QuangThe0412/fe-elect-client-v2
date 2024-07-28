@@ -3,6 +3,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { defaultSort } from '@/lib/constants';
 import { paths } from '@/lib/paths';
+import { Suspense } from 'react';
 
 const ButtonSeeMore = () => {
     const router = useRouter();
@@ -25,4 +26,10 @@ const ButtonSeeMore = () => {
     )
 }
 
-export default ButtonSeeMore;
+export default function ButtonSeeMoreComponent() {
+    return (
+        <Suspense>
+            <ButtonSeeMore />
+        </Suspense>
+    )
+}

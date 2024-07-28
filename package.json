@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "SET APP_ENV=dev && next dev -p 4005",
     "build": "next build",
-    "start": "SET APP_ENV=pro && next start",
+    "start": "next start -p 4005",
     "lint": "next lint"
   },
   "dependencies": {
@@ -33,6 +33,7 @@
     "react-hook-form": "^7.52.1",
     "react-icons": "^5.2.1",
     "react-slick": "^0.30.2",
+    "sharp": "^0.33.4",
     "slick-carousel": "^1.8.1",
     "slugify": "^1.6.6",
     "tailwind-merge": "^2.3.0",

@@ -59,7 +59,7 @@ const AppLayout = ({ children }: any) => {
         };
 
         init();
-    }, [user]);
+    }, [user, hadUser, setCart, setUser]);
 
     return (
         <>

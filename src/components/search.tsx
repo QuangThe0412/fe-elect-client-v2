@@ -2,9 +2,10 @@
 import { Input } from "@/components/ui/input"
 import { paths } from "@/lib/paths";
 import { useSearchParams, useRouter } from 'next/navigation';
+import { Suspense } from "react";
 import { useDebouncedCallback } from 'use-debounce';
 
-export function Search() {
+function Search() {
   const searchParams = useSearchParams();
   const { replace } = useRouter();
 
@@ -32,5 +33,13 @@ export function Search() {
       }}
       defaultValue={searchParams.get('query')?.toString()}
     />
+  )
+}
+
+export default function Searchbar() {
+  return (
+    <Suspense>
+      <Search />
+    </Suspense>
   )
 }

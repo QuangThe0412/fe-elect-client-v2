@@ -5,15 +5,12 @@ const accountApiRequest = {
     profile: (accessToken: string) => http.get('/account/profile', {
         headers: { Authorization: `${accessToken}` },
     }),
-    updateProfile: (body: any) => http.put('/api/account/profile', body, {
-        baseUrl: ''
+    updateProfile: (accessToken: string, body: any) => http.put('/account/profile', body, {
+        headers: { Authorization: `${accessToken}` },
     }),
-    changePassword: (body: any) => http.put('/api/account/change-password', body, {
-        baseUrl: ''
-    }),
-    logout: () => http.delete('/api/account/logout', null, {
-        baseUrl: ''
-    }),
+    changePassword: (accessToken: string, body: any) => http.put('/account/change-password', body, {
+        headers: { Authorization: `${accessToken}` },
+    })
 }
 
 export default accountApiRequest;

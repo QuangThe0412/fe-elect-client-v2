@@ -5,10 +5,10 @@ import DataProduct from '../data';
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { CategoryResType } from '@/schemaValidations/product.schema';
-import { PaginationProduct } from '@/components/pagination';
+import PaginationProduct from '@/components/pagination';
 import { ResponsePayloadType } from '@/lib/http';
 import { MobileCategory } from '../mobile-category';
-import { Filter } from '../filter';
+import Filter from '../filter';
 
 export async function generateMetadata({
     params

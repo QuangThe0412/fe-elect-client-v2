@@ -1,6 +1,6 @@
 import productApiRequest from '@/apiRequests/product'
 import configEnv from '@/configEnv';
-import { formatCurrency, formatNumber, getIdFromSlugLink, slugifyHandle } from '@/lib/utils';
+import { formatCurrency, formatNumber, generateLinkGoogleImage, getIdFromSlugLink, slugifyHandle } from '@/lib/utils';
 import { ProductResType } from '@/schemaValidations/product.schema';
 import Image from 'next/image';
 import ButtonAddCartPageDetails from '../../../components/products/button-add-cart-details';
@@ -23,13 +23,28 @@ const fetchDetailProducts = async (id: string) => {
 
 export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
     const id = getIdFromSlugLink(params.slug);
-    const collection = await fetchDetailProducts(id) as ProductResType;
-    const { TenMon = '' } = collection;
+    const { TenMon = '', Image: image, GhiChu } = await fetchDetailProducts(id) as ProductResType;
+    const src = `${(configEnv.NEXT_PUBLIC_LINK_IMAGE_GG ?? '') + image}`
 
-    if (!collection) return notFound();
     return {
         title: TenMon,
-        description: `Sản phẩm + ${TenMon}, ${TenMon} chất lượng, ${TenMon} giá rẻ,${slugifyHandle(TenMon)}`
+        description: `Sản phẩm + ${TenMon}, ${TenMon} chất lượng, ${TenMon} giá rẻ,${slugifyHandle(TenMon)}`,
+        openGraph: {
+            title: "Sản phẩm + " + TenMon,
+            description: `${GhiChu}`,
+            type: 'website',
+            locale: 'vi_VN',
+            url: `${configEnv.NEXT_PUBLIC_DOMAIN}`,
+            phoneNumbers: '0938729853',
+            countryName: 'Vietnam',
+            siteName: 'Điện nước Tâm Nhi',
+            images: [
+                {
+                    url: `${src}`,
+                    alt: `${TenMon}`,
+                },
+            ],
+        },
     };
 }
 
@@ -37,8 +52,7 @@ const ProductDetailPage = async ({ params }: { params: { slug: string } }) => {
     const id = getIdFromSlugLink(params.slug);
     const product = await fetchDetailProducts(id);
     const { IDMon, IDLoaiMon, TenMon = '', Image: image, DonGiaBanSi, DonGiaBanLe, SoLuongTonKho, GhiChu } = product as ProductResType;
-    const src = `${(configEnv.NEXT_PUBLIC_LINK_IMAGE_GG ?? '') + image}`
-
+    const src = generateLinkGoogleImage(image as string);
     const productJsonLd = {
         '@context': 'https://schema.org',
         '@type': 'Product',
@@ -96,7 +110,7 @@ const ProductDetailPage = async ({ params }: { params: { slug: string } }) => {
             <div>
                 <RelatedProducts idCategory={IDLoaiMon} />
             </div>
-            <Script strategy='lazyOnload' type="application/ld+json"
+            <Script id='scrip-jld-product' strategy='lazyOnload' type="application/ld+json"
                 dangerouslySetInnerHTML={{ __html: JSON.stringify(productJsonLd) }}
             />
         </div>

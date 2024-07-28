@@ -1,6 +1,6 @@
 import { CartDetails } from '@/schemaValidations/cart.schema'
 import configEnv from '@/configEnv';
-import { emptyImage, formatCurrency, formatNumber } from '@/lib/utils';
+import { emptyImage, formatCurrency, formatNumber, generateLinkGoogleImage } from '@/lib/utils';
 import cartApiRequest from '@/apiRequests/cart';
 import useCartStore, { TypeCartStore } from '@/store/cart.store';
 import { Button } from '@/components/ui/button';
@@ -20,7 +20,6 @@ function ItemCart({ data }: { data: CartDetails }) {
     }))
 
     const { IDChiTietHD, TenMon, SoLuong = 0, DonGia = 0, ChietKhau = 0, Image: image, IDMon } = data
-    const src = `${(configEnv.NEXT_PUBLIC_LINK_IMAGE_GG ?? '') + image}`
     const total = DonGia * SoLuong
 
     const onRemove = async (idChiTietHd: number) => {
@@ -105,11 +104,13 @@ function ItemCart({ data }: { data: CartDetails }) {
         <tr key={IDChiTietHD} className='border'>
             <td>
                 <Link className="flex items-center" href={`${paths.products}/${IDMon}`}>
-                    <Image width={100} height={100} className="px-4 py-4"
-                        src={src}
+                    <Image width={100} height={100} className="px-4 py-4 max-w-full md:max-w-20"
+                        src={generateLinkGoogleImage(image as string)}
                         // onError={emptyImage}
                         alt={`${TenMon}`} />
-                    <span title={TenMon} className="text-sm line-clamp-2 hidden md:block">{TenMon}</span>
+                    <span title={TenMon} className="text-sm line-clamp-2 hidden md:block">
+                        {TenMon}
+                    </span>
                 </Link>
             </td>
             <td className="text-center">{formatCurrency(DonGia)}</td>

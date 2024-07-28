@@ -27,6 +27,7 @@ import { paths } from '@/lib/paths';
 import { ResponsePayloadType } from '@/lib/http';
 import { FaSpinner } from 'react-icons/fa';
 import { isMobile } from 'react-device-detect';
+import { removeCookie } from '@/lib/utils';
 
 export function UserNav() {
   const router = useRouter()
@@ -54,6 +55,13 @@ export function UserNav() {
       router.push(paths.login);
     }
   };
+
+  const logout = () => {
+    removeCookie('accessToken')
+    removeCookie('refreshToken')
+    setUser({} as TypeDataAccountRes)
+    setCart({} as CartType)
+  }
 
   return (
     <>
@@ -93,13 +101,7 @@ export function UserNav() {
                   </DropdownMenuItem>
                 </DropdownMenuGroup>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem onClick={async () => {
-                  const { status } = await accountApiRequest.logout() as ResponsePayloadType;
-                  if (status === 200) {
-                    setUser({} as TypeDataAccountRes)
-                    setCart({} as CartType)
-                  }
-                }}>
+                <DropdownMenuItem onClick={() => logout()}>
                   <RiLogoutCircleLine className="mr-2 h-4 w-4" />
                   <span>Đăng xuất</span>
                 </DropdownMenuItem>

@@ -7,6 +7,7 @@ import emptyImg from '../../public/emptyCard.png'
 import { ResponsePayloadType } from "./http";
 import authApiRequest from "@/apiRequests/auth"
 import slugify from 'slugify';
+import configEnv from "@/configEnv"
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
@@ -179,4 +180,9 @@ export const getIdFromSlugLink = (slug: string) => {
   const temp = slug.split('.html');
   const id = temp[0].split('-').pop();
   return id as string;
+}
+
+export const generateLinkGoogleImage = (id: string) => {
+  if (!id) return '';
+  return `${(configEnv.NEXT_PUBLIC_LINK_IMAGE_GG ?? '') + id}` + '&sz=w1000';
 }

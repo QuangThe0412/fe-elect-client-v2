@@ -12,9 +12,9 @@ import {
 import { defaultSort, sorting } from "@/lib/constants"
 import { MdOutlineKeyboardArrowDown } from "react-icons/md"
 import { usePathname, useRouter, useSearchParams } from "next/navigation"
-import { useCallback, useState } from "react"
+import { Suspense, useCallback, useState } from "react"
 
-export function Filter() {
+function Filter() {
     const router = useRouter()
     const pathname = usePathname()
     const searchParams = useSearchParams()
@@ -58,5 +58,13 @@ export function Filter() {
                 </DropdownMenuRadioGroup>
             </DropdownMenuContent>
         </DropdownMenu>
+    )
+}
+
+export default function FilterComponent() {
+    return (
+        <Suspense>
+            <Filter />
+        </Suspense>
     )
 }

@@ -2,9 +2,9 @@ import { defaultSort } from '@lib/constants';
 import productApiRequest from '@/apiRequests/product';
 import { formatNumber } from '@/lib/utils';
 import DataProduct from './data';
-import { PaginationProduct } from '@/components/pagination';
+import PaginationProduct from '@/components/pagination';
 import { ResponsePayloadType } from '@/lib/http';
-import { Filter } from './filter';
+import Filter from './filter';
 import { MobileCategory } from './mobile-category';
 
 

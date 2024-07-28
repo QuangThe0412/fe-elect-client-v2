@@ -1,13 +1,12 @@
 import { ProductResType } from '@/schemaValidations/product.schema';
 import configEnv from '@/configEnv';
 import Image from 'next/image';
-import { formatCurrency, generateSlugLink } from '@/lib/utils';
+import { formatCurrency, generateLinkGoogleImage, generateSlugLink } from '@/lib/utils';
 import Link from 'next/link';
 import { paths } from '@/lib/paths';
 
 const Slide = ({ data }: { data: ProductResType }) => {
     const { IDMon, TenMon = '', Image: image, DonGiaBanLe, } = data;
-    const src = `${(configEnv.NEXT_PUBLIC_LINK_IMAGE_GG ?? '') + image}`
     const href = `${paths.products}/${generateSlugLink(TenMon as string, IDMon as number)}`;
     return (
         <div className='group flex h-full w-full items-center 
@@ -16,7 +15,7 @@ const Slide = ({ data }: { data: ProductResType }) => {
          border-neutral-200 dark:border-neutral-800'>
             <Image className='img-card rounded-md'
                 priority
-                src={src}
+                src={generateLinkGoogleImage(image as string)}
                 height={500}
                 width={600}
                 sizes="100vw"

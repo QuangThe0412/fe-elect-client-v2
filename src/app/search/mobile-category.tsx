@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { MdOutlineKeyboardArrowDown } from "react-icons/md"
 import { usePathname, useRouter } from "next/navigation"
-import { useEffect, useState } from "react"
+import { useEffect, useMemo, useState } from "react"
 import { CategoryResType } from "@/schemaValidations/product.schema"
 import productApiRequest from "@/apiRequests/product"
 import { ResponsePayloadType } from "@/lib/http"
@@ -19,12 +19,12 @@ import { ScrollArea } from "@/components/ui/scroll-area"
 import { slugifyHandle } from "@/lib/utils"
 
 export function MobileCategory() {
-    const AllOption: CategoryResType = {
+    const [categories, setCategories] = useState([] as CategoryResType[]) || [];
+    const AllOption: CategoryResType = useMemo(() => ({
         IDLoaiMon: 0,
         IDNhomMon: 0,
         TenLoai: 'Tất cả',
-    }
-    const [categories, setCategories] = useState([] as CategoryResType[]) || [];
+    }), []);
 
     useEffect(() => {
         const fetchCategories = async () => {
@@ -41,7 +41,7 @@ export function MobileCategory() {
         };
 
         fetchCategories();
-    }, []);
+    }, [AllOption, setCategories]);
 
     const router = useRouter();
     const pathname = usePathname();

@@ -10,12 +10,13 @@ import {
 } from "@/components/ui/pagination"
 import { defaultSort } from "@/lib/constants";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { Suspense } from "react";
 export interface PaginationProps {
   totalPages: number;
   totalPagesToDisplay?: number;
 }
 
-export const PaginationProduct: React.FC<PaginationProps> = ({
+const PaginationProduct: React.FC<PaginationProps> = ({
   totalPages,
   totalPagesToDisplay = 5,
 }: PaginationProps) => {
@@ -76,7 +77,7 @@ export const PaginationProduct: React.FC<PaginationProps> = ({
           href={createURL(pageNumber)}
           isActive={pageNumber === currentPage}
           className={pageNumber === currentPage ? 'cursor-not-allowed pointer-events-none text-primary' : ''}
-          // onClick={(e) => { handleClick(pageNumber) }}
+        // onClick={(e) => { handleClick(pageNumber) }}
         >
           {pageNumber}
         </PaginationLink>
@@ -91,7 +92,7 @@ export const PaginationProduct: React.FC<PaginationProps> = ({
           <PaginationPrevious
             className={currentPage <= 1 ? 'cursor-not-allowed pointer-events-none opacity-50' : ''}
             href={createURL(currentPage - 1)}
-            // onClick={(e) => { handleClick(currentPage - 1) }}
+          // onClick={(e) => { handleClick(currentPage - 1) }}
           />
         </PaginationItem>
         {showLeftEllipsis && (
@@ -109,10 +110,21 @@ export const PaginationProduct: React.FC<PaginationProps> = ({
           <PaginationNext
             className={currentPage >= totalPages ? 'cursor-not-allowed pointer-events-none opacity-50' : ''}
             href={createURL(currentPage + 1)}
-            // onClick={(e) => { handleClick(currentPage + 1) }}
+          // onClick={(e) => { handleClick(currentPage + 1) }}
           />
         </PaginationItem>
       </PaginationContent>
     </Pagination>
   );
 };
+
+export default function PaginationComponent({
+  totalPages,
+  totalPagesToDisplay = 5,
+}: PaginationProps) {
+  return (
+    <Suspense>
+      <PaginationProduct totalPages={totalPages} totalPagesToDisplay={totalPagesToDisplay} />
+    </Suspense>
+  )
+}

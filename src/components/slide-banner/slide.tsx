@@ -1,3 +1,4 @@
+import { generateLinkGoogleImage } from '@/lib/utils';
 import Image from 'next/image';
 
 type props = {
