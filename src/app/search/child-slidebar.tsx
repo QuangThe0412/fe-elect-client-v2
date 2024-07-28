@@ -1,23 +1,22 @@
 "use client";
 import { paths } from '@/lib/paths'
-import { removeAccentAndSpecialChars } from '@/lib/utils';
+import { generateSlugLink, getIdFromSlugLink, slugifyHandle } from '@/lib/utils';
 import { CategoryResType } from '@/schemaValidations/product.schema'
 import { usePathname, useRouter } from 'next/navigation'
 import { BsHammer } from 'react-icons/bs'
 
 
 const ChildSlideBar = ({ category }: { category: CategoryResType }) => {
-    const { IDLoaiMon, TenLoai } = category;
+    const { IDLoaiMon, TenLoai = '' } = category;
     const router = useRouter();
     const pathname = usePathname()
-    const categoryName = pathname.split('/')[2];
-    const currentIdCategory = removeAccentAndSpecialChars(TenLoai) === categoryName ? IDLoaiMon : undefined;
+    const currentIdCategory = getIdFromSlugLink(pathname);
 
     const HandleClickLink = (idLoaiMon: number | undefined) => {
         if (idLoaiMon === Number(currentIdCategory)) {
             router.push(`${paths.search}`);
         } else {
-            router.push(`${paths.search}/${removeAccentAndSpecialChars(TenLoai)}`);
+            router.push(`${paths.search}/${generateSlugLink(TenLoai as string, IDLoaiMon as number)}`);
         }
     }
 

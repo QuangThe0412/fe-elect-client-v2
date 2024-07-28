@@ -1,6 +1,6 @@
 import productApiRequest from '@/apiRequests/product';
 import { defaultSort } from '@/lib/constants';
-import { formatNumber } from '@/lib/utils';
+import { formatNumber, getIdFromSlugLink } from '@/lib/utils';
 import DataProduct from '../data';
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
@@ -9,22 +9,24 @@ import { PaginationProduct } from '@/components/pagination';
 import { ResponsePayloadType } from '@/lib/http';
 import { MobileCategory } from '../mobile-category';
 import { Filter } from '../filter';
-import { cache } from 'react';
 
 export async function generateMetadata({
     params
 }: {
     params: { collection: string };
 }): Promise<Metadata> {
-    const collection = await productApiRequest.getCollectionDetails(params.collection);
-    const { status, payload } = collection as ResponsePayloadType;
+    const { collection } = params;
+    const idCategory = getIdFromSlugLink(collection);
+
+    const collectionDetail = await productApiRequest.getCollectionDetails(idCategory);
+    const { status, payload } = collectionDetail as ResponsePayloadType;
     if (status !== 200) return notFound();
     const { TenLoai } = (payload as any)?.data as CategoryResType;
-    const title = TenLoai || params.collection;
-    if (!collection) return notFound();
+
+    if (!collectionDetail) return notFound();
 
     return {
-        title: 'Loại sản phẩm ' + title,
+        title: 'Loại sản phẩm ' + TenLoai,
         description: 'Danh sách sản phẩm thuộc ' + TenLoai
     };
 }
@@ -38,9 +40,9 @@ const CategoryPage = async ({
 }) => {
     const { query, page, sortKey, sortType } = searchParams as { [key: string]: string };
     const { collection } = params;
-
+    const idCategory = getIdFromSlugLink(collection);
     const { status, payload } = await productApiRequest.getCollectionProducts(
-        collection,
+        idCategory,
         query,
         page || '1',
         sortKey || defaultSort.sortKey,

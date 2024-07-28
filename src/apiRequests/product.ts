@@ -12,9 +12,9 @@ const productApiRequest = {
         const queryString = buildQueryString({ query, page, sortKey, sortType });
         return http.get(`/products?${queryString}`);
     },
-    getCollectionProducts: (nameCollection: string, query: string, page: string, sortKey: string, sortType: string) => {
+    getCollectionProducts: (idCategory: string, query: string, page: string, sortKey: string, sortType: string) => {
         const queryString = buildQueryString({ query, page, sortKey, sortType });
-        return http.get(`/products/category/${nameCollection}?${queryString}&limit=${limit}`);
+        return http.get(`/products/category/${idCategory}?${queryString}&limit=${limit}`);
     },
     getDetail: (idProduct: string) => http.get(`/products/details/${idProduct}`),
     getRelatedProducts: (idCategory: number) => http.get(`/products/related/${idCategory}`),

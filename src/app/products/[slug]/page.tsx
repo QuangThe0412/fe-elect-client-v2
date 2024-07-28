@@ -1,6 +1,6 @@
 import productApiRequest from '@/apiRequests/product'
 import configEnv from '@/configEnv';
-import { formatCurrency, formatNumber, removeAccentAndSpecialChars } from '@/lib/utils';
+import { formatCurrency, formatNumber, getIdFromSlugLink, slugifyHandle } from '@/lib/utils';
 import { ProductResType } from '@/schemaValidations/product.schema';
 import Image from 'next/image';
 import ButtonAddCartPageDetails from '../../../components/products/button-add-cart-details';
@@ -18,25 +18,25 @@ const fetchDetailProducts = async (id: string) => {
     if (status === 200) {
         return (payload as any)?.data as ProductResType;
     }
-    return {} as ProductResType;
+    return notFound();
 }
 
-export async function generateMetadata({ params }: { params: { id: string } }): Promise<Metadata> {
-    const collection = await fetchDetailProducts(params.id);
+export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
+    const id = getIdFromSlugLink(params.slug);
+    const collection = await fetchDetailProducts(id) as ProductResType;
     const { TenMon = '' } = collection;
 
     if (!collection) return notFound();
     return {
         title: TenMon,
-        description: `Sản phẩm + ${TenMon}, ${TenMon} chất lượng, ${TenMon} giá rẻ,${removeAccentAndSpecialChars(TenMon)}`
+        description: `Sản phẩm + ${TenMon}, ${TenMon} chất lượng, ${TenMon} giá rẻ,${slugifyHandle(TenMon)}`
     };
 }
 
-const ProductDetailPage = async ({ params }: { params: { id: string } }) => {
-    const product = await fetchDetailProducts(params.id);
-    const { IDMon, IDLoaiMon, TenMon = '', Image: image,
-        DVTMon, DonGiaBanSi, DonGiaBanLe, DonGiaVon,
-        SoLuongTonKho, ThoiGianBH, GhiChu } = product;
+const ProductDetailPage = async ({ params }: { params: { slug: string } }) => {
+    const id = getIdFromSlugLink(params.slug);
+    const product = await fetchDetailProducts(id);
+    const { IDMon, IDLoaiMon, TenMon = '', Image: image, DonGiaBanSi, DonGiaBanLe, SoLuongTonKho, GhiChu } = product as ProductResType;
     const src = `${(configEnv.NEXT_PUBLIC_LINK_IMAGE_GG ?? '') + image}`
 
     const productJsonLd = {

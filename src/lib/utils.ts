@@ -6,6 +6,7 @@ import jwt from 'jsonwebtoken'
 import emptyImg from '../../public/emptyCard.png'
 import { ResponsePayloadType } from "./http";
 import authApiRequest from "@/apiRequests/auth"
+import slugify from 'slugify';
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
@@ -146,6 +147,18 @@ export const parseHandleQuery = (handle: string): Record<string, string> => {
   return queryParams;
 }
 
+export const slugifyHandle = (str: string) => {
+  if (!str) return '';
+  return slugify(str, {
+    replacement: '-',  // replace spaces with replacement character, defaults to `-`
+    remove: undefined, // remove characters that match regex, defaults to `undefined`
+    lower: true,      // convert to lower case, defaults to `false`
+    strict: false,     // strip special characters except replacement, defaults to `false`
+    locale: 'vi',      // language code of the locale to use
+    trim: true         // trim leading and trailing replacement chars, defaults to `true`
+  })
+}
+
 // những tham số có giá trị mới được thêm vào chuỗi truy vấn của URL.
 export function buildQueryString(params: Record<string, any>): string {
   return Object.keys(params)
@@ -154,6 +167,16 @@ export function buildQueryString(params: Record<string, any>): string {
     .join('&');
 }
 
-export const removeAccentAndSpecialChars = (str: string | undefined) => {
-  return str?.normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-zA-Z0-9]/g, '');
+export const generateSlugLink = (str: string, id: number) => {
+  if (str && id) {
+    const link = slugifyHandle(str).concat(`-${id}`).concat('.html');
+    return link;
+  }
+  return null;
+}
+
+export const getIdFromSlugLink = (slug: string) => {
+  const temp = slug.split('.html');
+  const id = temp[0].split('-').pop();
+  return id as string;
 }

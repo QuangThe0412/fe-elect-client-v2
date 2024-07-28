@@ -14,9 +14,9 @@ import { useEffect, useState } from "react"
 import { CategoryResType } from "@/schemaValidations/product.schema"
 import productApiRequest from "@/apiRequests/product"
 import { ResponsePayloadType } from "@/lib/http"
-import { removeAccentAndSpecialChars } from "@/lib/utils"
 import { paths } from "@/lib/paths"
 import { ScrollArea } from "@/components/ui/scroll-area"
+import { slugifyHandle } from "@/lib/utils"
 
 export function MobileCategory() {
     const AllOption: CategoryResType = {
@@ -46,14 +46,14 @@ export function MobileCategory() {
     const router = useRouter();
     const pathname = usePathname();
     const categoryPath = pathname.split('/')[2] || AllOption.TenLoai;
-    const categoryMatch = categories.find((item) => removeAccentAndSpecialChars(item.TenLoai) === categoryPath) || AllOption;
+    const categoryMatch = categories.find((item) => slugifyHandle(item.TenLoai as string) === categoryPath) || AllOption;
 
     const HandleOnSelect = (idLoaiMon: number) => {
         if (idLoaiMon === 0) {
             router.push(paths.search)
         } else {
             const selectedCategory = categories.find((item) => item.IDLoaiMon === idLoaiMon)
-            const nameFilter = removeAccentAndSpecialChars(selectedCategory?.TenLoai || '')
+            const nameFilter = slugifyHandle(selectedCategory?.TenLoai || '')
             router.push(`${paths.search}/${nameFilter}`)
         }
     }

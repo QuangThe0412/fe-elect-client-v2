@@ -2,7 +2,7 @@ import { FaStar, FaRegStar } from "react-icons/fa";
 import { ProductResType } from '@/schemaValidations/product.schema';
 import configEnv from '@/configEnv';
 import ButtonAddCart from './button-add-cart';
-import { formatCurrency } from '@/lib/utils';
+import { formatCurrency, generateSlugLink } from '@/lib/utils';
 import Image from 'next/image';
 import Link from 'next/link';
 import { paths } from '@/lib/paths';
@@ -20,16 +20,16 @@ const generateRating = (rating: number) => {
 }
 
 const ProductCard = ({ data }: { data: ProductResType }) => {
-    const { IDMon, IDLoaiMon, TenMon, Image: image, DVTMon, DonGiaBanSi,
-        DonGiaBanLe = 0, DonGiaVon, SoLuongTonKho, ThoiGianBH, GhiChu } = data;
+    const { IDMon, TenMon, Image: image, DonGiaBanLe = 0 } = data;
     const src = `${(configEnv.NEXT_PUBLIC_LINK_IMAGE_GG ?? '') + image}`
 
     const price = formatCurrency(DonGiaBanLe);
     const priceSale = formatCurrency(DonGiaBanLe + (DonGiaBanLe * 0.2));
+    const href = `${paths.products}/${generateSlugLink(TenMon as string, IDMon as number)}`;
     return (
         <div className="px-4 py-4 border border-gray-200 rounded-xl min-w-[250px]
         cursor-pointer relative group hover:shadow-2xl">
-            <Link href={`${paths.products}/${IDMon}`}>
+            <Link href={href}>
                 <Image className='img-card rounded-md'
                     priority
                     src={src}
