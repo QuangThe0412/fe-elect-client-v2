@@ -39,7 +39,7 @@ jobs:
           fi
 
       - name: Yarn build...
-        run: CI=false yarn build --verbose
+        run: CI=false yarn build
         timeout-minutes: 10
 
       - name: Run Pm2...    
