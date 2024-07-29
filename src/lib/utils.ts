@@ -183,6 +183,9 @@ export const getIdFromSlugLink = (slug: string) => {
 }
 
 export const generateLinkGoogleImage = (id: string) => {
-  if (!id) return '';
-  return `${(configEnv.NEXT_PUBLIC_LINK_IMAGE_GG ?? '') + id}` + '&sz=w1000';
+  if(id){
+    return `${(configEnv.NEXT_PUBLIC_LINK_IMAGE_GG ?? '') + id}` + '&sz=w1000';
+  } else {
+    return emptyImg;
+  }
 }
