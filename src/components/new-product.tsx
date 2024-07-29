@@ -3,15 +3,12 @@ import productApiRequest from '@/apiRequests/product';
 import { ProductResType } from '@/schemaValidations/product.schema';
 import { ResponsePayloadType } from '@/lib/http';
 
-const dataNewProduct = [] as ProductResType[];
-productApiRequest.getNewProducts().then((res) => {
-    const { status, payload } = res as ResponsePayloadType;
+const NewProduct = async () => {
+    const dataNewProduct = [] as ProductResType[];
+    const { status, payload } = await productApiRequest.getNewProducts() as ResponsePayloadType;
     if (status === 200) {
         dataNewProduct.push(...((payload as any)?.data || []));
     }
-});
-
-const NewProduct = () => {
     return (
         <>
             <div className="container pt-16">
