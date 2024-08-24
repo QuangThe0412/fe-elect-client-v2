@@ -1,7 +1,7 @@
 import dotenv from 'dotenv';
 import path from 'path';
 
-const envFile = process.env.APP_ENV === 'pro' ? '.env.prodction' : '.env.development';
+const envFile = process.env.APP_ENV === 'pro' ? '.env.production' : '.env.development';
 dotenv.config({ path: path.resolve(envFile) });
 
 const configEnv = {
